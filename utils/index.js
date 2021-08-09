@@ -4,6 +4,7 @@ import {
   HUMAN_FULL_DATE_FORMAT,
   NUMERICAL_MONTH_YEAR_FORMAT,
   HUMAN_MONTH_YEAR_FORMAT,
+  YEAR_ONLY_FORMAT,
 } from '../consts';
 
 export const parseNumericalFullDate = date =>
@@ -16,12 +17,27 @@ export const parseNumericalMonthYearDate = date =>
 export const parseHumanMonthYearDate = date =>
   parse(date, HUMAN_MONTH_YEAR_FORMAT, new Date(0, 0, 1));
 
+export const parseYearOnly = date =>
+  parse(date, YEAR_ONLY_FORMAT, new Date(0, 1, 1));
+
 export const parseNumericalAndHumanFullFormat = date =>
   date.includes('/') ? parseNumericalFullDate(date) : parseHumanFullDate(date);
 export const parseNumericalAndHumanMonthYearFormat = date =>
   date.includes('/')
     ? parseNumericalMonthYearDate(date)
     : parseHumanMonthYearDate(date);
+
+export const todayDate = () =>
+  parseNumericalFullDate(format(new Date(), NUMERICAL_FULL_DATE_FORMAT));
+
+export const parseMultipleFormat = date =>
+  !date
+    ? todayDate()
+    : date.includes(' ') || date.includes('/')
+    ? date.split(' ').length === 2 || date.split('/').length === 2
+      ? parseNumericalAndHumanMonthYearFormat(date)
+      : parseNumericalAndHumanFullFormat(date)
+    : parseYearOnly(date);
 
 export const convertToNumericalDate = humanDate =>
   humanDate.includes(' ')
