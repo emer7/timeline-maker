@@ -11,7 +11,7 @@ import { WIDTH } from '../consts';
 
 const YEAR_IN_PIXELS = 6;
 
-export const Bar = ({ event, minStartDate }) => {
+export const Bar = ({ vw, event, minStartDate, position }) => {
   const { startDate, endDate, description, reignStartDate, reignEndDate } =
     event;
 
@@ -33,9 +33,11 @@ export const Bar = ({ event, minStartDate }) => {
 
   return reignStartDate && reignEndDate ? (
     <WithReign
+      vw={vw}
+      event={event}
+      position={position}
       startDurationInPixels={startDurationInPixels}
       durationInPixels={durationInPixels}
-      event={event}
     >
       {description}
     </WithReign>
@@ -43,7 +45,7 @@ export const Bar = ({ event, minStartDate }) => {
     <g>
       <rect
         className="cursor-pointer"
-        x={0}
+        x={Math.max(0, Math.min(vw - 25, position) - 25)}
         y={startDurationInPixels}
         height={Math.max(durationInPixels, 24)}
         width={WIDTH}
@@ -53,7 +55,7 @@ export const Bar = ({ event, minStartDate }) => {
       />
       <text
         className="select-none cursor-pointer"
-        x={0}
+        x={Math.max(0, Math.min(vw - 25, position) - 25) + WIDTH / 2}
         y={startDurationInPixels + Math.max(durationInPixels, 24) / 2}
         fill="#e5e5e5"
         textAnchor="middle"
@@ -66,10 +68,12 @@ export const Bar = ({ event, minStartDate }) => {
 };
 
 export const WithReign = ({
+  vw,
   event,
-  children,
+  position,
   startDurationInPixels,
   durationInPixels,
+  children,
 }) => {
   const { reignStartDate, reignEndDate, startDate } = event;
 
@@ -93,7 +97,7 @@ export const WithReign = ({
     <g>
       <rect
         className="cursor-pointer"
-        x={0}
+        x={Math.max(0, Math.min(vw - 25, position) - 25)}
         y={startDurationInPixels}
         height={reignStartDurationInPixels}
         width={WIDTH}
@@ -103,7 +107,7 @@ export const WithReign = ({
       />
       <rect
         className="cursor-pointer"
-        x={0}
+        x={Math.max(0, Math.min(vw - 25, position) - 25)}
         y={startDurationInPixels + reignStartDurationInPixels}
         height={reignDurationInPixels}
         width={WIDTH}
@@ -113,7 +117,7 @@ export const WithReign = ({
       />
       <rect
         className="cursor-pointer"
-        x={0}
+        x={Math.max(0, Math.min(vw - 25, position) - 25)}
         y={
           startDurationInPixels +
           reignStartDurationInPixels +
@@ -133,7 +137,7 @@ export const WithReign = ({
       />
       <text
         className="select-none cursor-pointer"
-        x={0}
+        x={Math.max(0, Math.min(vw - 25, position) - 25) + WIDTH / 2}
         y={startDurationInPixels + Math.max(durationInPixels, 24) / 2}
         textAnchor="middle"
         alignmentBaseline="middle"

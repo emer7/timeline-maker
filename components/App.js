@@ -63,18 +63,20 @@ export const App = () => {
 
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-  
+
   const [vw, setVw] = React.useState();
   const [vh, setVh] = React.useState();
 
   React.useEffect(() => {
     const parsedEvents = JSON.parse(localStorage.getItem('events'));
+    const parsedPositions = JSON.parse(localStorage.getItem('positions'));
 
     if (parsedEvents) {
       setEvents(parsedEvents);
       setMinStartDate(calculateMinStartDate(parsedEvents));
       setMaxEndDate(calculateMaxEndDate(parsedEvents));
     }
+    parsedPositions && setPositions(parsedPositions);
   }, []);
 
   const [events, setEvents] = React.useState([SAMPLE_EVENT]);
@@ -84,6 +86,7 @@ export const App = () => {
   const [maxEndDate, setMaxEndDate] = React.useState(() =>
     calculateMaxEndDate(events)
   );
+  const [positions, setPositions] = React.useState([0]);
   const handleAddEvent = event => {
     const { startDate, endDate } = event;
 
@@ -98,10 +101,12 @@ export const App = () => {
       setMaxEndDate(format(parsedEndDate, NUMERICAL_FULL_DATE_FORMAT));
 
     setEvents([...events, event]);
+    setPositions([...positions, 0]);
   };
 
   const handleSaveData = () => {
     localStorage.setItem('events', JSON.stringify(events));
+    localStorage.setItem('positions', JSON.stringify(positions));
   };
 
   return (
@@ -113,7 +118,12 @@ export const App = () => {
         viewBox={`0 0 ${vw} ${vh}`}
         preserveAspectRatio="xMidYMid meet"
       >
-        <Events events={events} minStartDate={minStartDate} />
+        <Events
+          vw={vw}
+          events={events}
+          minStartDate={minStartDate}
+          positions={positions}
+        />
       </svg>
 
       <div className="fixed right-2 bottom-2">
