@@ -19,7 +19,7 @@ const convertEventDateToNumerical = event => ({
     ),
 });
 
-export const Add = ({ handleAddEvent }) => {
+export const Add = ({ handleAddEvent, handleSaveData }) => {
   const [isPopupOpen, setIsPopupOpen] = React.useState(false);
   const handleDrawerToggle = () => {
     setIsPopupOpen(!isPopupOpen);
@@ -126,6 +126,7 @@ export const Add = ({ handleAddEvent }) => {
           </select>
 
           <button onClick={handleOnClick}>Add</button>
+          <button onClick={handleSaveData}>Save Data</button>
         </div>
       )}
 

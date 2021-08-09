@@ -16,10 +16,14 @@ export const App = () => {
     setEvents([...events, event]);
   };
 
+  const handleSaveData = () => {
+    localStorage.setItem('events', JSON.stringify(events));
+  };
+
   return (
     <div>
       <div className="fixed right-2 bottom-2">
-        <Add handleAddEvent={handleAddEvent} />
+        <Add handleAddEvent={handleAddEvent} handleSaveData={handleSaveData} />
       </div>
     </div>
   );
