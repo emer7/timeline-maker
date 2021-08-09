@@ -1,4 +1,4 @@
-import { format, parse } from 'date-fns';
+import { format, intervalToDuration, parse } from 'date-fns';
 import {
   NUMERICAL_FULL_DATE_FORMAT,
   HUMAN_FULL_DATE_FORMAT,
@@ -6,6 +6,11 @@ import {
   HUMAN_MONTH_YEAR_FORMAT,
   YEAR_ONLY_FORMAT,
 } from '../consts';
+
+export const convertToPixels = ({ years, months, days }, yearInPixels) =>
+  years * yearInPixels +
+  months * (yearInPixels / 12) +
+  days * (yearInPixels / 365);
 
 export const parseNumericalFullDate = date =>
   parse(date, NUMERICAL_FULL_DATE_FORMAT, new Date());
@@ -51,3 +56,29 @@ export const convertToNumericalDate = humanDate =>
           NUMERICAL_FULL_DATE_FORMAT
         )
     : humanDate;
+
+export const calculateStartDuration = (
+  parsedMinStartDate,
+  parsedStartDate,
+  yearInPixels
+) => {
+  const startDuration = intervalToDuration({
+    start: parsedMinStartDate,
+    end: parsedStartDate,
+  });
+
+  return convertToPixels(startDuration, yearInPixels);
+};
+
+export const calculateDuration = (
+  parsedStartDate,
+  parsedEndDate,
+  yearInPixels
+) => {
+  const duration = intervalToDuration({
+    start: parsedStartDate,
+    end: parsedEndDate,
+  });
+
+  return convertToPixels(duration, yearInPixels);
+};

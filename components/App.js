@@ -5,6 +5,7 @@ import { parseNumericalFullDate, parseMultipleFormat } from '../utils';
 import { NUMERICAL_FULL_DATE_FORMAT, SAMPLE_EVENT } from '../consts';
 
 import { Add } from './Add';
+import { Events } from './Events';
 
 const calculateMinStartDate = events => {
   const mappedEvents = events
@@ -27,6 +28,45 @@ const calculateMaxEndDate = events => {
 };
 
 export const App = () => {
+  React.useEffect(() => {
+    setVw(
+      Math.max(
+        document.documentElement.clientWidth || 0,
+        window.innerWidth || 0
+      )
+    );
+
+    setVh(
+      Math.max(
+        document.documentElement.clientHeight || 0,
+        window.innerHeight || 0
+      )
+    );
+
+    const handleResize = () => {
+      setVw(
+        Math.max(
+          document.documentElement.clientWidth || 0,
+          window.innerWidth || 0
+        )
+      );
+
+      setVh(
+        Math.max(
+          document.documentElement.clientHeight || 0,
+          window.innerHeight || 0
+        )
+      );
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+  
+  const [vw, setVw] = React.useState();
+  const [vh, setVh] = React.useState();
+
   React.useEffect(() => {
     const parsedEvents = JSON.parse(localStorage.getItem('events'));
 
@@ -66,6 +106,16 @@ export const App = () => {
 
   return (
     <div>
+      <svg
+        className="fixed"
+        width={vw}
+        height={vh}
+        viewBox={`0 0 ${vw} ${vh}`}
+        preserveAspectRatio="xMidYMid meet"
+      >
+        <Events events={events} minStartDate={minStartDate} />
+      </svg>
+
       <div className="fixed right-2 bottom-2">
         <Add handleAddEvent={handleAddEvent} handleSaveData={handleSaveData} />
       </div>

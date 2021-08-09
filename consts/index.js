@@ -6,6 +6,8 @@ export const HUMAN_MONTH_YEAR_FORMAT = 'MMMM yyyy';
 
 export const YEAR_ONLY_FORMAT = 'yyyy';
 
+export const WIDTH = 50;
+
 export const SAMPLE_EVENT = {
   startDate: '02/04/748',
   endDate: '28/01/814',
