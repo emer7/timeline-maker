@@ -185,6 +185,26 @@ export const App = () => {
       setClickedIndex(index);
       setIsHold(true);
       setCanMove(true);
+
+      const lastIndex = orders.length - 1;
+      const orderIndex = ordersByEventIndex[index];
+      if (orderIndex !== lastIndex) {
+        setOrders([
+          ...orders.slice(0, orderIndex),
+          ...orders.slice(orderIndex + 1),
+          index,
+        ]);
+
+        const mappedOrdersByEventIndex = ordersByEventIndex.map(order =>
+          order === orderIndex
+            ? lastIndex
+            : order > orderIndex
+            ? order - 1
+            : order
+        );
+
+        setOrdersByEventIndex(mappedOrdersByEventIndex);
+      }
     }, 250);
 
     setHoldTimer(timer);
