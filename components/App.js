@@ -28,6 +28,14 @@ const calculateMaxEndDate = events => {
   return format(maxEndDate, NUMERICAL_FULL_DATE_FORMAT);
 };
 
+const setBoundaryDate = (events, setMinStartDate, setMaxEndDate) => {
+  const newMinStartDate = calculateMinStartDate(events);
+  const newMaxEndDate = calculateMaxEndDate(events);
+
+  setMinStartDate(newMinStartDate);
+  setMaxEndDate(newMaxEndDate);
+};
+
 export const App = () => {
   React.useEffect(() => {
     document.addEventListener('mouseup', handleOnMouseUp);
@@ -176,6 +184,37 @@ export const App = () => {
     setOrders([...orders, events.length]);
     setOrdersByEventIndex([...ordersByEventIndex, events.length]);
   };
+  const handleDeleteEvent = index => {
+    const slicedEvents = [
+      ...events.slice(0, index),
+      ...events.slice(index + 1),
+    ];
+
+    const slicedPositions = [
+      ...positions.slice(0, index),
+      ...positions.slice(index + 1),
+    ];
+
+    const orderIndex = ordersByEventIndex[index];
+    const slicedOrders = [
+      ...orders.slice(0, orderIndex),
+      ...orders.slice(orderIndex + 1),
+    ];
+
+    const slicedAndMappedOrdersByEventIndex = [
+      ...ordersByEventIndex.slice(0, index),
+      ...ordersByEventIndex.slice(index + 1),
+    ].map(order => (order > orderIndex ? order - 1 : order));
+
+    setEvents(slicedEvents);
+    setPositions(slicedPositions);
+    setOrders(slicedOrders);
+    setOrdersByEventIndex(slicedAndMappedOrdersByEventIndex);
+
+    setBoundaryDate(slicedEvents, setMinStartDate, setMaxEndDate);
+
+    setIsPopup(false);
+  };
 
   const [isPopup, setIsPopup] = React.useState(false);
   const [clickedIndex, setClickedIndex] = React.useState(-1);
@@ -296,6 +335,7 @@ export const App = () => {
           minStartDate={minStartDate}
           selectedEvent={events[clickedIndex] || {}}
           left={positions[clickedIndex]}
+          handleDeleteEvent={() => handleDeleteEvent(clickedIndex)}
         />
       )}
 

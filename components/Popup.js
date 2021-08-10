@@ -1,4 +1,5 @@
 import React from 'react';
+import { Delete as DeleteIcon } from '@material-ui/icons';
 
 import {
   calculateStartDuration,
@@ -14,6 +15,7 @@ export const Popup = ({
   minStartDate,
   selectedEvent,
   left,
+  handleDeleteEvent,
 }) => {
   const { description, startDate, endDate, reignStartDate, reignEndDate } =
     selectedEvent;
@@ -32,6 +34,10 @@ export const Popup = ({
       className="relative inline-block p-2 rounded-r-lg shadow bg-white"
       style={{ top: top - scrollTop, left: Math.max(WIDTH, left + WIDTH / 2) }}
     >
+      <DeleteIcon
+        className="float-right cursor-pointer"
+        onClick={handleDeleteEvent}
+      />
       <div className="mb-2 font-bold clear-right">{description}</div>
       <div>
         Start date: <br />
