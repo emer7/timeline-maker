@@ -29,6 +29,14 @@ const calculateMaxEndDate = events => {
 
 export const App = () => {
   React.useEffect(() => {
+    document.addEventListener('mouseup', handleOnMouseUp);
+
+    return () => {
+      document.removeEventListener('mouseup', handleOnMouseUp);
+    };
+  }, []);
+
+  React.useEffect(() => {
     setVw(
       Math.max(
         document.documentElement.clientWidth || 0,
@@ -104,6 +112,34 @@ export const App = () => {
     setPositions([...positions, 0]);
   };
 
+  const [clickedIndex, setClickedIndex] = React.useState(-1);
+  const [isHold, setIsHold] = React.useState(false);
+  const [canMove, setCanMove] = React.useState(false);
+  const [holdTimer, setHoldTimer] = React.useState();
+  const handleOnMouseDownOnBar = index => {
+    const timer = setTimeout(() => {
+      setClickedIndex(index);
+      setIsHold(true);
+      setCanMove(true);
+    }, 250);
+
+    setHoldTimer(timer);
+  };
+  const handleOnMouseUp = (e, index) => {
+    e.stopPropagation();
+
+    clearTimeout(holdTimer);
+    setIsHold(false);
+    setCanMove(false);
+
+    if (index !== undefined && !canMove) {
+      setClickedIndex(index);
+    }
+  };
+  const handleOnMouseLeave = () => {
+    clearTimeout(holdTimer);
+  };
+
   const handleSaveData = () => {
     localStorage.setItem('events', JSON.stringify(events));
     localStorage.setItem('positions', JSON.stringify(positions));
@@ -123,6 +159,11 @@ export const App = () => {
           events={events}
           minStartDate={minStartDate}
           positions={positions}
+          clickedIndex={clickedIndex}
+          isHold={isHold}
+          handleOnMouseDownOnBar={handleOnMouseDownOnBar}
+          handleOnMouseUp={handleOnMouseUp}
+          handleOnMouseLeave={handleOnMouseLeave}
         />
       </svg>
 

@@ -11,7 +11,16 @@ import { WIDTH } from '../consts';
 
 const YEAR_IN_PIXELS = 6;
 
-export const Bar = ({ vw, event, minStartDate, position }) => {
+export const Bar = ({
+  vw,
+  event,
+  minStartDate,
+  position,
+  isHold,
+  handleOnMouseDown,
+  handleOnMouseUp,
+  handleOnMouseLeave,
+}) => {
   const { startDate, endDate, description, reignStartDate, reignEndDate } =
     event;
 
@@ -36,8 +45,12 @@ export const Bar = ({ vw, event, minStartDate, position }) => {
       vw={vw}
       event={event}
       position={position}
+      isHold={isHold}
       startDurationInPixels={startDurationInPixels}
       durationInPixels={durationInPixels}
+      handleOnMouseDown={handleOnMouseDown}
+      handleOnMouseUp={handleOnMouseUp}
+      handleOnMouseLeave={handleOnMouseLeave}
     >
       {description}
     </WithReign>
@@ -51,7 +64,10 @@ export const Bar = ({ vw, event, minStartDate, position }) => {
         width={WIDTH}
         fill="#14213d"
         stroke="#14213d"
-        strokeWidth={1}
+        strokeWidth={isHold ? 3 : 1}
+        onMouseDown={handleOnMouseDown}
+        onMouseUp={handleOnMouseUp}
+        onMouseLeave={handleOnMouseLeave}
       />
       <text
         className="select-none cursor-pointer"
@@ -60,6 +76,9 @@ export const Bar = ({ vw, event, minStartDate, position }) => {
         fill="#e5e5e5"
         textAnchor="middle"
         alignmentBaseline="middle"
+        onMouseDown={handleOnMouseDown}
+        onMouseUp={handleOnMouseUp}
+        onMouseLeave={handleOnMouseLeave}
       >
         {description}
       </text>
@@ -71,8 +90,12 @@ export const WithReign = ({
   vw,
   event,
   position,
+  isHold,
   startDurationInPixels,
   durationInPixels,
+  handleOnMouseDown,
+  handleOnMouseUp,
+  handleOnMouseLeave,
   children,
 }) => {
   const { reignStartDate, reignEndDate, startDate } = event;
@@ -103,7 +126,10 @@ export const WithReign = ({
         width={WIDTH}
         fill="#ffffff"
         stroke="#fca311"
-        strokeWidth={1}
+        strokeWidth={isHold ? 3 : 1}
+        onMouseDown={handleOnMouseDown}
+        onMouseUp={handleOnMouseUp}
+        onMouseLeave={handleOnMouseLeave}
       />
       <rect
         className="cursor-pointer"
@@ -113,7 +139,10 @@ export const WithReign = ({
         width={WIDTH}
         fill="#fca311"
         stroke="#fca311"
-        strokeWidth={1}
+        strokeWidth={isHold ? 3 : 1}
+        onMouseDown={handleOnMouseDown}
+        onMouseUp={handleOnMouseUp}
+        onMouseLeave={handleOnMouseLeave}
       />
       <rect
         className="cursor-pointer"
@@ -133,7 +162,10 @@ export const WithReign = ({
         width={WIDTH}
         fill="#ffffff"
         stroke="#fca311"
-        strokeWidth={1}
+        strokeWidth={isHold ? 3 : 1}
+        onMouseDown={handleOnMouseDown}
+        onMouseUp={handleOnMouseUp}
+        onMouseLeave={handleOnMouseLeave}
       />
       <text
         className="select-none cursor-pointer"
@@ -141,6 +173,9 @@ export const WithReign = ({
         y={startDurationInPixels + Math.max(durationInPixels, 24) / 2}
         textAnchor="middle"
         alignmentBaseline="middle"
+        onMouseDown={handleOnMouseDown}
+        onMouseUp={handleOnMouseUp}
+        onMouseLeave={handleOnMouseLeave}
       >
         {children}
       </text>
