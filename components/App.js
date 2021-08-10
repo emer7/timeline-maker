@@ -36,6 +36,21 @@ export const App = () => {
     };
   }, []);
 
+  const [scrollTop, setScrollTop] = React.useState(0);
+  const handleOnWheelDocument = e => {
+    const { deltaY } = e;
+
+    setScrollTop(scrollTop => Math.max(scrollTop + deltaY, 0));
+  };
+
+  React.useEffect(() => {
+    document.addEventListener('wheel', handleOnWheelDocument);
+
+    return () => {
+      document.removeEventListener('wheel', handleOnWheelDocument);
+    };
+  }, []);
+
   React.useEffect(() => {
     setVw(
       Math.max(
@@ -172,7 +187,7 @@ export const App = () => {
         className="fixed"
         width={vw}
         height={vh}
-        viewBox={`0 0 ${vw} ${vh}`}
+        viewBox={`0 ${scrollTop} ${vw} ${vh}`}
         preserveAspectRatio="xMidYMid meet"
       >
         <Events
