@@ -6,6 +6,7 @@ import { NUMERICAL_FULL_DATE_FORMAT, SAMPLE_EVENT } from '../consts';
 
 import { Add } from './Add';
 import { Events } from './Events';
+import { Popup } from './Popup';
 
 const calculateMinStartDate = events => {
   const mappedEvents = events
@@ -176,6 +177,7 @@ export const App = () => {
     setOrdersByEventIndex([...ordersByEventIndex, events.length]);
   };
 
+  const [isPopup, setIsPopup] = React.useState(false);
   const [clickedIndex, setClickedIndex] = React.useState(-1);
   const [isHold, setIsHold] = React.useState(false);
   const [canMove, setCanMove] = React.useState(false);
@@ -185,6 +187,7 @@ export const App = () => {
       setClickedIndex(index);
       setIsHold(true);
       setCanMove(true);
+      setIsPopup(false);
 
       const lastIndex = orders.length - 1;
       const orderIndex = ordersByEventIndex[index];
@@ -216,8 +219,13 @@ export const App = () => {
     setIsHold(false);
     setCanMove(false);
 
+    if (e.target.nodeName === 'svg') {
+      setIsPopup(false);
+    }
+
     if (index !== undefined && !canMove) {
       setClickedIndex(index);
+      setIsPopup(true);
     }
   };
   const handleOnMouseLeave = () => {
@@ -234,6 +242,8 @@ export const App = () => {
         steppedX,
         ...positions.slice(clickedIndex + 1),
       ]);
+
+      setIsPopup(false);
     }
   };
 
@@ -278,6 +288,16 @@ export const App = () => {
           handleOnMouseLeave={handleOnMouseLeave}
         />
       </svg>
+
+      {isPopup && (
+        <Popup
+          scrollTop={scrollTop}
+          yearInPixels={yearInPixels}
+          minStartDate={minStartDate}
+          selectedEvent={events[clickedIndex] || {}}
+          left={positions[clickedIndex]}
+        />
+      )}
 
       <div className="fixed right-2 bottom-2">
         <Add handleAddEvent={handleAddEvent} handleSaveData={handleSaveData} />
