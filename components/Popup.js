@@ -2,6 +2,7 @@ import React from 'react';
 import {
   Delete as DeleteIcon,
   Edit as EditIcon,
+  Save as SaveIcon,
 } from '@material-ui/icons';
 
 import {
@@ -19,6 +20,7 @@ export const Popup = ({
   selectedEvent,
   left,
   handleDeleteEvent,
+  handleEditEvent,
 }) => {
   const [popupEvent, setPopupEvent] = React.useState(selectedEvent);
   React.useEffect(() => {
@@ -26,6 +28,10 @@ export const Popup = ({
   }, [selectedEvent]);
   const handleEditPopupEvent = (e, key) => {
     setPopupEvent({ ...popupEvent, [key]: e.target.value });
+  };
+  const handleSaveEvent = () => {
+    handleEditEvent(popupEvent);
+    setIsEdit(false);
   };
 
   const [isEdit, setIsEdit] = React.useState(false);
@@ -60,6 +66,10 @@ export const Popup = ({
       />
       {isEdit ? (
         <>
+          <SaveIcon
+            className="float-right cursor-pointer"
+            onClick={handleSaveEvent}
+          />
           <input
             className="block clear-right"
             value={description}
@@ -106,28 +116,28 @@ export const Popup = ({
         </>
       ) : (
         <>
-      <div className="mb-2 font-bold clear-right">{description}</div>
-      <div>
-        Start date: <br />
-        {convertToHumanDate(startDate)}
-      </div>
-      {endDate && (
-        <div>
-          End date: <br />
-          {convertToHumanDate(endDate)}
-        </div>
-      )}
-      {reignStartDate && (
-        <div>
-          Reign start date: <br />
-          {convertToHumanDate(reignStartDate)}
-        </div>
-      )}
-      {reignEndDate && (
-        <div>
-          Reign end date: <br />
-          {convertToHumanDate(reignEndDate)}
-        </div>
+          <div className="mb-2 font-bold clear-right">{description}</div>
+          <div>
+            Start date: <br />
+            {convertToHumanDate(startDate)}
+          </div>
+          {endDate && (
+            <div>
+              End date: <br />
+              {convertToHumanDate(endDate)}
+            </div>
+          )}
+          {reignStartDate && (
+            <div>
+              Reign start date: <br />
+              {convertToHumanDate(reignStartDate)}
+            </div>
+          )}
+          {reignEndDate && (
+            <div>
+              Reign end date: <br />
+              {convertToHumanDate(reignEndDate)}
+            </div>
           )}
         </>
       )}

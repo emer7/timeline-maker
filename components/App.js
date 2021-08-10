@@ -215,6 +215,17 @@ export const App = () => {
 
     setIsPopup(false);
   };
+  const handleEditEvent = (index, editedEvent) => {
+    const slicedEvents = [
+      ...events.slice(0, index),
+      editedEvent,
+      ...events.slice(index + 1),
+    ];
+
+    setEvents(slicedEvents);
+
+    setBoundaryDate(slicedEvents, setMinStartDate, setMaxEndDate);
+  };
 
   const [isPopup, setIsPopup] = React.useState(false);
   const [clickedIndex, setClickedIndex] = React.useState(-1);
@@ -336,6 +347,9 @@ export const App = () => {
           selectedEvent={events[clickedIndex] || {}}
           left={positions[clickedIndex]}
           handleDeleteEvent={() => handleDeleteEvent(clickedIndex)}
+          handleEditEvent={editedEvent =>
+            handleEditEvent(clickedIndex, editedEvent)
+          }
         />
       )}
 
