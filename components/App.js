@@ -30,11 +30,31 @@ const calculateMaxEndDate = events => {
 export const App = () => {
   React.useEffect(() => {
     document.addEventListener('mouseup', handleOnMouseUp);
+    document.addEventListener('keydown', handleKeyDownDocument);
+    document.addEventListener('keyup', handleKeyUpDocument);
 
     return () => {
       document.removeEventListener('mouseup', handleOnMouseUp);
+      document.removeEventListener('keydown', handleKeyDownDocument);
+      document.removeEventListener('keyup', handleKeyUpDocument);
     };
   }, []);
+
+  const [isCtrlPressed, setIsCtrlPressed] = React.useState(false);
+  const handleKeyDownDocument = e => {
+    const { code } = e;
+
+    if (code === 'ControlLeft') {
+      setIsCtrlPressed(true);
+    }
+  };
+  const handleKeyUpDocument = e => {
+    const { code } = e;
+
+    if (code === 'ControlLeft') {
+      setIsCtrlPressed(false);
+    }
+  };
 
   const [scrollTop, setScrollTop] = React.useState(0);
   const handleOnWheelDocument = e => {
