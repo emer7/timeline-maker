@@ -120,6 +120,14 @@ export const App = () => {
   React.useEffect(() => {
     const parsedEvents = JSON.parse(localStorage.getItem('events'));
     const parsedPositions = JSON.parse(localStorage.getItem('positions'));
+    const parsedOrders = JSON.parse(localStorage.getItem('orders'));
+    const parsedOrdersByEventIndex = JSON.parse(
+      localStorage.getItem('ordersByEventIndex')
+    );
+
+    const calculatedOrders = parsedOrders
+      ? parsedOrders
+      : parsedEvents && parsedEvents.map((_, index) => index);
 
     if (parsedEvents) {
       setEvents(parsedEvents);
@@ -127,6 +135,16 @@ export const App = () => {
       setMaxEndDate(calculateMaxEndDate(parsedEvents));
     }
     parsedPositions && setPositions(parsedPositions);
+    calculatedOrders && setOrders(calculatedOrders);
+    parsedOrdersByEventIndex
+      ? setOrdersByEventIndex(parsedOrdersByEventIndex)
+      : calculatedOrders &&
+        setOrdersByEventIndex(
+          [...calculatedOrders.keys()].sort(
+            (orderA, orderB) =>
+              calculatedOrders[orderA] - calculatedOrders[orderB]
+          )
+        );
   }, []);
 
   const [events, setEvents] = React.useState([SAMPLE_EVENT]);
@@ -137,6 +155,8 @@ export const App = () => {
     calculateMaxEndDate(events)
   );
   const [positions, setPositions] = React.useState([0]);
+  const [orders, setOrders] = React.useState([0]);
+  const [ordersByEventIndex, setOrdersByEventIndex] = React.useState([0]);
   const handleAddEvent = event => {
     const { startDate, endDate } = event;
 
@@ -152,6 +172,8 @@ export const App = () => {
 
     setEvents([...events, event]);
     setPositions([...positions, 0]);
+    setOrders([...orders, events.length]);
+    setOrdersByEventIndex([...ordersByEventIndex, events.length]);
   };
 
   const [clickedIndex, setClickedIndex] = React.useState(-1);
@@ -206,6 +228,11 @@ export const App = () => {
   const handleSaveData = () => {
     localStorage.setItem('events', JSON.stringify(events));
     localStorage.setItem('positions', JSON.stringify(positions));
+    localStorage.setItem('orders', JSON.stringify(orders));
+    localStorage.setItem(
+      'ordersByEventIndex',
+      JSON.stringify(ordersByEventIndex)
+    );
   };
 
   return (
@@ -223,6 +250,7 @@ export const App = () => {
           events={events}
           minStartDate={minStartDate}
           positions={positions}
+          ordersByEventIndex={ordersByEventIndex}
           clickedIndex={clickedIndex}
           isHold={isHold}
           handleOnMouseDownOnBar={handleOnMouseDownOnBar}
