@@ -1,5 +1,8 @@
 import React from 'react';
-import { Delete as DeleteIcon } from '@material-ui/icons';
+import {
+  Delete as DeleteIcon,
+  Edit as EditIcon,
+} from '@material-ui/icons';
 
 import {
   calculateStartDuration,
@@ -17,8 +20,21 @@ export const Popup = ({
   left,
   handleDeleteEvent,
 }) => {
+  const [popupEvent, setPopupEvent] = React.useState(selectedEvent);
+  React.useEffect(() => {
+    setPopupEvent(selectedEvent);
+  }, [selectedEvent]);
+  const handleEditPopupEvent = (e, key) => {
+    setPopupEvent({ ...popupEvent, [key]: e.target.value });
+  };
+
+  const [isEdit, setIsEdit] = React.useState(false);
+  const handleToggleEdit = () => {
+    setIsEdit(!isEdit);
+  };
+
   const { description, startDate, endDate, reignStartDate, reignEndDate } =
-    selectedEvent;
+    popupEvent;
 
   const parsedMinStartDate = parseNumericalFullDate(minStartDate);
   const parsedStartDate = parseMultipleFormat(startDate);
@@ -38,6 +54,58 @@ export const Popup = ({
         className="float-right cursor-pointer"
         onClick={handleDeleteEvent}
       />
+      <EditIcon
+        className="float-right cursor-pointer"
+        onClick={handleToggleEdit}
+      />
+      {isEdit ? (
+        <>
+          <input
+            className="block clear-right"
+            value={description}
+            onChange={e => handleEditPopupEvent(e, 'description')}
+          />
+          <div>
+            Start date:{' '}
+            <input
+              className="block clear-right"
+              value={startDate}
+              onChange={e => handleEditPopupEvent(e, 'startDate')}
+            />
+          </div>
+          {endDate && (
+            <div>
+              End date:{' '}
+              <input
+                className="block clear-right"
+                value={endDate}
+                onChange={e => handleEditPopupEvent(e, 'endDate')}
+              />
+            </div>
+          )}
+          {reignStartDate && (
+            <div>
+              Reign start date:{' '}
+              <input
+                className="block clear-right"
+                value={reignStartDate}
+                onChange={e => handleEditPopupEvent(e, 'reignStartDate')}
+              />
+            </div>
+          )}
+          {reignEndDate && (
+            <div>
+              Reign end date:{' '}
+              <input
+                className="block clear-right"
+                value={reignEndDate}
+                onChange={e => handleEditPopupEvent(e, 'reignEndDate')}
+              />
+            </div>
+          )}
+        </>
+      ) : (
+        <>
       <div className="mb-2 font-bold clear-right">{description}</div>
       <div>
         Start date: <br />
@@ -60,6 +128,8 @@ export const Popup = ({
           Reign end date: <br />
           {convertToHumanDate(reignEndDate)}
         </div>
+          )}
+        </>
       )}
     </div>
   );
