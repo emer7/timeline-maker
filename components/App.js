@@ -139,6 +139,27 @@ export const App = () => {
   const handleOnMouseLeave = () => {
     clearTimeout(holdTimer);
   };
+  const handleOnMouseMove = e => {
+    const { clientX } = e;
+
+    if (canMove) {
+      const steppedX = Math.floor(clientX / 10) * 10;
+
+      setPositions([
+        ...positions.slice(0, clickedIndex),
+        steppedX,
+        ...positions.slice(clickedIndex + 1),
+      ]);
+    }
+  };
+
+  React.useEffect(() => {
+    document.addEventListener('mousemove', handleOnMouseMove);
+
+    return () => {
+      document.removeEventListener('mousemove', handleOnMouseMove);
+    };
+  }, [canMove && clickedIndex]);
 
   const handleSaveData = () => {
     localStorage.setItem('events', JSON.stringify(events));
