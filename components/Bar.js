@@ -9,9 +9,8 @@ import {
 
 import { WIDTH } from '../consts';
 
-const YEAR_IN_PIXELS = 6;
-
 export const Bar = ({
+  yearInPixels,
   vw,
   event,
   minStartDate,
@@ -31,17 +30,18 @@ export const Bar = ({
   const durationInPixels = calculateDuration(
     parsedStartDate,
     parsedEndDate,
-    YEAR_IN_PIXELS
+    yearInPixels
   );
 
   const startDurationInPixels = calculateStartDuration(
     parsedMinStartDate,
     parsedStartDate,
-    YEAR_IN_PIXELS
+    yearInPixels
   );
 
   return reignStartDate && reignEndDate ? (
     <WithReign
+      yearInPixels={yearInPixels}
       vw={vw}
       event={event}
       position={position}
@@ -87,6 +87,7 @@ export const Bar = ({
 };
 
 export const WithReign = ({
+  yearInPixels,
   vw,
   event,
   position,
@@ -107,13 +108,13 @@ export const WithReign = ({
   const reignDurationInPixels = calculateDuration(
     parsedReignStartDate,
     parsedReignEndDate,
-    YEAR_IN_PIXELS
+    yearInPixels
   );
 
   const reignStartDurationInPixels = calculateStartDuration(
     parsedStartDate,
     parsedReignStartDate,
-    YEAR_IN_PIXELS
+    yearInPixels
   );
 
   return (

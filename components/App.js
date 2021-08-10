@@ -57,10 +57,17 @@ export const App = () => {
   };
 
   const [scrollTop, setScrollTop] = React.useState(0);
+  const [yearInPixels, setYearInPixels] = React.useState(6);
   const handleOnWheelDocument = e => {
     const { deltaY } = e;
 
     setScrollTop(scrollTop => Math.max(scrollTop + deltaY, 0));
+
+    if (isCtrlPressed) {
+      setYearInPixels(
+        latestYearInPixels => latestYearInPixels + (deltaY > 0 ? 1 : -1) * 0.2
+      );
+    }
   };
 
   React.useEffect(() => {
@@ -69,7 +76,7 @@ export const App = () => {
     return () => {
       document.removeEventListener('wheel', handleOnWheelDocument);
     };
-  }, []);
+  }, [isCtrlPressed]);
 
   React.useEffect(() => {
     setVw(
@@ -211,6 +218,7 @@ export const App = () => {
         preserveAspectRatio="xMidYMid meet"
       >
         <Events
+          yearInPixels={yearInPixels}
           vw={vw}
           events={events}
           minStartDate={minStartDate}
