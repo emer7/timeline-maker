@@ -57,6 +57,19 @@ export const convertToNumericalDate = humanDate =>
         )
     : humanDate;
 
+export const convertToHumanDate = numericalDate =>
+  numericalDate.includes('/')
+    ? numericalDate.split('/').length === 2
+      ? format(
+          parseNumericalAndHumanMonthYearFormat(numericalDate),
+          HUMAN_MONTH_YEAR_FORMAT
+        )
+      : format(
+          parseNumericalAndHumanFullFormat(numericalDate),
+          HUMAN_FULL_DATE_FORMAT
+        )
+    : numericalDate;
+
 export const calculateStartDuration = (
   parsedMinStartDate,
   parsedStartDate,
