@@ -50,12 +50,15 @@ export const App = () => {
     };
   }, []);
 
+  const [isAltPressed, setIsAltPressed] = React.useState(false);
   const [isCtrlPressed, setIsCtrlPressed] = React.useState(false);
   const handleKeyDownDocument = e => {
     const { code } = e;
 
     if (code === 'ControlLeft') {
       setIsCtrlPressed(true);
+    } else if (code === 'AltLeft') {
+      setIsAltPressed(true);
     }
   };
   const handleKeyUpDocument = e => {
@@ -63,6 +66,8 @@ export const App = () => {
 
     if (code === 'ControlLeft') {
       setIsCtrlPressed(false);
+    } else if (code === 'AltLeft') {
+      setIsAltPressed(false);
     }
   };
 
