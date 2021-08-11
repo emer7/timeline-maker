@@ -129,8 +129,8 @@ export const App = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const [vw, setVw] = React.useState();
-  const [vh, setVh] = React.useState();
+  const [vw, setVw] = React.useState(0);
+  const [vh, setVh] = React.useState(0);
 
   React.useEffect(() => {
     const parsedEvents = JSON.parse(localStorage.getItem('events'));

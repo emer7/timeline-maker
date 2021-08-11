@@ -129,7 +129,7 @@ export const WithReign = ({
         className="cursor-pointer"
         x={Math.max(0, Math.min(vw - 25, position) - 25)}
         y={startDurationInPixels}
-        height={reignStartDurationInPixels}
+        height={Math.max(reignStartDurationInPixels, 0)}
         width={WIDTH}
         fill="#ffffff"
         stroke={isOrigin ? '#b7245c' : isDestination ? '#00a6fb' : '#fca311'}
@@ -142,7 +142,7 @@ export const WithReign = ({
         className="cursor-pointer"
         x={Math.max(0, Math.min(vw - 25, position) - 25)}
         y={startDurationInPixels + reignStartDurationInPixels}
-        height={reignDurationInPixels}
+        height={Math.max(reignDurationInPixels, 0)}
         width={WIDTH}
         fill="#fca311"
         stroke={isOrigin ? '#b7245c' : isDestination ? '#00a6fb' : '#fca311'}
@@ -159,13 +159,14 @@ export const WithReign = ({
           reignStartDurationInPixels +
           reignDurationInPixels
         }
-        height={
+        height={Math.max(
           startDurationInPixels +
-          durationInPixels -
-          (startDurationInPixels +
-            reignStartDurationInPixels +
-            reignDurationInPixels)
-        }
+            durationInPixels -
+            (startDurationInPixels +
+              reignStartDurationInPixels +
+              reignDurationInPixels),
+          0
+        )}
         width={WIDTH}
         fill="#ffffff"
         stroke={isOrigin ? '#b7245c' : isDestination ? '#00a6fb' : '#fca311'}

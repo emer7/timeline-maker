@@ -69,6 +69,7 @@ export const Links = ({
 
     return (
       <path
+        key={d}
         className="cursor-pointer"
         d={d}
         stroke="#f00"
