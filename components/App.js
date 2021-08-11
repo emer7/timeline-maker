@@ -7,6 +7,7 @@ import { NUMERICAL_FULL_DATE_FORMAT, SAMPLE_EVENT } from '../consts';
 import { Add } from './Add';
 import { Events } from './Events';
 import { Popup } from './Popup';
+import { Links } from './Links';
 
 const calculateMinStartDate = events => {
   const mappedEvents = events
@@ -305,6 +306,14 @@ export const App = () => {
     };
   }, [canMove && clickedIndex]);
 
+  React.useEffect(() => {
+    const parsedLinks = JSON.parse(localStorage.getItem('links'));
+
+    parsedLinks && setLinks(parsedLinks);
+  }, []);
+
+  const [links, setLinks] = React.useState([{ origin: 0, destination: 0 }]);
+
   const handleSaveData = () => {
     localStorage.setItem('events', JSON.stringify(events));
     localStorage.setItem('positions', JSON.stringify(positions));
@@ -336,6 +345,14 @@ export const App = () => {
           handleOnMouseDownOnBar={handleOnMouseDownOnBar}
           handleOnMouseUp={handleOnMouseUp}
           handleOnMouseLeave={handleOnMouseLeave}
+        />
+
+        <Links
+          yearInPixels={yearInPixels}
+          events={events}
+          minStartDate={minStartDate}
+          positions={positions}
+          links={links}
         />
       </svg>
 
