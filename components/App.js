@@ -280,8 +280,17 @@ export const App = () => {
     }
 
     if (index !== undefined && !canMove) {
+      if (isAltPressed) {
+        if (origin === -1 || destination !== -1) {
+          setOrigin(index);
+          setDestination(-1);
+        } else {
+          setDestination(index);
+        }
+      } else {
       setClickedIndex(index);
       setIsPopup(true);
+    }
     }
   };
   const handleOnMouseLeave = () => {
@@ -318,6 +327,15 @@ export const App = () => {
   }, []);
 
   const [links, setLinks] = React.useState([{ origin: 0, destination: 0 }]);
+  const [origin, setOrigin] = React.useState(-1);
+  const [destination, setDestination] = React.useState(-1);
+  const handleAddLink = () => {
+    origin !== -1 &&
+      destination !== -1 &&
+      setLinks([...links, { origin, destination }]);
+    setOrigin(-1);
+    setDestination(-1);
+  };
 
   const handleSaveData = () => {
     localStorage.setItem('events', JSON.stringify(events));
@@ -378,6 +396,7 @@ export const App = () => {
 
       <div className="fixed right-2 bottom-2">
         <Add handleAddEvent={handleAddEvent} handleSaveData={handleSaveData} />
+        <button onClick={handleAddLink}>Link</button>
       </div>
     </div>
   );
