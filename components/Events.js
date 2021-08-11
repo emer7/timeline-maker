@@ -11,6 +11,8 @@ export const Events = ({
   ordersByEventIndex,
   clickedIndex,
   isHold,
+  origin,
+  destination,
   handleOnMouseDownOnBar,
   handleOnMouseUp,
   handleOnMouseLeave,
@@ -29,6 +31,8 @@ export const Events = ({
         minStartDate={minStartDate}
         position={positions[eventIndex]}
         isHold={clickedIndex === eventIndex && isHold}
+        isOrigin={origin === eventIndex}
+        isDestination={destination === eventIndex}
         handleOnMouseDown={() => handleOnMouseDownOnBar(eventIndex)}
         handleOnMouseUp={e => handleOnMouseUp(e, eventIndex)}
         handleOnMouseLeave={handleOnMouseLeave}

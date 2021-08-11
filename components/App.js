@@ -288,9 +288,9 @@ export const App = () => {
           setDestination(index);
         }
       } else {
-      setClickedIndex(index);
-      setIsPopup(true);
-    }
+        setClickedIndex(index);
+        setIsPopup(true);
+      }
     }
   };
   const handleOnMouseLeave = () => {
@@ -369,6 +369,8 @@ export const App = () => {
           ordersByEventIndex={ordersByEventIndex}
           clickedIndex={clickedIndex}
           isHold={isHold}
+          origin={origin}
+          destination={destination}
           handleOnMouseDownOnBar={handleOnMouseDownOnBar}
           handleOnMouseUp={handleOnMouseUp}
           handleOnMouseLeave={handleOnMouseLeave}

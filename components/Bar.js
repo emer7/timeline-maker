@@ -16,6 +16,8 @@ export const Bar = ({
   minStartDate,
   position,
   isHold,
+  isOrigin,
+  isDestination,
   handleOnMouseDown,
   handleOnMouseUp,
   handleOnMouseLeave,
@@ -46,6 +48,8 @@ export const Bar = ({
       event={event}
       position={position}
       isHold={isHold}
+      isOrigin={isOrigin}
+      isDestination={isDestination}
       startDurationInPixels={startDurationInPixels}
       durationInPixels={durationInPixels}
       handleOnMouseDown={handleOnMouseDown}
@@ -63,7 +67,7 @@ export const Bar = ({
         height={Math.max(durationInPixels, 24)}
         width={WIDTH}
         fill="#14213d"
-        stroke="#14213d"
+        stroke={isOrigin ? '#b7245c' : isDestination ? '#00a6fb' : '#14213d'}
         strokeWidth={isHold ? 3 : 1}
         onMouseDown={handleOnMouseDown}
         onMouseUp={handleOnMouseUp}
@@ -92,6 +96,8 @@ export const WithReign = ({
   event,
   position,
   isHold,
+  isOrigin,
+  isDestination,
   startDurationInPixels,
   durationInPixels,
   handleOnMouseDown,
@@ -126,7 +132,7 @@ export const WithReign = ({
         height={reignStartDurationInPixels}
         width={WIDTH}
         fill="#ffffff"
-        stroke="#fca311"
+        stroke={isOrigin ? '#b7245c' : isDestination ? '#00a6fb' : '#fca311'}
         strokeWidth={isHold ? 3 : 1}
         onMouseDown={handleOnMouseDown}
         onMouseUp={handleOnMouseUp}
@@ -139,7 +145,7 @@ export const WithReign = ({
         height={reignDurationInPixels}
         width={WIDTH}
         fill="#fca311"
-        stroke="#fca311"
+        stroke={isOrigin ? '#b7245c' : isDestination ? '#00a6fb' : '#fca311'}
         strokeWidth={isHold ? 3 : 1}
         onMouseDown={handleOnMouseDown}
         onMouseUp={handleOnMouseUp}
@@ -162,7 +168,7 @@ export const WithReign = ({
         }
         width={WIDTH}
         fill="#ffffff"
-        stroke="#fca311"
+        stroke={isOrigin ? '#b7245c' : isDestination ? '#00a6fb' : '#fca311'}
         strokeWidth={isHold ? 3 : 1}
         onMouseDown={handleOnMouseDown}
         onMouseUp={handleOnMouseUp}
