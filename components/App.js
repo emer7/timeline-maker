@@ -322,6 +322,7 @@ export const App = () => {
       'ordersByEventIndex',
       JSON.stringify(ordersByEventIndex)
     );
+    localStorage.setItem('links', JSON.stringify(links));
   };
 
   return (
