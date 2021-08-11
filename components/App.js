@@ -336,6 +336,9 @@ export const App = () => {
     setOrigin(-1);
     setDestination(-1);
   };
+  const handleDeleteLink = index => {
+    setLinks([...links.slice(0, index), ...links.slice(index + 1)]);
+  };
 
   const handleSaveData = () => {
     localStorage.setItem('events', JSON.stringify(events));
@@ -377,6 +380,7 @@ export const App = () => {
           minStartDate={minStartDate}
           positions={positions}
           links={links}
+          handleDeleteLink={handleDeleteLink}
         />
       </svg>
 

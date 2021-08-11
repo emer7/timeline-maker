@@ -13,8 +13,9 @@ export const Links = ({
   minStartDate,
   positions,
   links,
+  handleDeleteLink,
 }) =>
-  links.map(link => {
+  links.map((link, linkIndex) => {
     const { origin, destination } = link;
 
     const { startDate: originStartDate, endDate: originEndDate } =
@@ -73,6 +74,7 @@ export const Links = ({
         stroke="#f00"
         strokeWidth="2"
         fill="none"
+        onClick={() => handleDeleteLink(linkIndex)}
       />
     );
   });
