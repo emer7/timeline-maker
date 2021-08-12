@@ -9,6 +9,7 @@ export const Events = ({
   minStartDate,
   positions,
   ordersByEventIndex,
+  visibility,
   clickedIndex,
   isHold,
   origin,
@@ -23,6 +24,7 @@ export const Events = ({
       (eventAIndex, eventBIndex) =>
         ordersByEventIndex[eventAIndex] - ordersByEventIndex[eventBIndex]
     )
+    .filter(eventIndex => visibility[eventIndex])
     .map(eventIndex => (
       <Bar
         key={JSON.stringify(events[eventIndex])}

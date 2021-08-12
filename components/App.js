@@ -153,6 +153,7 @@ export const App = () => {
       setEvents(parsedEvents);
       setMinStartDate(calculateMinStartDate(parsedEvents));
       setMaxEndDate(calculateMaxEndDate(parsedEvents));
+      setVisibility(parsedEvents.map(_ => true));
     }
     parsedPositions && setPositions(parsedPositions);
     calculatedOrders && setOrders(calculatedOrders);
@@ -177,6 +178,7 @@ export const App = () => {
   const [positions, setPositions] = React.useState([0]);
   const [orders, setOrders] = React.useState([0]);
   const [ordersByEventIndex, setOrdersByEventIndex] = React.useState([0]);
+  const [visibility, setVisibility] = React.useState([true]);
   const handleAddEvent = event => {
     const { startDate, endDate } = event;
 
@@ -375,6 +377,7 @@ export const App = () => {
           minStartDate={minStartDate}
           positions={positions}
           ordersByEventIndex={ordersByEventIndex}
+          visibility={visibility}
           clickedIndex={clickedIndex}
           isHold={isHold}
           origin={origin}
