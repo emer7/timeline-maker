@@ -379,6 +379,7 @@ export const App = () => {
           isHold={isHold}
           origin={origin}
           destination={destination}
+          groupSelection={groupSelection}
           handleOnMouseDownOnBar={handleOnMouseDownOnBar}
           handleOnMouseUp={handleOnMouseUp}
           handleOnMouseLeave={handleOnMouseLeave}

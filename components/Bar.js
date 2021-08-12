@@ -18,6 +18,7 @@ export const Bar = ({
   isHold,
   isOrigin,
   isDestination,
+  isGroupSelection,
   handleOnMouseDown,
   handleOnMouseUp,
   handleOnMouseLeave,
@@ -50,6 +51,7 @@ export const Bar = ({
       isHold={isHold}
       isOrigin={isOrigin}
       isDestination={isDestination}
+      isGroupSelection={isGroupSelection}
       startDurationInPixels={startDurationInPixels}
       durationInPixels={durationInPixels}
       handleOnMouseDown={handleOnMouseDown}
@@ -67,7 +69,15 @@ export const Bar = ({
         height={Math.max(durationInPixels, 24)}
         width={WIDTH}
         fill="#14213d"
-        stroke={isOrigin ? '#b7245c' : isDestination ? '#00a6fb' : '#14213d'}
+        stroke={
+          isOrigin
+            ? '#b7245c'
+            : isDestination
+            ? '#00a6fb'
+            : isGroupSelection
+            ? '#5FAD41'
+            : '#14213d'
+        }
         strokeWidth={isHold ? 3 : 1}
         onMouseDown={handleOnMouseDown}
         onMouseUp={handleOnMouseUp}
@@ -98,6 +108,7 @@ export const WithReign = ({
   isHold,
   isOrigin,
   isDestination,
+  isGroupSelection,
   startDurationInPixels,
   durationInPixels,
   handleOnMouseDown,
@@ -132,7 +143,15 @@ export const WithReign = ({
         height={Math.max(reignStartDurationInPixels, 0)}
         width={WIDTH}
         fill="#ffffff"
-        stroke={isOrigin ? '#b7245c' : isDestination ? '#00a6fb' : '#fca311'}
+        stroke={
+          isOrigin
+            ? '#b7245c'
+            : isDestination
+            ? '#00a6fb'
+            : isGroupSelection
+            ? '#5FAD41'
+            : '#fca311'
+        }
         strokeWidth={isHold ? 3 : 1}
         onMouseDown={handleOnMouseDown}
         onMouseUp={handleOnMouseUp}
@@ -145,7 +164,15 @@ export const WithReign = ({
         height={Math.max(reignDurationInPixels, 0)}
         width={WIDTH}
         fill="#fca311"
-        stroke={isOrigin ? '#b7245c' : isDestination ? '#00a6fb' : '#fca311'}
+        stroke={
+          isOrigin
+            ? '#b7245c'
+            : isDestination
+            ? '#00a6fb'
+            : isGroupSelection
+            ? '#5FAD41'
+            : '#fca311'
+        }
         strokeWidth={isHold ? 3 : 1}
         onMouseDown={handleOnMouseDown}
         onMouseUp={handleOnMouseUp}
@@ -169,7 +196,15 @@ export const WithReign = ({
         )}
         width={WIDTH}
         fill="#ffffff"
-        stroke={isOrigin ? '#b7245c' : isDestination ? '#00a6fb' : '#fca311'}
+        stroke={
+          isOrigin
+            ? '#b7245c'
+            : isDestination
+            ? '#00a6fb'
+            : isGroupSelection
+            ? '#5FAD41'
+            : '#fca311'
+        }
         strokeWidth={isHold ? 3 : 1}
         onMouseDown={handleOnMouseDown}
         onMouseUp={handleOnMouseUp}
