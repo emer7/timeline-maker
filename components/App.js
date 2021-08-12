@@ -292,6 +292,8 @@ export const App = () => {
         } else {
           setDestination(index);
         }
+      } else if (isShiftPressed) {
+        setGroupSelection([...groupSelection, index]);
       } else {
         setClickedIndex(index);
         setIsPopup(true);
@@ -345,6 +347,7 @@ export const App = () => {
     setLinks([...links.slice(0, index), ...links.slice(index + 1)]);
   };
 
+  const [groupSelection, setGroupSelection] = React.useState([]);
   const handleSaveData = () => {
     localStorage.setItem('events', JSON.stringify(events));
     localStorage.setItem('positions', JSON.stringify(positions));
