@@ -295,7 +295,13 @@ export const App = () => {
           setDestination(index);
         }
       } else if (isShiftPressed) {
-        setGroupSelection([...groupSelection, index]);
+          setGroupSelection(
+            groupSelection.includes(index)
+              ? groupSelection.filter(
+                  groupMemberIndex => groupMemberIndex !== index
+                )
+              : [...groupSelection, index]
+          );
       } else {
         setClickedIndex(index);
         setIsPopup(true);
