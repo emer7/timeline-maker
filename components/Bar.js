@@ -15,6 +15,7 @@ export const Bar = ({
   event,
   minStartDate,
   position,
+  temporaryVerticalPosition,
   isHold,
   isOrigin,
   isDestination,
@@ -48,6 +49,7 @@ export const Bar = ({
       vw={vw}
       event={event}
       position={position}
+      temporaryVerticalPosition={temporaryVerticalPosition}
       isHold={isHold}
       isOrigin={isOrigin}
       isDestination={isDestination}
@@ -65,7 +67,7 @@ export const Bar = ({
       <rect
         className="cursor-pointer"
         x={Math.max(0, Math.min(vw - 25, position) - 25)}
-        y={startDurationInPixels}
+        y={temporaryVerticalPosition || startDurationInPixels}
         height={Math.max(durationInPixels, 24)}
         width={WIDTH}
         fill="#14213d"
@@ -86,7 +88,10 @@ export const Bar = ({
       <text
         className="select-none cursor-pointer"
         x={Math.max(0, Math.min(vw - 25, position) - 25) + WIDTH / 2}
-        y={startDurationInPixels + Math.max(durationInPixels, 24) / 2}
+        y={
+          (temporaryVerticalPosition || startDurationInPixels) +
+          Math.max(durationInPixels, 24) / 2
+        }
         fill="#e5e5e5"
         textAnchor="middle"
         alignmentBaseline="middle"
@@ -105,6 +110,7 @@ export const WithReign = ({
   vw,
   event,
   position,
+  temporaryVerticalPosition,
   isHold,
   isOrigin,
   isDestination,
@@ -139,7 +145,7 @@ export const WithReign = ({
       <rect
         className="cursor-pointer"
         x={Math.max(0, Math.min(vw - 25, position) - 25)}
-        y={startDurationInPixels}
+        y={temporaryVerticalPosition || startDurationInPixels}
         height={Math.max(reignStartDurationInPixels, 0)}
         width={WIDTH}
         fill="#ffffff"
@@ -160,7 +166,10 @@ export const WithReign = ({
       <rect
         className="cursor-pointer"
         x={Math.max(0, Math.min(vw - 25, position) - 25)}
-        y={startDurationInPixels + reignStartDurationInPixels}
+        y={
+          (temporaryVerticalPosition || startDurationInPixels) +
+          reignStartDurationInPixels
+        }
         height={Math.max(reignDurationInPixels, 0)}
         width={WIDTH}
         fill="#fca311"
@@ -182,7 +191,7 @@ export const WithReign = ({
         className="cursor-pointer"
         x={Math.max(0, Math.min(vw - 25, position) - 25)}
         y={
-          startDurationInPixels +
+          (temporaryVerticalPosition || startDurationInPixels) +
           reignStartDurationInPixels +
           reignDurationInPixels
         }
@@ -213,7 +222,10 @@ export const WithReign = ({
       <text
         className="select-none cursor-pointer"
         x={Math.max(0, Math.min(vw - 25, position) - 25) + WIDTH / 2}
-        y={startDurationInPixels + Math.max(durationInPixels, 24) / 2}
+        y={
+          (temporaryVerticalPosition || startDurationInPixels) +
+          Math.max(durationInPixels, 24) / 2
+        }
         textAnchor="middle"
         alignmentBaseline="middle"
         onMouseDown={handleOnMouseDown}

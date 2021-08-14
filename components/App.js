@@ -1,7 +1,11 @@
 import React from 'react';
 import { isAfter, isBefore, max, min, format } from 'date-fns';
 
-import { parseNumericalFullDate, parseMultipleFormat } from '../utils';
+import {
+  parseNumericalFullDate,
+  parseMultipleFormat,
+  calculateStartDuration,
+} from '../utils';
 import { NUMERICAL_FULL_DATE_FORMAT, SAMPLE_EVENT } from '../consts';
 
 import { Add } from './Add';
@@ -38,18 +42,6 @@ const setBoundaryDate = (events, setMinStartDate, setMaxEndDate) => {
 };
 
 export const App = () => {
-  React.useEffect(() => {
-    document.addEventListener('mouseup', handleOnMouseUp);
-    document.addEventListener('keydown', handleKeyDownDocument);
-    document.addEventListener('keyup', handleKeyUpDocument);
-
-    return () => {
-      document.removeEventListener('mouseup', handleOnMouseUp);
-      document.removeEventListener('keydown', handleKeyDownDocument);
-      document.removeEventListener('keyup', handleKeyUpDocument);
-    };
-  }, []);
-
   const [isAltPressed, setIsAltPressed] = React.useState(false);
   const [isCtrlPressed, setIsCtrlPressed] = React.useState(false);
   const [isShiftPressed, setIsShiftPressed] = React.useState(false);
@@ -247,10 +239,16 @@ export const App = () => {
   const [holdTimer, setHoldTimer] = React.useState();
   const handleOnMouseDownOnBar = index => {
     const timer = setTimeout(() => {
+      if (isShiftPressed && groupSelection.length) {
+        setClickedIndex(-1);
+        setIsHold(true);
+        setCanMove(true);
+        setIsPopup(false);
+      } else if (!isShiftPressed && !groupSelection.length) {
       setClickedIndex(index);
-      setIsHold(true);
-      setCanMove(true);
-      setIsPopup(false);
+        setIsHold(true);
+        setCanMove(true);
+        setIsPopup(false);
 
       const lastIndex = orders.length - 1;
       const orderIndex = ordersByEventIndex[index];
@@ -270,6 +268,7 @@ export const App = () => {
         );
 
         setOrdersByEventIndex(mappedOrdersByEventIndex);
+        }
       }
     }, 250);
 
@@ -310,16 +309,53 @@ export const App = () => {
         setIsPopup(true);
       }
     }
+
+    if (isShiftPressed && canMove) {
+        setTemporaryHorizontalPosition();
+        setTemporaryVerticalPosition();
+    }
   };
   const handleOnMouseLeave = () => {
     clearTimeout(holdTimer);
   };
   const handleOnMouseMove = e => {
-    const { clientX } = e;
+    const { clientX, clientY } = e;
 
     if (canMove) {
       const steppedX = Math.floor(clientX / 10) * 10;
 
+      if (isShiftPressed && groupSelection.length) {
+        setTemporaryHorizontalPosition(
+          groupSelection.map(
+            (_, groupMemberIndex) =>
+              clientX - (groupSelection.length - 1 - groupMemberIndex) * 10
+          )
+        );
+
+        const baseEvent = events[groupSelection[groupSelection.length - 1]];
+        const { startDate } = baseEvent;
+
+        const parsedMinStartDate = parseNumericalFullDate(minStartDate);
+        const parsedStartDate = parseMultipleFormat(startDate);
+
+        const baseHeight =
+          calculateStartDuration(
+            parsedMinStartDate,
+            parsedStartDate,
+            yearInPixels
+          ) / 2;
+
+        setTemporaryVerticalPosition(
+          groupSelection.map(
+            (_, groupMemberIndex) =>
+              clientY -
+              baseHeight -
+              (groupSelection.length - 1 - groupMemberIndex) * 10
+          )
+        );
+
+        setIsPopup(false);
+      } else {
       setPositions([
         ...positions.slice(0, clickedIndex),
         steppedX,
@@ -327,8 +363,21 @@ export const App = () => {
       ]);
 
       setIsPopup(false);
+      }
     }
   };
+
+  React.useEffect(() => {
+    document.addEventListener('mouseup', handleOnMouseUp);
+    document.addEventListener('keydown', handleKeyDownDocument);
+    document.addEventListener('keyup', handleKeyUpDocument);
+
+    return () => {
+      document.removeEventListener('mouseup', handleOnMouseUp);
+      document.removeEventListener('keydown', handleKeyDownDocument);
+      document.removeEventListener('keyup', handleKeyUpDocument);
+    };
+  }, [isShiftPressed && canMove]);
 
   React.useEffect(() => {
     document.addEventListener('mousemove', handleOnMouseMove);
@@ -358,6 +407,10 @@ export const App = () => {
     setLinks([...links.slice(0, index), ...links.slice(index + 1)]);
   };
 
+  const [temporaryHorizontalPositions, setTemporaryHorizontalPosition] =
+    React.useState();
+  const [temporaryVerticalPosition, setTemporaryVerticalPosition] =
+    React.useState();
   const [groupSelection, setGroupSelection] = React.useState([]);
   const handleClearGroupSelection = () => {
     setGroupSelection([]);
@@ -391,6 +444,8 @@ export const App = () => {
           positions={positions}
           ordersByEventIndex={ordersByEventIndex}
           visibility={visibility}
+          temporaryHorizontalPositions={temporaryHorizontalPositions}
+          temporaryVerticalPositions={temporaryVerticalPosition}
           clickedIndex={clickedIndex}
           isHold={isHold}
           origin={origin}
