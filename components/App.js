@@ -5,6 +5,7 @@ import {
   parseNumericalFullDate,
   parseMultipleFormat,
   calculateStartDuration,
+  calculateDuration,
 } from '../utils';
 import { NUMERICAL_FULL_DATE_FORMAT, SAMPLE_EVENT } from '../consts';
 
@@ -73,7 +74,17 @@ export const App = () => {
   const handleOnWheelDocument = e => {
     const { deltaY } = e;
 
-    setScrollTop(scrollTop => Math.max(scrollTop + deltaY, 0));
+    const parsedMinStartDate = parseNumericalFullDate(minStartDate);
+    const parsedMaxEndDate = parseNumericalFullDate(maxEndDate);
+    const maximumScrollDistance = calculateDuration(
+      parsedMinStartDate,
+      parsedMaxEndDate,
+      yearInPixels
+    );
+
+    setScrollTop(scrollTop =>
+      Math.min(Math.max(scrollTop + deltaY, 0), maximumScrollDistance - vh)
+    );
 
     if (isCtrlPressed) {
       setYearInPixels(
@@ -81,14 +92,6 @@ export const App = () => {
       );
     }
   };
-
-  React.useEffect(() => {
-    document.addEventListener('wheel', handleOnWheelDocument);
-
-    return () => {
-      document.removeEventListener('wheel', handleOnWheelDocument);
-    };
-  }, [isCtrlPressed]);
 
   React.useEffect(() => {
     setVw(
@@ -231,6 +234,14 @@ export const App = () => {
 
     setBoundaryDate(slicedEvents, setMinStartDate, setMaxEndDate);
   };
+
+  React.useEffect(() => {
+    document.addEventListener('wheel', handleOnWheelDocument);
+
+    return () => {
+      document.removeEventListener('wheel', handleOnWheelDocument);
+    };
+  }, [isCtrlPressed, minStartDate, maxEndDate]);
 
   const [isPopup, setIsPopup] = React.useState(false);
   const [clickedIndex, setClickedIndex] = React.useState(-1);
