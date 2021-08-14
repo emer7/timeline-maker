@@ -448,6 +448,7 @@ export const App = () => {
           temporaryVerticalPositions={temporaryVerticalPosition}
           clickedIndex={clickedIndex}
           isHold={isHold}
+          canMove={canMove}
           origin={origin}
           destination={destination}
           groupSelection={groupSelection}

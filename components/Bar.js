@@ -17,6 +17,7 @@ export const Bar = ({
   position,
   temporaryVerticalPosition,
   isHold,
+  isThrough,
   isOrigin,
   isDestination,
   isGroupSelection,
@@ -51,6 +52,7 @@ export const Bar = ({
       position={position}
       temporaryVerticalPosition={temporaryVerticalPosition}
       isHold={isHold}
+      isThrough={isThrough}
       isOrigin={isOrigin}
       isDestination={isDestination}
       isGroupSelection={isGroupSelection}
@@ -65,7 +67,7 @@ export const Bar = ({
   ) : (
     <g>
       <rect
-        className="cursor-pointer"
+        className={`cursor-pointer${isThrough ? ' pointer-events-none' : ''}`}
         x={Math.max(0, Math.min(vw - 25, position) - 25)}
         y={temporaryVerticalPosition || startDurationInPixels}
         height={Math.max(durationInPixels, 24)}
@@ -86,7 +88,9 @@ export const Bar = ({
         onMouseLeave={handleOnMouseLeave}
       />
       <text
-        className="select-none cursor-pointer"
+        className={`select-none cursor-pointer${
+          isThrough ? ' pointer-events-none' : ''
+        }`}
         x={Math.max(0, Math.min(vw - 25, position) - 25) + WIDTH / 2}
         y={
           (temporaryVerticalPosition || startDurationInPixels) +
@@ -112,6 +116,7 @@ export const WithReign = ({
   position,
   temporaryVerticalPosition,
   isHold,
+  isThrough,
   isOrigin,
   isDestination,
   isGroupSelection,
@@ -143,7 +148,7 @@ export const WithReign = ({
   return (
     <g>
       <rect
-        className="cursor-pointer"
+        className={`cursor-pointer${isThrough ? ' pointer-events-none' : ''}`}
         x={Math.max(0, Math.min(vw - 25, position) - 25)}
         y={temporaryVerticalPosition || startDurationInPixels}
         height={Math.max(reignStartDurationInPixels, 0)}
@@ -164,7 +169,7 @@ export const WithReign = ({
         onMouseLeave={handleOnMouseLeave}
       />
       <rect
-        className="cursor-pointer"
+        className={`cursor-pointer${isThrough ? ' pointer-events-none' : ''}`}
         x={Math.max(0, Math.min(vw - 25, position) - 25)}
         y={
           (temporaryVerticalPosition || startDurationInPixels) +
@@ -188,7 +193,7 @@ export const WithReign = ({
         onMouseLeave={handleOnMouseLeave}
       />
       <rect
-        className="cursor-pointer"
+        className={`cursor-pointer${isThrough ? ' pointer-events-none' : ''}`}
         x={Math.max(0, Math.min(vw - 25, position) - 25)}
         y={
           (temporaryVerticalPosition || startDurationInPixels) +
@@ -220,7 +225,9 @@ export const WithReign = ({
         onMouseLeave={handleOnMouseLeave}
       />
       <text
-        className="select-none cursor-pointer"
+        className={`select-none cursor-pointer${
+          isThrough ? ' pointer-events-none' : ''
+        }`}
         x={Math.max(0, Math.min(vw - 25, position) - 25) + WIDTH / 2}
         y={
           (temporaryVerticalPosition || startDurationInPixels) +

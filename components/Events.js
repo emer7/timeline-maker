@@ -14,6 +14,7 @@ export const Events = ({
   temporaryVerticalPositions,
   clickedIndex,
   isHold,
+  canMove,
   origin,
   destination,
   groupSelection,
@@ -64,6 +65,8 @@ export const Events = ({
     )
         ];
 
+      const isThrough = isGroupSelection && canMove;
+
       return (
       <Bar
         key={JSON.stringify(events[eventIndex])}
@@ -74,6 +77,7 @@ export const Events = ({
           position={position}
           temporaryVerticalPosition={temporaryVerticalPosition}
           isHold={clickedIndex === eventIndex && isHold}
+          isThrough={isThrough}
         isOrigin={origin === eventIndex}
         isDestination={destination === eventIndex}
           isGroupSelection={isGroupSelection}
