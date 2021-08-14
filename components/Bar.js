@@ -3,7 +3,6 @@ import React from 'react';
 import {
   parseNumericalFullDate,
   parseMultipleFormat,
-  calculateStartDuration,
   calculateDuration,
 } from '../utils';
 
@@ -38,7 +37,7 @@ export const Bar = ({
     yearInPixels
   );
 
-  const startDurationInPixels = calculateStartDuration(
+  const startDurationInPixels = calculateDuration(
     parsedMinStartDate,
     parsedStartDate,
     yearInPixels
@@ -139,7 +138,7 @@ export const WithReign = ({
     yearInPixels
   );
 
-  const reignStartDurationInPixels = calculateStartDuration(
+  const reignStartDurationInPixels = calculateDuration(
     parsedStartDate,
     parsedReignStartDate,
     yearInPixels

@@ -6,7 +6,7 @@ import {
 } from '@material-ui/icons';
 
 import {
-  calculateStartDuration,
+  calculateDuration,
   convertToHumanDate,
   parseMultipleFormat,
   parseNumericalFullDate,
@@ -52,7 +52,7 @@ export const Popup = ({
   const parsedMinStartDate = parseNumericalFullDate(minStartDate);
   const parsedStartDate = parseMultipleFormat(startDate);
 
-  const top = calculateStartDuration(
+  const top = calculateDuration(
     parsedMinStartDate,
     parsedStartDate,
     yearInPixels

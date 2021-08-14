@@ -2,7 +2,6 @@ import React from 'react';
 
 import {
   calculateDuration,
-  calculateStartDuration,
   parseMultipleFormat,
   parseNumericalFullDate,
 } from '../utils';
@@ -35,14 +34,14 @@ export const Links = ({
       parsedOriginEndDate,
       yearInPixels
     );
-    const originTop = calculateStartDuration(
+    const originTop = calculateDuration(
       parsedMinStartDate,
       parsedOriginStartDate,
       yearInPixels
     );
     const originLeft = positions[origin];
 
-    const destinationTop = calculateStartDuration(
+    const destinationTop = calculateDuration(
       parsedMinStartDate,
       parsedDestinationStartDate,
       yearInPixels

@@ -70,19 +70,6 @@ export const convertToHumanDate = numericalDate =>
         )
     : numericalDate;
 
-export const calculateStartDuration = (
-  parsedMinStartDate,
-  parsedStartDate,
-  yearInPixels
-) => {
-  const startDuration = intervalToDuration({
-    start: parsedMinStartDate,
-    end: parsedStartDate,
-  });
-
-  return convertToPixels(startDuration, yearInPixels);
-};
-
 export const calculateDuration = (
   parsedStartDate,
   parsedEndDate,

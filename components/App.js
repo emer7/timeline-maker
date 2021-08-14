@@ -4,7 +4,6 @@ import { isAfter, isBefore, max, min, format } from 'date-fns';
 import {
   parseNumericalFullDate,
   parseMultipleFormat,
-  calculateStartDuration,
   calculateDuration,
 } from '../utils';
 import { NUMERICAL_FULL_DATE_FORMAT, SAMPLE_EVENT } from '../consts';
@@ -351,11 +350,8 @@ export const App = () => {
         const parsedStartDate = parseMultipleFormat(startDate);
 
         const baseHeight =
-          calculateStartDuration(
-            parsedMinStartDate,
-            parsedStartDate,
-            yearInPixels
-          ) / 2;
+          calculateDuration(parsedMinStartDate, parsedStartDate, yearInPixels) /
+          2;
 
         setTemporaryVerticalPosition(
           groupSelection.map(
