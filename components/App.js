@@ -311,8 +311,12 @@ export const App = () => {
     }
 
     if (isShiftPressed && canMove) {
+      if (index !== undefined) {
+        handleCreateGroup(index);
+      } else {
         setTemporaryHorizontalPosition();
         setTemporaryVerticalPosition();
+    }
     }
   };
   const handleOnMouseLeave = () => {
@@ -414,6 +418,25 @@ export const App = () => {
   const [groupSelection, setGroupSelection] = React.useState([]);
   const handleClearGroupSelection = () => {
     setGroupSelection([]);
+  };
+  const handleCreateGroup = parentIndex => {
+    const parentEvent = events[parentIndex];
+
+    const editedParentEvent = {
+      ...parentEvent,
+      children: groupSelection,
+    };
+
+    const slicedEvents = [
+      ...events.slice(0, parentIndex),
+      editedParentEvent,
+      ...events.slice(parentIndex + 1),
+    ];
+
+    setEvents(slicedEvents);
+    setGroupSelection([]);
+    setTemporaryHorizontalPosition();
+    setTemporaryVerticalPosition();
   };
 
   const handleSaveData = () => {
