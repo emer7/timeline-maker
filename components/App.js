@@ -41,6 +41,11 @@ const setBoundaryDate = (events, setMinStartDate, setMaxEndDate) => {
   setMaxEndDate(newMaxEndDate);
 };
 
+const removeElementByIndex = (array, index) => [
+  ...array.slice(0, index),
+  ...array.slice(index + 1),
+];
+
 export const App = () => {
   const [isAltPressed, setIsAltPressed] = React.useState(false);
   const [isCtrlPressed, setIsCtrlPressed] = React.useState(false);
@@ -193,31 +198,17 @@ export const App = () => {
     setVisibility([...visibility, true]);
   };
   const handleDeleteEvent = index => {
-    const slicedEvents = [
-      ...events.slice(0, index),
-      ...events.slice(index + 1),
-    ];
-
-    const slicedPositions = [
-      ...positions.slice(0, index),
-      ...positions.slice(index + 1),
-    ];
+    const slicedEvents = removeElementByIndex(events, index);
+    const slicedPositions = removeElementByIndex(positions, index);
 
     const orderIndex = ordersByEventIndex[index];
-    const slicedOrders = [
-      ...orders.slice(0, orderIndex),
-      ...orders.slice(orderIndex + 1),
-    ];
+    const slicedOrders = removeElementByIndex(orders, orderIndex);
+    const slicedAndMappedOrdersByEventIndex = removeElementByIndex(
+      ordersByEventIndex,
+      index
+    ).map(order => (order > orderIndex ? order - 1 : order));
 
-    const slicedAndMappedOrdersByEventIndex = [
-      ...ordersByEventIndex.slice(0, index),
-      ...ordersByEventIndex.slice(index + 1),
-    ].map(order => (order > orderIndex ? order - 1 : order));
-
-    const slicedVisibility = [
-      ...visibility.slice(0, index),
-      ...visibility.slice(index + 1),
-    ];
+    const slicedVisibility = removeElementByIndex(visibility, index);
 
     setEvents(slicedEvents);
     setPositions(slicedPositions);
@@ -267,11 +258,7 @@ export const App = () => {
         const lastIndex = orders.length - 1;
         const orderIndex = ordersByEventIndex[index];
         if (orderIndex !== lastIndex) {
-          setOrders([
-            ...orders.slice(0, orderIndex),
-            ...orders.slice(orderIndex + 1),
-            index,
-          ]);
+          setOrders([removeElementByIndex(orders, orderIndex), index]);
 
           const mappedOrdersByEventIndex = ordersByEventIndex.map(order =>
             order === orderIndex
@@ -419,7 +406,7 @@ export const App = () => {
     setDestination(-1);
   };
   const handleDeleteLink = index => {
-    setLinks([...links.slice(0, index), ...links.slice(index + 1)]);
+    setLinks(removeElementByIndex(links, index));
   };
 
   const [temporaryHorizontalPositions, setTemporaryHorizontalPosition] =
