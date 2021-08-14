@@ -245,29 +245,29 @@ export const App = () => {
         setCanMove(true);
         setIsPopup(false);
       } else if (!isShiftPressed && !groupSelection.length) {
-      setClickedIndex(index);
+        setClickedIndex(index);
         setIsHold(true);
         setCanMove(true);
         setIsPopup(false);
 
-      const lastIndex = orders.length - 1;
-      const orderIndex = ordersByEventIndex[index];
-      if (orderIndex !== lastIndex) {
-        setOrders([
-          ...orders.slice(0, orderIndex),
-          ...orders.slice(orderIndex + 1),
-          index,
-        ]);
+        const lastIndex = orders.length - 1;
+        const orderIndex = ordersByEventIndex[index];
+        if (orderIndex !== lastIndex) {
+          setOrders([
+            ...orders.slice(0, orderIndex),
+            ...orders.slice(orderIndex + 1),
+            index,
+          ]);
 
-        const mappedOrdersByEventIndex = ordersByEventIndex.map(order =>
-          order === orderIndex
-            ? lastIndex
-            : order > orderIndex
-            ? order - 1
-            : order
-        );
+          const mappedOrdersByEventIndex = ordersByEventIndex.map(order =>
+            order === orderIndex
+              ? lastIndex
+              : order > orderIndex
+              ? order - 1
+              : order
+          );
 
-        setOrdersByEventIndex(mappedOrdersByEventIndex);
+          setOrdersByEventIndex(mappedOrdersByEventIndex);
         }
       }
     }, 250);
@@ -294,16 +294,16 @@ export const App = () => {
           setDestination(index);
         }
       } else if (isShiftPressed) {
-          setGroupSelection(
-            groupSelection.includes(index)
-              ? groupSelection.filter(
-                  groupMemberIndex => groupMemberIndex !== index
-                )
+        setGroupSelection(
+          groupSelection.includes(index)
+            ? groupSelection.filter(
+                groupMemberIndex => groupMemberIndex !== index
+              )
             : [...groupSelection, index].sort(
                 (eventAIndex, eventBIndex) =>
                   positions[eventAIndex] - positions[eventBIndex]
               )
-          );
+        );
       } else {
         setClickedIndex(index);
         setIsPopup(true);
@@ -316,7 +316,7 @@ export const App = () => {
       } else {
         setTemporaryHorizontalPosition();
         setTemporaryVerticalPosition();
-    }
+      }
     }
   };
   const handleOnMouseLeave = () => {
@@ -360,13 +360,13 @@ export const App = () => {
 
         setIsPopup(false);
       } else {
-      setPositions([
-        ...positions.slice(0, clickedIndex),
-        steppedX,
-        ...positions.slice(clickedIndex + 1),
-      ]);
+        setPositions([
+          ...positions.slice(0, clickedIndex),
+          steppedX,
+          ...positions.slice(clickedIndex + 1),
+        ]);
 
-      setIsPopup(false);
+        setIsPopup(false);
       }
     }
   };
@@ -438,6 +438,13 @@ export const App = () => {
     setTemporaryHorizontalPosition();
     setTemporaryVerticalPosition();
   };
+  const handleChildrenVisibility = children => {
+    setVisibility(
+      visibility.map((value, index) =>
+        children.includes(index) ? !value : value
+      )
+    );
+  };
 
   const handleSaveData = () => {
     localStorage.setItem('events', JSON.stringify(events));
@@ -501,6 +508,7 @@ export const App = () => {
           handleEditEvent={editedEvent =>
             handleEditEvent(clickedIndex, editedEvent)
           }
+          handleChildrenVisibility={handleChildrenVisibility}
         />
       )}
 
