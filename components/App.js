@@ -190,6 +190,7 @@ export const App = () => {
     setPositions([...positions, 0]);
     setOrders([...orders, events.length]);
     setOrdersByEventIndex([...ordersByEventIndex, events.length]);
+    setVisibility([...visibility, true]);
   };
   const handleDeleteEvent = index => {
     const slicedEvents = [
@@ -213,10 +214,16 @@ export const App = () => {
       ...ordersByEventIndex.slice(index + 1),
     ].map(order => (order > orderIndex ? order - 1 : order));
 
+    const slicedVisibility = [
+      ...visibility.slice(0, index),
+      ...visibility.slice(index + 1),
+    ];
+
     setEvents(slicedEvents);
     setPositions(slicedPositions);
     setOrders(slicedOrders);
     setOrdersByEventIndex(slicedAndMappedOrdersByEventIndex);
+    setVisibility(slicedVisibility);
 
     setBoundaryDate(slicedEvents, setMinStartDate, setMaxEndDate);
 
