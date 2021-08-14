@@ -16,7 +16,7 @@ export const Bar = ({
   minStartDate,
   position,
   temporaryVerticalPosition,
-  isHold,
+  canMove,
   isThrough,
   isOrigin,
   isDestination,
@@ -51,7 +51,7 @@ export const Bar = ({
       event={event}
       position={position}
       temporaryVerticalPosition={temporaryVerticalPosition}
-      isHold={isHold}
+      canMove={canMove}
       isThrough={isThrough}
       isOrigin={isOrigin}
       isDestination={isDestination}
@@ -82,7 +82,7 @@ export const Bar = ({
             ? '#5FAD41'
             : '#14213d'
         }
-        strokeWidth={isHold ? 3 : 1}
+        strokeWidth={canMove ? 3 : 1}
         onMouseDown={handleOnMouseDown}
         onMouseUp={handleOnMouseUp}
         onMouseLeave={handleOnMouseLeave}
@@ -115,7 +115,7 @@ export const WithReign = ({
   event,
   position,
   temporaryVerticalPosition,
-  isHold,
+  canMove,
   isThrough,
   isOrigin,
   isDestination,
@@ -163,7 +163,7 @@ export const WithReign = ({
             ? '#5FAD41'
             : '#fca311'
         }
-        strokeWidth={isHold ? 3 : 1}
+        strokeWidth={canMove ? 3 : 1}
         onMouseDown={handleOnMouseDown}
         onMouseUp={handleOnMouseUp}
         onMouseLeave={handleOnMouseLeave}
@@ -187,7 +187,7 @@ export const WithReign = ({
             ? '#5FAD41'
             : '#fca311'
         }
-        strokeWidth={isHold ? 3 : 1}
+        strokeWidth={canMove ? 3 : 1}
         onMouseDown={handleOnMouseDown}
         onMouseUp={handleOnMouseUp}
         onMouseLeave={handleOnMouseLeave}
@@ -219,7 +219,7 @@ export const WithReign = ({
             ? '#5FAD41'
             : '#fca311'
         }
-        strokeWidth={isHold ? 3 : 1}
+        strokeWidth={canMove ? 3 : 1}
         onMouseDown={handleOnMouseDown}
         onMouseUp={handleOnMouseUp}
         onMouseLeave={handleOnMouseLeave}

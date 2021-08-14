@@ -13,7 +13,6 @@ export const Events = ({
   temporaryHorizontalPositions,
   temporaryVerticalPositions,
   clickedIndex,
-  isHold,
   canMove,
   origin,
   destination,
@@ -76,7 +75,7 @@ export const Events = ({
           minStartDate={minStartDate}
           position={position}
           temporaryVerticalPosition={temporaryVerticalPosition}
-          isHold={isThrough || (clickedIndex === eventIndex && isHold)}
+          canMove={isThrough || (clickedIndex === eventIndex && canMove)}
           isThrough={isThrough}
           isOrigin={origin === eventIndex}
           isDestination={destination === eventIndex}

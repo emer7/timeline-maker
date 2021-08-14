@@ -234,19 +234,16 @@ export const App = () => {
 
   const [isPopup, setIsPopup] = React.useState(false);
   const [clickedIndex, setClickedIndex] = React.useState(-1);
-  const [isHold, setIsHold] = React.useState(false);
   const [canMove, setCanMove] = React.useState(false);
   const [holdTimer, setHoldTimer] = React.useState();
   const handleOnMouseDownOnBar = index => {
     const timer = setTimeout(() => {
-      if (isShiftPressed && groupSelection.length) {
-        setClickedIndex(-1);
-        setIsHold(true);
+      if (isShiftPressed && groupSelection.includes(index)) {
+        setClickedIndex(index);
         setCanMove(true);
         setIsPopup(false);
       } else if (!isShiftPressed && !groupSelection.length) {
         setClickedIndex(index);
-        setIsHold(true);
         setCanMove(true);
         setIsPopup(false);
 
@@ -278,44 +275,43 @@ export const App = () => {
     e.stopPropagation();
 
     clearTimeout(holdTimer);
-    setIsHold(false);
-    setCanMove(false);
 
-    if (e.target.nodeName === 'svg') {
-      setIsPopup(false);
-    }
-
-    if (index !== undefined && !canMove) {
-      if (isAltPressed) {
-        if (origin === -1 || destination !== -1) {
-          setOrigin(index);
-          setDestination(-1);
-        } else {
-          setDestination(index);
-        }
-      } else if (isShiftPressed) {
-        setGroupSelection(
-          groupSelection.includes(index)
-            ? groupSelection.filter(
-                groupMemberIndex => groupMemberIndex !== index
-              )
-            : [...groupSelection, index].sort(
-                (eventAIndex, eventBIndex) =>
-                  positions[eventAIndex] - positions[eventBIndex]
-              )
-        );
-      } else {
-        setClickedIndex(index);
-        setIsPopup(true);
-      }
-    }
-
-    if (isShiftPressed && canMove) {
-      if (index !== undefined) {
+    if (canMove) {
+      setCanMove(false);
+      setTemporaryHorizontalPosition();
+      setTemporaryVerticalPosition();
+      if (index !== undefined && isShiftPressed && groupSelection.length) {
         handleCreateGroup(index);
-      } else {
-        setTemporaryHorizontalPosition();
-        setTemporaryVerticalPosition();
+      }
+    } else {
+      // Cannot index === undefined because popup doesn't have index
+      if (e.target.nodeName === 'svg') {
+        setIsPopup(false);
+      }
+
+      if (index !== undefined) {
+        if (isAltPressed) {
+          if (origin === -1 || destination !== -1) {
+            setOrigin(index);
+            setDestination(-1);
+          } else {
+            setDestination(index);
+          }
+        } else if (isShiftPressed) {
+          setGroupSelection(
+            groupSelection.includes(index)
+              ? groupSelection.filter(
+                  groupMemberIndex => groupMemberIndex !== index
+                )
+              : [...groupSelection, index].sort(
+                  (eventAIndex, eventBIndex) =>
+                    positions[eventAIndex] - positions[eventBIndex]
+                )
+          );
+        } else {
+          setClickedIndex(index);
+          setIsPopup(true);
+        }
       }
     }
   };
@@ -328,7 +324,8 @@ export const App = () => {
     if (canMove) {
       const steppedX = Math.floor(clientX / 10) * 10;
 
-      if (isShiftPressed && groupSelection.length) {
+      // can omit && groupSelection.includes(index), see handleOnMouseDownOnBar
+      if (isShiftPressed) {
         setTemporaryHorizontalPosition(
           groupSelection.map(
             (_, groupMemberIndex) =>
@@ -381,7 +378,7 @@ export const App = () => {
       document.removeEventListener('keydown', handleKeyDownDocument);
       document.removeEventListener('keyup', handleKeyUpDocument);
     };
-  }, [isShiftPressed && canMove]);
+  }, [isShiftPressed, canMove]);
 
   React.useEffect(() => {
     document.addEventListener('mousemove', handleOnMouseMove);
@@ -389,7 +386,7 @@ export const App = () => {
     return () => {
       document.removeEventListener('mousemove', handleOnMouseMove);
     };
-  }, [canMove && clickedIndex]);
+  }, [canMove, clickedIndex]);
 
   React.useEffect(() => {
     const parsedLinks = JSON.parse(localStorage.getItem('links'));
@@ -435,8 +432,6 @@ export const App = () => {
 
     setEvents(slicedEvents);
     setGroupSelection([]);
-    setTemporaryHorizontalPosition();
-    setTemporaryVerticalPosition();
   };
   const handleChildrenVisibility = children => {
     setVisibility(
@@ -477,7 +472,6 @@ export const App = () => {
           temporaryHorizontalPositions={temporaryHorizontalPositions}
           temporaryVerticalPositions={temporaryVerticalPosition}
           clickedIndex={clickedIndex}
-          isHold={isHold}
           canMove={canMove}
           origin={origin}
           destination={destination}
