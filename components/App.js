@@ -1,7 +1,11 @@
 import React from 'react';
 import { isAfter, isBefore, max, min, format } from 'date-fns';
 
-import { parseNumericalFullDate, parseMultipleFormat } from '../utils';
+import {
+  parseNumericalFullDate,
+  parseMultipleFormat,
+  calculateStartDuration,
+} from '../utils';
 import { NUMERICAL_FULL_DATE_FORMAT, SAMPLE_EVENT } from '../consts';
 
 import { Add } from './Add';
@@ -38,20 +42,9 @@ const setBoundaryDate = (events, setMinStartDate, setMaxEndDate) => {
 };
 
 export const App = () => {
-  React.useEffect(() => {
-    document.addEventListener('mouseup', handleOnMouseUp);
-    document.addEventListener('keydown', handleKeyDownDocument);
-    document.addEventListener('keyup', handleKeyUpDocument);
-
-    return () => {
-      document.removeEventListener('mouseup', handleOnMouseUp);
-      document.removeEventListener('keydown', handleKeyDownDocument);
-      document.removeEventListener('keyup', handleKeyUpDocument);
-    };
-  }, []);
-
   const [isAltPressed, setIsAltPressed] = React.useState(false);
   const [isCtrlPressed, setIsCtrlPressed] = React.useState(false);
+  const [isShiftPressed, setIsShiftPressed] = React.useState(false);
   const handleKeyDownDocument = e => {
     const { code } = e;
 
@@ -59,6 +52,8 @@ export const App = () => {
       setIsCtrlPressed(true);
     } else if (code === 'AltLeft') {
       setIsAltPressed(true);
+    } else if (code === 'ShiftLeft') {
+      setIsShiftPressed(true);
     }
   };
   const handleKeyUpDocument = e => {
@@ -68,6 +63,8 @@ export const App = () => {
       setIsCtrlPressed(false);
     } else if (code === 'AltLeft') {
       setIsAltPressed(false);
+    } else if (code === 'ShiftLeft') {
+      setIsShiftPressed(false);
     }
   };
 
@@ -148,6 +145,7 @@ export const App = () => {
       setEvents(parsedEvents);
       setMinStartDate(calculateMinStartDate(parsedEvents));
       setMaxEndDate(calculateMaxEndDate(parsedEvents));
+      setVisibility(parsedEvents.map(_ => true));
     }
     parsedPositions && setPositions(parsedPositions);
     calculatedOrders && setOrders(calculatedOrders);
@@ -172,6 +170,7 @@ export const App = () => {
   const [positions, setPositions] = React.useState([0]);
   const [orders, setOrders] = React.useState([0]);
   const [ordersByEventIndex, setOrdersByEventIndex] = React.useState([0]);
+  const [visibility, setVisibility] = React.useState([true]);
   const handleAddEvent = event => {
     const { startDate, endDate } = event;
 
@@ -235,34 +234,38 @@ export const App = () => {
 
   const [isPopup, setIsPopup] = React.useState(false);
   const [clickedIndex, setClickedIndex] = React.useState(-1);
-  const [isHold, setIsHold] = React.useState(false);
   const [canMove, setCanMove] = React.useState(false);
   const [holdTimer, setHoldTimer] = React.useState();
   const handleOnMouseDownOnBar = index => {
     const timer = setTimeout(() => {
-      setClickedIndex(index);
-      setIsHold(true);
-      setCanMove(true);
-      setIsPopup(false);
+      if (isShiftPressed && groupSelection.includes(index)) {
+        setClickedIndex(index);
+        setCanMove(true);
+        setIsPopup(false);
+      } else if (!isShiftPressed && !groupSelection.length) {
+        setClickedIndex(index);
+        setCanMove(true);
+        setIsPopup(false);
 
-      const lastIndex = orders.length - 1;
-      const orderIndex = ordersByEventIndex[index];
-      if (orderIndex !== lastIndex) {
-        setOrders([
-          ...orders.slice(0, orderIndex),
-          ...orders.slice(orderIndex + 1),
-          index,
-        ]);
+        const lastIndex = orders.length - 1;
+        const orderIndex = ordersByEventIndex[index];
+        if (orderIndex !== lastIndex) {
+          setOrders([
+            ...orders.slice(0, orderIndex),
+            ...orders.slice(orderIndex + 1),
+            index,
+          ]);
 
-        const mappedOrdersByEventIndex = ordersByEventIndex.map(order =>
-          order === orderIndex
-            ? lastIndex
-            : order > orderIndex
-            ? order - 1
-            : order
-        );
+          const mappedOrdersByEventIndex = ordersByEventIndex.map(order =>
+            order === orderIndex
+              ? lastIndex
+              : order > orderIndex
+              ? order - 1
+              : order
+          );
 
-        setOrdersByEventIndex(mappedOrdersByEventIndex);
+          setOrdersByEventIndex(mappedOrdersByEventIndex);
+        }
       }
     }, 250);
 
@@ -272,24 +275,43 @@ export const App = () => {
     e.stopPropagation();
 
     clearTimeout(holdTimer);
-    setIsHold(false);
-    setCanMove(false);
 
-    if (e.target.nodeName === 'svg') {
-      setIsPopup(false);
-    }
+    if (canMove) {
+      setCanMove(false);
+      setTemporaryHorizontalPosition();
+      setTemporaryVerticalPosition();
+      if (index !== undefined && isShiftPressed && groupSelection.length) {
+        handleCreateGroup(index);
+      }
+    } else {
+      // Cannot index === undefined because popup doesn't have index
+      if (e.target.nodeName === 'svg') {
+        setIsPopup(false);
+      }
 
-    if (index !== undefined && !canMove) {
-      if (isAltPressed) {
-        if (origin === -1 || destination !== -1) {
-          setOrigin(index);
-          setDestination(-1);
+      if (index !== undefined) {
+        if (isAltPressed) {
+          if (origin === -1 || destination !== -1) {
+            setOrigin(index);
+            setDestination(-1);
+          } else {
+            setDestination(index);
+          }
+        } else if (isShiftPressed) {
+          setGroupSelection(
+            groupSelection.includes(index)
+              ? groupSelection.filter(
+                  groupMemberIndex => groupMemberIndex !== index
+                )
+              : [...groupSelection, index].sort(
+                  (eventAIndex, eventBIndex) =>
+                    positions[eventAIndex] - positions[eventBIndex]
+                )
+          );
         } else {
-          setDestination(index);
+          setClickedIndex(index);
+          setIsPopup(true);
         }
-      } else {
-        setClickedIndex(index);
-        setIsPopup(true);
       }
     }
   };
@@ -297,20 +319,66 @@ export const App = () => {
     clearTimeout(holdTimer);
   };
   const handleOnMouseMove = e => {
-    const { clientX } = e;
+    const { clientX, clientY } = e;
 
     if (canMove) {
       const steppedX = Math.floor(clientX / 10) * 10;
 
-      setPositions([
-        ...positions.slice(0, clickedIndex),
-        steppedX,
-        ...positions.slice(clickedIndex + 1),
-      ]);
+      // can omit && groupSelection.includes(index), see handleOnMouseDownOnBar
+      if (isShiftPressed) {
+        setTemporaryHorizontalPosition(
+          groupSelection.map(
+            (_, groupMemberIndex) =>
+              clientX - (groupSelection.length - 1 - groupMemberIndex) * 10
+          )
+        );
 
-      setIsPopup(false);
+        const baseEvent = events[groupSelection[groupSelection.length - 1]];
+        const { startDate } = baseEvent;
+
+        const parsedMinStartDate = parseNumericalFullDate(minStartDate);
+        const parsedStartDate = parseMultipleFormat(startDate);
+
+        const baseHeight =
+          calculateStartDuration(
+            parsedMinStartDate,
+            parsedStartDate,
+            yearInPixels
+          ) / 2;
+
+        setTemporaryVerticalPosition(
+          groupSelection.map(
+            (_, groupMemberIndex) =>
+              clientY -
+              baseHeight -
+              (groupSelection.length - 1 - groupMemberIndex) * 10
+          )
+        );
+
+        setIsPopup(false);
+      } else {
+        setPositions([
+          ...positions.slice(0, clickedIndex),
+          steppedX,
+          ...positions.slice(clickedIndex + 1),
+        ]);
+
+        setIsPopup(false);
+      }
     }
   };
+
+  React.useEffect(() => {
+    document.addEventListener('mouseup', handleOnMouseUp);
+    document.addEventListener('keydown', handleKeyDownDocument);
+    document.addEventListener('keyup', handleKeyUpDocument);
+
+    return () => {
+      document.removeEventListener('mouseup', handleOnMouseUp);
+      document.removeEventListener('keydown', handleKeyDownDocument);
+      document.removeEventListener('keyup', handleKeyUpDocument);
+    };
+  }, [isShiftPressed, canMove]);
 
   React.useEffect(() => {
     document.addEventListener('mousemove', handleOnMouseMove);
@@ -318,7 +386,7 @@ export const App = () => {
     return () => {
       document.removeEventListener('mousemove', handleOnMouseMove);
     };
-  }, [canMove && clickedIndex]);
+  }, [canMove, clickedIndex]);
 
   React.useEffect(() => {
     const parsedLinks = JSON.parse(localStorage.getItem('links'));
@@ -338,6 +406,39 @@ export const App = () => {
   };
   const handleDeleteLink = index => {
     setLinks([...links.slice(0, index), ...links.slice(index + 1)]);
+  };
+
+  const [temporaryHorizontalPositions, setTemporaryHorizontalPosition] =
+    React.useState();
+  const [temporaryVerticalPosition, setTemporaryVerticalPosition] =
+    React.useState();
+  const [groupSelection, setGroupSelection] = React.useState([]);
+  const handleClearGroupSelection = () => {
+    setGroupSelection([]);
+  };
+  const handleCreateGroup = parentIndex => {
+    const parentEvent = events[parentIndex];
+
+    const editedParentEvent = {
+      ...parentEvent,
+      children: groupSelection,
+    };
+
+    const slicedEvents = [
+      ...events.slice(0, parentIndex),
+      editedParentEvent,
+      ...events.slice(parentIndex + 1),
+    ];
+
+    setEvents(slicedEvents);
+    setGroupSelection([]);
+  };
+  const handleChildrenVisibility = children => {
+    setVisibility(
+      visibility.map((value, index) =>
+        children.includes(index) ? !value : value
+      )
+    );
   };
 
   const handleSaveData = () => {
@@ -367,10 +468,14 @@ export const App = () => {
           minStartDate={minStartDate}
           positions={positions}
           ordersByEventIndex={ordersByEventIndex}
+          visibility={visibility}
+          temporaryHorizontalPositions={temporaryHorizontalPositions}
+          temporaryVerticalPositions={temporaryVerticalPosition}
           clickedIndex={clickedIndex}
-          isHold={isHold}
+          canMove={canMove}
           origin={origin}
           destination={destination}
+          groupSelection={groupSelection}
           handleOnMouseDownOnBar={handleOnMouseDownOnBar}
           handleOnMouseUp={handleOnMouseUp}
           handleOnMouseLeave={handleOnMouseLeave}
@@ -397,11 +502,19 @@ export const App = () => {
           handleEditEvent={editedEvent =>
             handleEditEvent(clickedIndex, editedEvent)
           }
+          handleChildrenVisibility={handleChildrenVisibility}
         />
       )}
 
       <div className="fixed right-2 bottom-2">
-        <Add handleAddEvent={handleAddEvent} handleSaveData={handleSaveData} />
+        {groupSelection.length ? (
+          <button onClick={handleClearGroupSelection}>Clear grouping</button>
+        ) : (
+          <Add
+            handleAddEvent={handleAddEvent}
+            handleSaveData={handleSaveData}
+          />
+        )}
         <button onClick={handleAddLink}>Link</button>
       </div>
     </div>

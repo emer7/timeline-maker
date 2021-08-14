@@ -21,6 +21,7 @@ export const Popup = ({
   left,
   handleDeleteEvent,
   handleEditEvent,
+  handleChildrenVisibility,
 }) => {
   const [popupEvent, setPopupEvent] = React.useState(selectedEvent);
   React.useEffect(() => {
@@ -39,8 +40,14 @@ export const Popup = ({
     setIsEdit(!isEdit);
   };
 
-  const { description, startDate, endDate, reignStartDate, reignEndDate } =
-    popupEvent;
+  const {
+    description,
+    startDate,
+    endDate,
+    reignStartDate,
+    reignEndDate,
+    children,
+  } = popupEvent;
 
   const parsedMinStartDate = parseNumericalFullDate(minStartDate);
   const parsedStartDate = parseMultipleFormat(startDate);
@@ -50,6 +57,10 @@ export const Popup = ({
     parsedStartDate,
     yearInPixels
   );
+
+  const handleToggleChildrenVisibility = () => {
+    handleChildrenVisibility(children);
+  };
 
   return (
     <div
@@ -138,6 +149,11 @@ export const Popup = ({
               Reign end date: <br />
               {convertToHumanDate(reignEndDate)}
             </div>
+          )}
+          {children && (
+            <button onClick={handleToggleChildrenVisibility}>
+              toggle children
+            </button>
           )}
         </>
       )}

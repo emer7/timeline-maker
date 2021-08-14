@@ -112,13 +112,21 @@ export const Add = ({ handleAddEvent, handleSaveData }) => {
               <div className="flex">
                 <input
                   onChange={handleStartDateChange}
-                  onClick={handleSetPlaceholderAsValue}
+                  onClick={
+                    !startDate && !endDate
+                      ? handleSetPlaceholderAsValue
+                      : () => {}
+                  }
                   value={startDate}
                   placeholder={format(new Date(), HUMAN_FULL_DATE_FORMAT)}
                 />
                 <input
                   onChange={handleEndDateChange}
-                  onClick={handleSetPlaceholderAsValue}
+                  onClick={
+                    !startDate && !endDate
+                      ? handleSetPlaceholderAsValue
+                      : () => {}
+                  }
                   value={endDate}
                   placeholder={format(new Date(), HUMAN_FULL_DATE_FORMAT)}
                 />

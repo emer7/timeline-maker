@@ -15,9 +15,12 @@ export const Bar = ({
   event,
   minStartDate,
   position,
-  isHold,
+  temporaryVerticalPosition,
+  canMove,
+  isThrough,
   isOrigin,
   isDestination,
+  isGroupSelection,
   handleOnMouseDown,
   handleOnMouseUp,
   handleOnMouseLeave,
@@ -47,9 +50,12 @@ export const Bar = ({
       vw={vw}
       event={event}
       position={position}
-      isHold={isHold}
+      temporaryVerticalPosition={temporaryVerticalPosition}
+      canMove={canMove}
+      isThrough={isThrough}
       isOrigin={isOrigin}
       isDestination={isDestination}
+      isGroupSelection={isGroupSelection}
       startDurationInPixels={startDurationInPixels}
       durationInPixels={durationInPixels}
       handleOnMouseDown={handleOnMouseDown}
@@ -61,22 +67,35 @@ export const Bar = ({
   ) : (
     <g>
       <rect
-        className="cursor-pointer"
+        className={`cursor-pointer${isThrough ? ' pointer-events-none' : ''}`}
         x={Math.max(0, Math.min(vw - 25, position) - 25)}
-        y={startDurationInPixels}
+        y={temporaryVerticalPosition || startDurationInPixels}
         height={Math.max(durationInPixels, 24)}
         width={WIDTH}
         fill="#14213d"
-        stroke={isOrigin ? '#b7245c' : isDestination ? '#00a6fb' : '#14213d'}
-        strokeWidth={isHold ? 3 : 1}
+        stroke={
+          isOrigin
+            ? '#b7245c'
+            : isDestination
+            ? '#00a6fb'
+            : isGroupSelection
+            ? '#5FAD41'
+            : '#14213d'
+        }
+        strokeWidth={canMove ? 3 : 1}
         onMouseDown={handleOnMouseDown}
         onMouseUp={handleOnMouseUp}
         onMouseLeave={handleOnMouseLeave}
       />
       <text
-        className="select-none cursor-pointer"
+        className={`select-none cursor-pointer${
+          isThrough ? ' pointer-events-none' : ''
+        }`}
         x={Math.max(0, Math.min(vw - 25, position) - 25) + WIDTH / 2}
-        y={startDurationInPixels + Math.max(durationInPixels, 24) / 2}
+        y={
+          (temporaryVerticalPosition || startDurationInPixels) +
+          Math.max(durationInPixels, 24) / 2
+        }
         fill="#e5e5e5"
         textAnchor="middle"
         alignmentBaseline="middle"
@@ -95,9 +114,12 @@ export const WithReign = ({
   vw,
   event,
   position,
-  isHold,
+  temporaryVerticalPosition,
+  canMove,
+  isThrough,
   isOrigin,
   isDestination,
+  isGroupSelection,
   startDurationInPixels,
   durationInPixels,
   handleOnMouseDown,
@@ -126,36 +148,55 @@ export const WithReign = ({
   return (
     <g>
       <rect
-        className="cursor-pointer"
+        className={`cursor-pointer${isThrough ? ' pointer-events-none' : ''}`}
         x={Math.max(0, Math.min(vw - 25, position) - 25)}
-        y={startDurationInPixels}
+        y={temporaryVerticalPosition || startDurationInPixels}
         height={Math.max(reignStartDurationInPixels, 0)}
         width={WIDTH}
         fill="#ffffff"
-        stroke={isOrigin ? '#b7245c' : isDestination ? '#00a6fb' : '#fca311'}
-        strokeWidth={isHold ? 3 : 1}
+        stroke={
+          isOrigin
+            ? '#b7245c'
+            : isDestination
+            ? '#00a6fb'
+            : isGroupSelection
+            ? '#5FAD41'
+            : '#fca311'
+        }
+        strokeWidth={canMove ? 3 : 1}
         onMouseDown={handleOnMouseDown}
         onMouseUp={handleOnMouseUp}
         onMouseLeave={handleOnMouseLeave}
       />
       <rect
-        className="cursor-pointer"
+        className={`cursor-pointer${isThrough ? ' pointer-events-none' : ''}`}
         x={Math.max(0, Math.min(vw - 25, position) - 25)}
-        y={startDurationInPixels + reignStartDurationInPixels}
+        y={
+          (temporaryVerticalPosition || startDurationInPixels) +
+          reignStartDurationInPixels
+        }
         height={Math.max(reignDurationInPixels, 0)}
         width={WIDTH}
         fill="#fca311"
-        stroke={isOrigin ? '#b7245c' : isDestination ? '#00a6fb' : '#fca311'}
-        strokeWidth={isHold ? 3 : 1}
+        stroke={
+          isOrigin
+            ? '#b7245c'
+            : isDestination
+            ? '#00a6fb'
+            : isGroupSelection
+            ? '#5FAD41'
+            : '#fca311'
+        }
+        strokeWidth={canMove ? 3 : 1}
         onMouseDown={handleOnMouseDown}
         onMouseUp={handleOnMouseUp}
         onMouseLeave={handleOnMouseLeave}
       />
       <rect
-        className="cursor-pointer"
+        className={`cursor-pointer${isThrough ? ' pointer-events-none' : ''}`}
         x={Math.max(0, Math.min(vw - 25, position) - 25)}
         y={
-          startDurationInPixels +
+          (temporaryVerticalPosition || startDurationInPixels) +
           reignStartDurationInPixels +
           reignDurationInPixels
         }
@@ -169,16 +210,29 @@ export const WithReign = ({
         )}
         width={WIDTH}
         fill="#ffffff"
-        stroke={isOrigin ? '#b7245c' : isDestination ? '#00a6fb' : '#fca311'}
-        strokeWidth={isHold ? 3 : 1}
+        stroke={
+          isOrigin
+            ? '#b7245c'
+            : isDestination
+            ? '#00a6fb'
+            : isGroupSelection
+            ? '#5FAD41'
+            : '#fca311'
+        }
+        strokeWidth={canMove ? 3 : 1}
         onMouseDown={handleOnMouseDown}
         onMouseUp={handleOnMouseUp}
         onMouseLeave={handleOnMouseLeave}
       />
       <text
-        className="select-none cursor-pointer"
+        className={`select-none cursor-pointer${
+          isThrough ? ' pointer-events-none' : ''
+        }`}
         x={Math.max(0, Math.min(vw - 25, position) - 25) + WIDTH / 2}
-        y={startDurationInPixels + Math.max(durationInPixels, 24) / 2}
+        y={
+          (temporaryVerticalPosition || startDurationInPixels) +
+          Math.max(durationInPixels, 24) / 2
+        }
         textAnchor="middle"
         alignmentBaseline="middle"
         onMouseDown={handleOnMouseDown}
