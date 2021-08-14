@@ -356,6 +356,10 @@ export const App = () => {
   };
 
   const [groupSelection, setGroupSelection] = React.useState([]);
+  const handleClearGroupSelection = () => {
+    setGroupSelection([]);
+  };
+
   const handleSaveData = () => {
     localStorage.setItem('events', JSON.stringify(events));
     localStorage.setItem('positions', JSON.stringify(positions));
@@ -419,7 +423,14 @@ export const App = () => {
       )}
 
       <div className="fixed right-2 bottom-2">
-        <Add handleAddEvent={handleAddEvent} handleSaveData={handleSaveData} />
+        {groupSelection.length ? (
+          <button onClick={handleClearGroupSelection}>Clear grouping</button>
+        ) : (
+          <Add
+            handleAddEvent={handleAddEvent}
+            handleSaveData={handleSaveData}
+          />
+        )}
         <button onClick={handleAddLink}>Link</button>
       </div>
     </div>
