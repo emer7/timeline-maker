@@ -153,16 +153,6 @@ export const WithReign = ({
         height={Math.max(reignStartDurationInPixels, 0)}
         width={WIDTH}
         fill="#ffffff"
-        stroke={
-          isOrigin
-            ? '#b7245c'
-            : isDestination
-            ? '#00a6fb'
-            : isGroupSelection
-            ? '#5FAD41'
-            : '#fca311'
-        }
-        strokeWidth={canMove ? 3 : 1}
         onMouseDown={handleOnMouseDown}
         onMouseUp={handleOnMouseUp}
         onMouseLeave={handleOnMouseLeave}
@@ -177,16 +167,6 @@ export const WithReign = ({
         height={Math.max(reignDurationInPixels, 0)}
         width={WIDTH}
         fill="#fca311"
-        stroke={
-          isOrigin
-            ? '#b7245c'
-            : isDestination
-            ? '#00a6fb'
-            : isGroupSelection
-            ? '#5FAD41'
-            : '#fca311'
-        }
-        strokeWidth={canMove ? 3 : 1}
         onMouseDown={handleOnMouseDown}
         onMouseUp={handleOnMouseUp}
         onMouseLeave={handleOnMouseLeave}
@@ -209,16 +189,6 @@ export const WithReign = ({
         )}
         width={WIDTH}
         fill="#ffffff"
-        stroke={
-          isOrigin
-            ? '#b7245c'
-            : isDestination
-            ? '#00a6fb'
-            : isGroupSelection
-            ? '#5FAD41'
-            : '#fca311'
-        }
-        strokeWidth={canMove ? 3 : 1}
         onMouseDown={handleOnMouseDown}
         onMouseUp={handleOnMouseUp}
         onMouseLeave={handleOnMouseLeave}
@@ -240,6 +210,24 @@ export const WithReign = ({
       >
         {children}
       </text>
+      <rect
+        className={isThrough ? 'pointer-events-none' : ''}
+        x={Math.max(0, Math.min(vw - 25, position) - 25)}
+        y={temporaryVerticalPosition || startDurationInPixels}
+        height={Math.max(durationInPixels, 0)}
+        width={WIDTH}
+        fill="none"
+        stroke={
+          isOrigin
+            ? '#b7245c'
+            : isDestination
+            ? '#00a6fb'
+            : isGroupSelection
+            ? '#5FAD41'
+            : '#fca311'
+        }
+        strokeWidth={canMove ? 3 : 1}
+      />
     </g>
   );
 };
