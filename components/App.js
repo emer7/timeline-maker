@@ -300,7 +300,10 @@ export const App = () => {
               ? groupSelection.filter(
                   groupMemberIndex => groupMemberIndex !== index
                 )
-              : [...groupSelection, index]
+            : [...groupSelection, index].sort(
+                (eventAIndex, eventBIndex) =>
+                  positions[eventAIndex] - positions[eventBIndex]
+              )
           );
       } else {
         setClickedIndex(index);
