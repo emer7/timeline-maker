@@ -62,28 +62,28 @@ export const Events = ({
         temporaryVerticalPositions[
           groupSelection.findIndex(
             groupMemberIndex => groupMemberIndex === eventIndex
-    )
+          )
         ];
 
       const isThrough = isGroupSelection && canMove;
 
       return (
-      <Bar
-        key={JSON.stringify(events[eventIndex])}
-        yearInPixels={yearInPixels}
-        vw={vw}
-        event={events[eventIndex]}
-        minStartDate={minStartDate}
+        <Bar
+          key={JSON.stringify(events[eventIndex])}
+          yearInPixels={yearInPixels}
+          vw={vw}
+          event={events[eventIndex]}
+          minStartDate={minStartDate}
           position={position}
           temporaryVerticalPosition={temporaryVerticalPosition}
-          isHold={clickedIndex === eventIndex && isHold}
+          isHold={isThrough || (clickedIndex === eventIndex && isHold)}
           isThrough={isThrough}
-        isOrigin={origin === eventIndex}
-        isDestination={destination === eventIndex}
+          isOrigin={origin === eventIndex}
+          isDestination={destination === eventIndex}
           isGroupSelection={isGroupSelection}
-        handleOnMouseDown={() => handleOnMouseDownOnBar(eventIndex)}
-        handleOnMouseUp={e => handleOnMouseUp(e, eventIndex)}
-        handleOnMouseLeave={handleOnMouseLeave}
-      />
+          handleOnMouseDown={() => handleOnMouseDownOnBar(eventIndex)}
+          handleOnMouseUp={e => handleOnMouseUp(e, eventIndex)}
+          handleOnMouseLeave={handleOnMouseLeave}
+        />
       );
     });
