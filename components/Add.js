@@ -1,7 +1,12 @@
 import React from 'react';
 
 import { format } from 'date-fns';
-import { Add as AddIcon } from '@material-ui/icons';
+import {
+  Add as AddIcon,
+  People as PeopleIcon,
+  Event as EventIcon,
+  Subject as SubjectIcon,
+} from '@material-ui/icons';
 import { animated, useTransition, useSpring } from 'react-spring';
 
 import { HUMAN_FULL_DATE_FORMAT } from '../consts';
@@ -20,7 +25,7 @@ const convertEventDateToNumerical = event => ({
     ),
 });
 
-export const Add = ({ handleAddEvent, handleSaveData }) => {
+export const Add = ({ handleAddEvent }) => {
   const [isPopupOpen, setIsPopupOpen] = React.useState(false);
   const handleDrawerToggle = () => {
     setIsPopupOpen(!isPopupOpen);
@@ -86,7 +91,7 @@ export const Add = ({ handleAddEvent, handleSaveData }) => {
     }
   };
 
-  const handleOnClick = () => {
+  const handleOnClickAddButton = () => {
     const event = {
       ...Object.keys(dates)
         .filter(key => !!dates[key])
@@ -106,11 +111,14 @@ export const Add = ({ handleAddEvent, handleSaveData }) => {
         (styles, isShown) =>
           isShown && (
             <animated.div
-              className="absolute bottom-16 right-0 p-4 flex flex-col rounded-lg bg-white"
+              className="absolute bottom-16 right-0 p-4 flex flex-col space-y-2 rounded-lg bg-white shadow-lg"
               style={styles}
             >
-              <div className="flex">
+              <div className="flex space-x-1">
                 <input
+                  className={`py-2 px-3 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none rounded-lg ${
+                    startDate ? 'bg-gray-100' : ''
+                  }`}
                   onChange={handleStartDateChange}
                   onClick={
                     !startDate && !endDate
@@ -118,9 +126,12 @@ export const Add = ({ handleAddEvent, handleSaveData }) => {
                       : () => {}
                   }
                   value={startDate}
-                  placeholder={format(new Date(), HUMAN_FULL_DATE_FORMAT)}
+                  placeholder="Add start date"
                 />
                 <input
+                  className={`py-2 px-3 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none rounded-lg ${
+                    endDate ? 'bg-gray-100' : ''
+                  }`}
                   onChange={handleEndDateChange}
                   onClick={
                     !startDate && !endDate
@@ -128,30 +139,60 @@ export const Add = ({ handleAddEvent, handleSaveData }) => {
                       : () => {}
                   }
                   value={endDate}
-                  placeholder={format(new Date(), HUMAN_FULL_DATE_FORMAT)}
+                  placeholder="Add end date"
                 />
               </div>
               {type === 'people' && (
-                <div className="flex">
+                <div className="flex space-x-1">
                   <input
+                    className={`py-2 px-3 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none rounded-lg ${
+                      reignStartDate || '' ? 'bg-gray-100' : ''
+                    }`}
                     onChange={handleReignStartDateChange}
                     value={reignStartDate || ''}
+                    placeholder="Add reign start date"
                   />
                   <input
+                    className={`py-2 px-3 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none rounded-lg ${
+                      reignEndDate || '' ? 'bg-gray-100' : ''
+                    }`}
                     onChange={handleReignEndDateChange}
                     value={reignEndDate || ''}
+                    placeholder="Add reign end date"
                   />
                 </div>
               )}
-              <input onChange={handleDescriptionChange} value={description} />
 
-              <select onChange={handleTypeChange} value={type}>
-                <option value="event">Event</option>
-                <option value="people">People</option>
-              </select>
+              <div className="flex items-center space-x-2">
+                <SubjectIcon />
+                <input
+                  className={`py-2 px-3 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none rounded-lg w-full ${
+                    description ? 'bg-gray-100' : ''
+                  }`}
+                  onChange={handleDescriptionChange}
+                  value={description}
+                  placeholder="Add a description"
+                />
+              </div>
 
-              <button onClick={handleOnClick}>Add</button>
-              <button onClick={handleSaveData}>Save Data</button>
+              <div className="flex items-center space-x-2">
+                {type === 'event' ? <EventIcon /> : <PeopleIcon />}
+                <select
+                  className="p-2 rounded-lg hover:bg-gray-100 focus:outline-none cursor-pointer w-full"
+                  onChange={handleTypeChange}
+                  value={type}
+                >
+                  <option value="event">Event</option>
+                  <option value="people">People</option>
+                </select>
+              </div>
+
+              <button
+                className="py-1 w-full text-white bg-blue-400 rounded-lg"
+                onClick={handleOnClickAddButton}
+              >
+                Add
+              </button>
             </animated.div>
           )
       )}

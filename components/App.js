@@ -1,5 +1,6 @@
 import React from 'react';
 import { isAfter, isBefore, max, min, format } from 'date-fns';
+import { Clear as ClearIcon } from '@material-ui/icons';
 
 import {
   parseNumericalFullDate,
@@ -508,15 +509,35 @@ export const App = () => {
       )}
 
       <div className="fixed right-2 bottom-2">
-        {groupSelection.length ? (
-          <button onClick={handleClearGroupSelection}>Clear grouping</button>
-        ) : (
-          <Add
-            handleAddEvent={handleAddEvent}
-            handleSaveData={handleSaveData}
-          />
-        )}
-        <button onClick={handleAddLink}>Link</button>
+        <div className="flex space-x-2">
+          {groupSelection.length ? (
+            <div
+              className="w-24 h-12 flex items-center justify-center rounded-full cursor-pointer text-white bg-green-400"
+              onClick={handleClearGroupSelection}
+            >
+              Clear
+            </div>
+          ) : (
+            <>
+              {origin !== -1 && destination !== -1 && (
+                <div
+                  className="w-24 h-12 flex items-center justify-center rounded-full cursor-pointer text-white bg-red-400"
+                  onClick={handleAddLink}
+                >
+                  Link
+                </div>
+              )}
+
+              <div
+                className="w-24 h-12 flex items-center justify-center rounded-full cursor-pointer text-white bg-blue-400"
+                onClick={handleSaveData}
+              >
+                Save
+              </div>
+              <Add handleAddEvent={handleAddEvent} />
+            </>
+          )}
+        </div>
       </div>
     </div>
   );
