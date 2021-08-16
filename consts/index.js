@@ -1,3 +1,5 @@
+import colors from 'tailwindcss/colors';
+
 export const NUMERICAL_FULL_DATE_FORMAT = 'd/M/yyyy';
 export const HUMAN_FULL_DATE_FORMAT = 'd MMMM yyyy';
 
@@ -16,3 +18,29 @@ export const SAMPLE_EVENT = {
   description: 'Charlemagne',
   type: 'people',
 };
+
+export const COLORS_NAME = [
+  'black',
+  'white',
+  'coolGray',
+  'red',
+  'amber',
+  'emerald',
+  'blue',
+];
+
+export const PALETTE = Object.keys(colors)
+  .filter(colorsKey => COLORS_NAME.includes(colorsKey))
+  .sort(
+    (colorsKeyA, colorsKeyB) =>
+      COLORS_NAME.findIndex(colorsK => colorsK === colorsKeyA) -
+      COLORS_NAME.findIndex(colorsK => colorsK === colorsKeyB)
+  )
+  .flatMap(colorsKey => {
+    const colorsValue = colors[colorsKey];
+    return typeof colorsValue === 'string'
+      ? colorsValue
+      : Object.keys(colorsValue)
+          .filter(colorKey => ['300', '400', '500'].includes(colorKey))
+          .map(colorKey => colorsValue[colorKey]);
+  });
