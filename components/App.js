@@ -290,7 +290,7 @@ export const App = () => {
       }
     } else {
       // Cannot index === undefined because popup doesn't have index
-      if (e.target.nodeName === 'svg') {
+      if (e.target.id === 'main-svg') {
         setIsPopup(false);
       }
 
@@ -457,6 +457,7 @@ export const App = () => {
   return (
     <div>
       <svg
+        id="main-svg"
         className="fixed"
         width={vw}
         height={vh}
