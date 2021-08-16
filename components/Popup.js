@@ -30,6 +30,22 @@ export const Popup = ({
   const handleEditPopupEvent = (e, key) => {
     setPopupEvent({ ...popupEvent, [key]: e.target.value });
   };
+  const handleDescriptionChange = e => {
+    handleEditPopupEvent(e, 'description');
+  };
+  const handleStartDateChange = e => {
+    handleEditPopupEvent(e, 'startDate');
+  };
+  const handleEndDateChange = e => {
+    handleEditPopupEvent(e, 'endDate');
+  };
+  const handleReignStartDateChange = e => {
+    handleEditPopupEvent(e, 'reignStartDate');
+  };
+  const handleReignEndDateChange = e => {
+    handleEditPopupEvent(e, 'reignEndDate');
+  };
+
   const handleSaveEvent = () => {
     handleEditEvent(popupEvent);
     setIsEdit(false);
@@ -103,7 +119,7 @@ export const Popup = ({
             isEdit ? 'bg-gray-100' : 'bg-white'
           }`}
           value={description}
-          onChange={e => handleEditPopupEvent(e, 'description')}
+          onChange={handleDescriptionChange}
           disabled={!isEdit}
         />
 
@@ -115,7 +131,7 @@ export const Popup = ({
                 isEdit ? 'bg-gray-100' : 'bg-white'
               }`}
               value={convertToHumanDate(startDate)}
-              onChange={e => handleEditPopupEvent(e, 'startDate')}
+              onChange={handleStartDateChange}
               disabled={!isEdit}
             />
           </div>
@@ -128,7 +144,7 @@ export const Popup = ({
                   isEdit ? 'bg-gray-100' : 'bg-white'
                 }`}
                 value={convertToHumanDate(endDate)}
-                onChange={e => handleEditPopupEvent(e, 'endDate')}
+                onChange={handleEndDateChange}
                 disabled={!isEdit}
               />
             </div>
@@ -145,7 +161,7 @@ export const Popup = ({
                     isEdit ? 'bg-gray-100' : 'bg-white'
                   }`}
                   value={convertToHumanDate(reignStartDate)}
-                  onChange={e => handleEditPopupEvent(e, 'reignStartDate')}
+                  onChange={handleReignStartDateChange}
                   disabled={!isEdit}
                 />
               </div>
@@ -159,7 +175,7 @@ export const Popup = ({
                     isEdit ? 'bg-gray-100' : 'bg-white'
                   }`}
                   value={convertToHumanDate(reignEndDate)}
-                  onChange={e => handleEditPopupEvent(e, 'reignEndDate')}
+                  onChange={handleReignEndDateChange}
                   disabled={!isEdit}
                 />
               </div>
