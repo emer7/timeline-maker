@@ -24,8 +24,14 @@ export const Bar = ({
   handleOnMouseUp,
   handleOnMouseLeave,
 }) => {
-  const { startDate, endDate, description, reignStartDate, reignEndDate } =
-    event;
+  const {
+    startDate,
+    endDate,
+    description,
+    reignStartDate,
+    reignEndDate,
+    color,
+  } = event;
 
   const parsedMinStartDate = parseNumericalFullDate(minStartDate);
   const parsedStartDate = parseMultipleFormat(startDate);
@@ -71,7 +77,7 @@ export const Bar = ({
         y={temporaryVerticalPosition || startDurationInPixels}
         height={Math.max(durationInPixels, 24)}
         width={WIDTH}
-        fill="#14213d"
+        fill={color ? color : '#14213d'}
         stroke={
           isOrigin
             ? '#b7245c'
@@ -126,7 +132,7 @@ export const WithReign = ({
   handleOnMouseLeave,
   children,
 }) => {
-  const { reignStartDate, reignEndDate, startDate } = event;
+  const { reignStartDate, reignEndDate, startDate, color } = event;
 
   const parsedReignStartDate = parseMultipleFormat(reignStartDate);
   const parsedReignEndDate = parseMultipleFormat(reignEndDate);
@@ -166,7 +172,7 @@ export const WithReign = ({
         }
         height={Math.max(reignDurationInPixels, 0)}
         width={WIDTH}
-        fill="#fca311"
+        fill={color ? color : '#fca311'}
         onMouseDown={handleOnMouseDown}
         onMouseUp={handleOnMouseUp}
         onMouseLeave={handleOnMouseLeave}
