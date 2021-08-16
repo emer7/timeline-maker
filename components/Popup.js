@@ -1,8 +1,8 @@
 import React from 'react';
 import {
-  Delete as DeleteIcon,
-  Edit as EditIcon,
-  Save as SaveIcon,
+  DeleteOutlined as DeleteIcon,
+  EditOutlined as EditIcon,
+  SaveOutlined as SaveIcon,
 } from '@material-ui/icons';
 
 import {
@@ -64,99 +64,105 @@ export const Popup = ({
 
   return (
     <div
-      className="relative inline-block p-2 rounded-r-lg shadow bg-white"
-      style={{ top: top - scrollTop, left: Math.max(WIDTH, left + WIDTH / 2) }}
+      className="relative inline-block rounded-lg bg-white shadow-lg overflow-hidden"
+      style={{
+        top: top - scrollTop,
+        left: Math.max(WIDTH, left + WIDTH / 2) + 16,
+      }}
     >
-      <DeleteIcon
-        className="float-right cursor-pointer"
-        onClick={handleDeleteEvent}
-      />
-      <EditIcon
-        className="float-right cursor-pointer"
-        onClick={handleToggleEdit}
-      />
-      {isEdit ? (
-        <>
-          <SaveIcon
-            className="float-right cursor-pointer"
+      <div className="flex justify-end bg-gray-700 p-2">
+        {isEdit && (
+          <div
+            className="w-8 h-8 flex items-center justify-center rounded-full cursor-pointer hover:bg-gray-600"
             onClick={handleSaveEvent}
-          />
-          <input
-            className="block clear-right"
-            value={description}
-            onChange={e => handleEditPopupEvent(e, 'description')}
-          />
-          <div>
-            Start date:{' '}
+          >
+            <SaveIcon className="cursor-pointer text-gray-200" />
+          </div>
+        )}
+        <div
+          className="w-8 h-8 flex items-center justify-center rounded-full cursor-pointer hover:bg-gray-600"
+          onClick={handleToggleEdit}
+        >
+          <EditIcon className="cursor-pointer text-gray-200" />
+        </div>
+        <div
+          className="w-8 h-8 flex items-center justify-center rounded-full cursor-pointer hover:bg-gray-600"
+          onClick={handleDeleteEvent}
+        >
+          <DeleteIcon className="cursor-pointer text-gray-200" />
+        </div>
+      </div>
+
+      <div className="flex flex-col space-y-1 p-2">
+        <input
+          className={`py-2 px-3 focus:outline-none rounded-lg font-bold ${
+            isEdit ? 'bg-gray-100' : 'bg-white'
+          }`}
+          value={description}
+          onChange={e => handleEditPopupEvent(e, 'description')}
+          disabled={!isEdit}
+        />
+
+        <div className="flex space-x-2">
+          <div className="flex flex-col">
+            <div className="pl-3 font-medium">Start date</div>
             <input
-              className="block clear-right"
-              value={startDate}
+              className={`py-2 px-3 focus:outline-none rounded-lg ${
+                isEdit ? 'bg-gray-100' : 'bg-white'
+              }`}
+              value={convertToHumanDate(startDate)}
               onChange={e => handleEditPopupEvent(e, 'startDate')}
+              disabled={!isEdit}
             />
           </div>
+
           {endDate && (
-            <div>
-              End date:{' '}
+            <div className="flex flex-col">
+              <div className="pl-3 font-medium">End date</div>
               <input
-                className="block clear-right"
-                value={endDate}
+                className={`py-2 px-3 focus:outline-none rounded-lg ${
+                  isEdit ? 'bg-gray-100' : 'bg-white'
+                }`}
+                value={convertToHumanDate(endDate)}
                 onChange={e => handleEditPopupEvent(e, 'endDate')}
+                disabled={!isEdit}
               />
             </div>
           )}
-          {reignStartDate && (
-            <div>
-              Reign start date:{' '}
-              <input
-                className="block clear-right"
-                value={reignStartDate}
-                onChange={e => handleEditPopupEvent(e, 'reignStartDate')}
-              />
-            </div>
-          )}
-          {reignEndDate && (
-            <div>
-              Reign end date:{' '}
-              <input
-                className="block clear-right"
-                value={reignEndDate}
-                onChange={e => handleEditPopupEvent(e, 'reignEndDate')}
-              />
-            </div>
-          )}
-        </>
-      ) : (
-        <>
-          <div className="mb-2 font-bold clear-right">{description}</div>
-          <div>
-            Start date: <br />
-            {convertToHumanDate(startDate)}
+        </div>
+
+        {(reignStartDate || reignEndDate) && (
+          <div className="flex space-x-2">
+            {reignStartDate && (
+              <div className="flex flex-col">
+                <div className="pl-3 font-medium">Reign start date</div>
+                <input
+                  className={`py-2 px-3 focus:outline-none rounded-lg ${
+                    isEdit ? 'bg-gray-100' : 'bg-white'
+                  }`}
+                  value={convertToHumanDate(reignStartDate)}
+                  onChange={e => handleEditPopupEvent(e, 'reignStartDate')}
+                  disabled={!isEdit}
+                />
+              </div>
+            )}
+
+            {reignEndDate && (
+              <div className="flex flex-col">
+                <div className="pl-3 font-medium">Reign end date</div>
+                <input
+                  className={`py-2 px-3 focus:outline-none rounded-lg ${
+                    isEdit ? 'bg-gray-100' : 'bg-white'
+                  }`}
+                  value={convertToHumanDate(reignEndDate)}
+                  onChange={e => handleEditPopupEvent(e, 'reignEndDate')}
+                  disabled={!isEdit}
+                />
+              </div>
+            )}
           </div>
-          {endDate && (
-            <div>
-              End date: <br />
-              {convertToHumanDate(endDate)}
-            </div>
-          )}
-          {reignStartDate && (
-            <div>
-              Reign start date: <br />
-              {convertToHumanDate(reignStartDate)}
-            </div>
-          )}
-          {reignEndDate && (
-            <div>
-              Reign end date: <br />
-              {convertToHumanDate(reignEndDate)}
-            </div>
-          )}
-          {children && (
-            <button onClick={handleToggleChildrenVisibility}>
-              toggle children
-            </button>
-          )}
-        </>
-      )}
+        )}
+      </div>
     </div>
   );
 };
