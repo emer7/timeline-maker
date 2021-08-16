@@ -47,6 +47,7 @@ export const Popup = ({
     reignStartDate,
     reignEndDate,
     children,
+    color,
   } = popupEvent;
 
   const parsedMinStartDate = parseNumericalFullDate(minStartDate);
@@ -70,7 +71,10 @@ export const Popup = ({
         left: Math.max(WIDTH, left + WIDTH / 2) + 16,
       }}
     >
-      <div className="flex justify-end bg-gray-700 p-2">
+      <div
+        className="flex justify-end p-2"
+        style={{ backgroundColor: color || 'gray' }}
+      >
         {isEdit && (
           <div
             className="w-8 h-8 flex items-center justify-center rounded-full cursor-pointer hover:bg-gray-600"
