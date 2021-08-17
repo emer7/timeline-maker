@@ -330,14 +330,16 @@ export const App = () => {
     const { clientX, clientY } = e;
 
     if (canMove) {
-      const steppedX = Math.floor(clientX / 10) * 10;
+      const steppedX = Math.floor((scrollLeft + clientX) / 10) * 10;
 
       // can omit && groupSelection.includes(index), see handleOnMouseDownOnBar
       if (isShiftPressed) {
         setTemporaryHorizontalPosition(
           groupSelection.map(
             (_, groupMemberIndex) =>
-              clientX - (groupSelection.length - 1 - groupMemberIndex) * 10
+              scrollLeft +
+              clientX -
+              (groupSelection.length - 1 - groupMemberIndex) * 10
           )
         );
 

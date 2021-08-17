@@ -73,7 +73,7 @@ export const Bar = ({
     <g>
       <rect
         className={`cursor-pointer${isThrough ? ' pointer-events-none' : ''}`}
-        x={Math.max(0, Math.min(vw - 25, position) - 25)}
+        x={position - 25}
         y={temporaryVerticalPosition || startDurationInPixels}
         height={Math.max(durationInPixels, 24)}
         width={WIDTH}
@@ -98,7 +98,7 @@ export const Bar = ({
         className={`select-none cursor-pointer${
           isThrough ? ' pointer-events-none' : ''
         }`}
-        x={Math.max(0, Math.min(vw - 25, position) - 25) + WIDTH / 2}
+        x={position - 25 + WIDTH / 2}
         y={
           (temporaryVerticalPosition || startDurationInPixels) +
           Math.max(durationInPixels, 24) / 2
@@ -155,7 +155,7 @@ export const WithReign = ({
     <g>
       <rect
         className={`cursor-pointer${isThrough ? ' pointer-events-none' : ''}`}
-        x={Math.max(0, Math.min(vw - 25, position) - 25)}
+        x={position - 25}
         y={temporaryVerticalPosition || startDurationInPixels}
         height={Math.max(reignStartDurationInPixels, 0)}
         width={WIDTH}
@@ -166,7 +166,7 @@ export const WithReign = ({
       />
       <rect
         className={`cursor-pointer${isThrough ? ' pointer-events-none' : ''}`}
-        x={Math.max(0, Math.min(vw - 25, position) - 25)}
+        x={position - 25}
         y={
           (temporaryVerticalPosition || startDurationInPixels) +
           reignStartDurationInPixels
@@ -180,7 +180,7 @@ export const WithReign = ({
       />
       <rect
         className={`cursor-pointer${isThrough ? ' pointer-events-none' : ''}`}
-        x={Math.max(0, Math.min(vw - 25, position) - 25)}
+        x={position - 25}
         y={
           (temporaryVerticalPosition || startDurationInPixels) +
           reignStartDurationInPixels +
@@ -204,7 +204,7 @@ export const WithReign = ({
         className={`select-none cursor-pointer${
           isThrough ? ' pointer-events-none' : ''
         }`}
-        x={Math.max(0, Math.min(vw - 25, position) - 25) + WIDTH / 2}
+        x={position - 25 + WIDTH / 2}
         y={
           (temporaryVerticalPosition || startDurationInPixels) +
           Math.max(durationInPixels, 24) / 2
@@ -219,7 +219,7 @@ export const WithReign = ({
       </text>
       <rect
         className={isThrough ? 'pointer-events-none' : ''}
-        x={Math.max(0, Math.min(vw - 25, position) - 25)}
+        x={position - 25}
         y={temporaryVerticalPosition || startDurationInPixels}
         height={Math.max(durationInPixels, 0)}
         width={WIDTH}
