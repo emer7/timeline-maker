@@ -55,6 +55,11 @@ export const Popup = ({
     handleEditEvent(editedPopupEvent);
   };
 
+  const handleToggleChildrenVisibility = e => {
+    e.stopPropagation();
+    handleChildrenVisibility(children);
+  };
+
   const handleOnClickDelete = e => {
     e.stopPropagation();
     handleDeleteEvent();
@@ -91,11 +96,6 @@ export const Popup = ({
     parsedStartDate,
     yearInPixels
   );
-
-  const handleToggleChildrenVisibility = e => {
-    e.stopPropagation();
-    handleChildrenVisibility(children);
-  };
 
   const [isColorPicker, setIsColorPicker] = React.useState(false);
   const handleToggleColorPicker = e => {
@@ -137,9 +137,6 @@ export const Popup = ({
           >
             <EditIcon className="cursor-pointer text-white" />
           </div>
-          <div className="w-8 h-8 flex items-center justify-center rounded-full cursor-pointer hover:bg-gray-600">
-            <PaletteIcon className="cursor-pointer text-white" />
-          </div>
           <div
             className="w-8 h-8 flex items-center justify-center rounded-full cursor-pointer hover:bg-gray-600"
             onClick={handleOnClickDelete}
@@ -154,6 +151,9 @@ export const Popup = ({
               />
             </div>
           )}
+          <div className="w-8 h-8 flex items-center justify-center rounded-full cursor-pointer hover:bg-gray-600">
+            <PaletteIcon className="cursor-pointer text-white" />
+          </div>
         </div>
 
         <div className="flex flex-col space-y-1 p-2">
