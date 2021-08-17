@@ -3,6 +3,7 @@ import {
   DeleteOutlined as DeleteIcon,
   EditOutlined as EditIcon,
   SaveOutlined as SaveIcon,
+  Palette as PaletteIcon,
 } from '@material-ui/icons';
 
 import {
@@ -11,7 +12,9 @@ import {
   parseMultipleFormat,
   parseNumericalFullDate,
 } from '../utils';
-import { WIDTH } from '../consts';
+import { WIDTH, PALETTE } from '../consts';
+
+import { ColorPicker } from './ColorPicker';
 
 export const Popup = ({
   scrollTop,
@@ -45,14 +48,26 @@ export const Popup = ({
   const handleReignEndDateChange = e => {
     handleEditPopupEvent(e, 'reignEndDate');
   };
+  const handleOnColorChange = newColor => {
+    const editedPopupEvent = { ...popupEvent, color: newColor.hex };
 
-  const handleSaveEvent = () => {
+    handleEditEvent(editedPopupEvent);
+  };
+
+  const handleOnClickDelete = e => {
+    e.stopPropagation();
+    handleDeleteEvent();
+  };
+
+  const handleSaveEvent = e => {
+    e.stopPropagation();
     handleEditEvent(popupEvent);
     setIsEdit(false);
   };
 
   const [isEdit, setIsEdit] = React.useState(false);
-  const handleToggleEdit = () => {
+  const handleToggleEdit = e => {
+    e.stopPropagation();
     setIsEdit(!isEdit);
   };
 
@@ -64,6 +79,7 @@ export const Popup = ({
     reignEndDate,
     children,
     color,
+    type,
   } = popupEvent;
 
   const parsedMinStartDate = parseNumericalFullDate(minStartDate);
@@ -79,109 +95,127 @@ export const Popup = ({
     handleChildrenVisibility(children);
   };
 
+  const [isColorPicker, setIsColorPicker] = React.useState(false);
+  const handleToggleColorPicker = e => {
+    setIsColorPicker(!isColorPicker);
+  };
+
   return (
     <div
-      className="relative inline-block rounded-lg bg-white shadow-lg overflow-hidden"
+      className="relative inline-flex flex-col space-y-4"
       style={{
         top: top - scrollTop,
         left: Math.max(WIDTH, left + WIDTH / 2) + 16,
       }}
     >
-      <div
-        className="flex justify-end p-2"
-        style={{ backgroundColor: color || 'gray' }}
-      >
-        {isEdit && (
+      {isColorPicker && (
+        <ColorPicker color={color} onChangeComplete={handleOnColorChange} />
+      )}
+
+      <div className="inline-block rounded-lg bg-white shadow-lg overflow-hidden">
+        <div
+          className="flex justify-end p-2 cursor-pointer"
+          style={{
+            backgroundColor:
+              color || (type === 'event' ? PALETTE[4] : PALETTE[10]),
+          }}
+          onClick={handleToggleColorPicker}
+        >
+          {isEdit && (
+            <div
+              className="w-8 h-8 flex items-center justify-center rounded-full cursor-pointer hover:bg-gray-600"
+              onClick={handleSaveEvent}
+            >
+              <SaveIcon className="cursor-pointer text-white" />
+            </div>
+          )}
           <div
             className="w-8 h-8 flex items-center justify-center rounded-full cursor-pointer hover:bg-gray-600"
-            onClick={handleSaveEvent}
+            onClick={handleToggleEdit}
           >
-            <SaveIcon className="cursor-pointer text-gray-200" />
+            <EditIcon className="cursor-pointer text-white" />
           </div>
-        )}
-        <div
-          className="w-8 h-8 flex items-center justify-center rounded-full cursor-pointer hover:bg-gray-600"
-          onClick={handleToggleEdit}
-        >
-          <EditIcon className="cursor-pointer text-gray-200" />
-        </div>
-        <div
-          className="w-8 h-8 flex items-center justify-center rounded-full cursor-pointer hover:bg-gray-600"
-          onClick={handleDeleteEvent}
-        >
-          <DeleteIcon className="cursor-pointer text-gray-200" />
-        </div>
-      </div>
-
-      <div className="flex flex-col space-y-1 p-2">
-        <input
-          className={`py-2 px-3 focus:outline-none rounded-lg font-bold ${
-            isEdit ? 'bg-gray-100' : 'bg-white'
-          }`}
-          value={description}
-          onChange={handleDescriptionChange}
-          disabled={!isEdit}
-        />
-
-        <div className="flex space-x-2">
-          <div className="flex flex-col">
-            <div className="pl-3 font-medium">Start date</div>
-            <input
-              className={`py-2 px-3 focus:outline-none rounded-lg ${
-                isEdit ? 'bg-gray-100' : 'bg-white'
-              }`}
-              value={convertToHumanDate(startDate)}
-              onChange={handleStartDateChange}
-              disabled={!isEdit}
-            />
+          <div className="w-8 h-8 flex items-center justify-center rounded-full cursor-pointer hover:bg-gray-600">
+            <PaletteIcon className="cursor-pointer text-white" />
           </div>
+          <div
+            className="w-8 h-8 flex items-center justify-center rounded-full cursor-pointer hover:bg-gray-600"
+            onClick={handleOnClickDelete}
+          >
+            <DeleteIcon className="cursor-pointer text-white" />
+          </div>
+        </div>
 
-          {endDate && (
+        <div className="flex flex-col space-y-1 p-2">
+          <input
+            className={`py-2 px-3 focus:outline-none rounded-lg font-bold ${
+              isEdit ? 'bg-gray-100' : 'bg-white'
+            }`}
+            value={description}
+            onChange={handleDescriptionChange}
+            disabled={!isEdit}
+          />
+
+          <div className="flex space-x-2">
             <div className="flex flex-col">
-              <div className="pl-3 font-medium">End date</div>
+              <div className="pl-3 font-medium">Start date</div>
               <input
                 className={`py-2 px-3 focus:outline-none rounded-lg ${
                   isEdit ? 'bg-gray-100' : 'bg-white'
                 }`}
-                value={convertToHumanDate(endDate)}
-                onChange={handleEndDateChange}
+                value={convertToHumanDate(startDate)}
+                onChange={handleStartDateChange}
                 disabled={!isEdit}
               />
             </div>
-          )}
-        </div>
 
-        {(reignStartDate || reignEndDate) && (
-          <div className="flex space-x-2">
-            {reignStartDate && (
+            {endDate && (
               <div className="flex flex-col">
-                <div className="pl-3 font-medium">Reign start date</div>
+                <div className="pl-3 font-medium">End date</div>
                 <input
                   className={`py-2 px-3 focus:outline-none rounded-lg ${
                     isEdit ? 'bg-gray-100' : 'bg-white'
                   }`}
-                  value={convertToHumanDate(reignStartDate)}
-                  onChange={handleReignStartDateChange}
-                  disabled={!isEdit}
-                />
-              </div>
-            )}
-
-            {reignEndDate && (
-              <div className="flex flex-col">
-                <div className="pl-3 font-medium">Reign end date</div>
-                <input
-                  className={`py-2 px-3 focus:outline-none rounded-lg ${
-                    isEdit ? 'bg-gray-100' : 'bg-white'
-                  }`}
-                  value={convertToHumanDate(reignEndDate)}
-                  onChange={handleReignEndDateChange}
+                  value={convertToHumanDate(endDate)}
+                  onChange={handleEndDateChange}
                   disabled={!isEdit}
                 />
               </div>
             )}
           </div>
-        )}
+
+          {(reignStartDate || reignEndDate) && (
+            <div className="flex space-x-2">
+              {reignStartDate && (
+                <div className="flex flex-col">
+                  <div className="pl-3 font-medium">Reign start date</div>
+                  <input
+                    className={`py-2 px-3 focus:outline-none rounded-lg ${
+                      isEdit ? 'bg-gray-100' : 'bg-white'
+                    }`}
+                    value={convertToHumanDate(reignStartDate)}
+                    onChange={handleReignStartDateChange}
+                    disabled={!isEdit}
+                  />
+                </div>
+              )}
+
+              {reignEndDate && (
+                <div className="flex flex-col">
+                  <div className="pl-3 font-medium">Reign end date</div>
+                  <input
+                    className={`py-2 px-3 focus:outline-none rounded-lg ${
+                      isEdit ? 'bg-gray-100' : 'bg-white'
+                    }`}
+                    value={convertToHumanDate(reignEndDate)}
+                    onChange={handleReignEndDateChange}
+                    disabled={!isEdit}
+                  />
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
