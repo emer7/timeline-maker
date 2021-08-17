@@ -3,7 +3,8 @@ import {
   DeleteOutlined as DeleteIcon,
   EditOutlined as EditIcon,
   SaveOutlined as SaveIcon,
-  Palette as PaletteIcon,
+  PaletteOutlined as PaletteIcon,
+  AccountTreeOutlined as GroupIcon,
 } from '@material-ui/icons';
 
 import {
@@ -91,7 +92,8 @@ export const Popup = ({
     yearInPixels
   );
 
-  const handleToggleChildrenVisibility = () => {
+  const handleToggleChildrenVisibility = e => {
+    e.stopPropagation();
     handleChildrenVisibility(children);
   };
 
@@ -144,6 +146,14 @@ export const Popup = ({
           >
             <DeleteIcon className="cursor-pointer text-white" />
           </div>
+          {children && (
+            <div className="w-8 h-8 flex items-center justify-center rounded-full cursor-pointer hover:bg-gray-600">
+              <GroupIcon
+                className="cursor-pointer text-white"
+                onClick={handleToggleChildrenVisibility}
+              />
+            </div>
+          )}
         </div>
 
         <div className="flex flex-col space-y-1 p-2">
