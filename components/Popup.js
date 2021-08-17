@@ -32,7 +32,10 @@ export const Popup = ({
     setPopupEvent(selectedEvent);
   }, [selectedEvent]);
   const handleEditPopupEvent = (e, key) => {
-    setPopupEvent({ ...popupEvent, [key]: e.target.value });
+    const { value } = e.target;
+    const trimmedValue = value.trim();
+
+    setPopupEvent({ ...popupEvent, [key]: trimmedValue });
   };
   const handleDescriptionChange = e => {
     handleEditPopupEvent(e, 'description');

@@ -49,10 +49,16 @@ export const Add = ({ handleAddEvent }) => {
     endDate: '',
   });
   const handleStartDateChange = e => {
-    setDates({ ...dates, startDate: e.target.value, endDate: e.target.value });
+    const { value } = e.target;
+    const trimmedValue = value.trim();
+
+    setDates({ ...dates, startDate: trimmedValue, endDate: trimmedValue });
   };
   const handleEndDateChange = e => {
-    setDates({ ...dates, endDate: e.target.value });
+    const { value } = e.target;
+    const trimmedValue = value.trim();
+
+    setDates({ ...dates, endDate: trimmedValue });
   };
   const handleSetPlaceholderAsValue = () => {
     setDates({
@@ -64,28 +70,33 @@ export const Add = ({ handleAddEvent }) => {
 
   const handleReignStartDateChange = e => {
     const { value } = e.target;
+    const trimmedValue = value.trim();
 
     setDates({
       ...dates,
-      reignStartDate: value,
-      reignEndDate: value,
+      reignStartDate: trimmedValue,
+      reignEndDate: trimmedValue,
     });
 
-    value ? setColor(PALETTE[10]) : setColor(PALETTE[16]);
+    trimmedValue ? setColor(PALETTE[10]) : setColor(PALETTE[16]);
   };
   const handleReignEndDateChange = e => {
     const { value } = e.target;
+    const trimmedValue = value.trim();
 
-    setDates({ ...dates, reignEndDate: value });
+    setDates({ ...dates, reignEndDate: trimmedValue });
 
-    value
+    trimmedValue
       ? setColor(PALETTE[10])
       : !dates.reignStartDate && setColor(PALETTE[16]);
   };
 
   const [description, setDescription] = React.useState('');
   const handleDescriptionChange = e => {
-    setDescription(e.target.value);
+    const { value } = e.target;
+    const trimmedValue = value.trim();
+
+    setDescription(trimmedValue);
   };
 
   const [type, setType] = React.useState('people');
