@@ -19,6 +19,7 @@ import { ColorPicker } from './ColorPicker';
 
 export const Popup = ({
   scrollTop,
+  scrollLeft,
   yearInPixels,
   minStartDate,
   selectedEvent,
@@ -111,7 +112,7 @@ export const Popup = ({
       className="relative inline-flex flex-col space-y-4"
       style={{
         top: top - scrollTop,
-        left: Math.max(WIDTH, left + WIDTH / 2) + 16,
+        left:  left + WIDTH / 2 + 16 - scrollLeft,
       }}
     >
       {isColorPicker && (

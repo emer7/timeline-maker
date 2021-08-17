@@ -74,8 +74,8 @@ export const App = () => {
     }
   };
 
-  const [scrollLeft, setScrollLeft] = React.useState(0);
   const [scrollTop, setScrollTop] = React.useState(0);
+  const [scrollLeft, setScrollLeft] = React.useState(0);
   const [yearInPixels, setYearInPixels] = React.useState(6);
   const handleOnWheelDocument = e => {
     const { deltaY, deltaX } = e;
@@ -502,6 +502,7 @@ export const App = () => {
       {isPopup && (
         <Popup
           scrollTop={scrollTop}
+          scrollLeft={scrollLeft}
           yearInPixels={yearInPixels}
           minStartDate={minStartDate}
           selectedEvent={events[clickedIndex] || {}}
