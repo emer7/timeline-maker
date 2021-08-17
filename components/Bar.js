@@ -85,7 +85,9 @@ export const Bar = ({
             ? '#00a6fb'
             : isGroupSelection
             ? '#5FAD41'
-            : '#14213d'
+            : color
+            ? color
+            : PALETTE[4]
         }
         strokeWidth={canMove ? 3 : 1}
         onMouseDown={handleOnMouseDown}
@@ -230,7 +232,9 @@ export const WithReign = ({
             ? '#00a6fb'
             : isGroupSelection
             ? '#5FAD41'
-            : '#fca311'
+            : color
+            ? color
+            : PALETTE[10]
         }
         strokeWidth={canMove ? 3 : 1}
       />
