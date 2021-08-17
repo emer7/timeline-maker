@@ -74,26 +74,29 @@ export const App = () => {
     }
   };
 
+  const [scrollLeft, setScrollLeft] = React.useState(0);
   const [scrollTop, setScrollTop] = React.useState(0);
   const [yearInPixels, setYearInPixels] = React.useState(6);
   const handleOnWheelDocument = e => {
-    const { deltaY } = e;
-
-    const parsedMinStartDate = parseNumericalFullDate(minStartDate);
-    const parsedMaxEndDate = parseNumericalFullDate(maxEndDate);
-    const maximumScrollDistance = calculateDuration(
-      parsedMinStartDate,
-      parsedMaxEndDate,
-      yearInPixels
-    );
-
-    setScrollTop(scrollTop =>
-      Math.min(Math.max(scrollTop + deltaY, 0), maximumScrollDistance - vh)
-    );
+    const { deltaY, deltaX } = e;
 
     if (isCtrlPressed) {
       setYearInPixels(
         latestYearInPixels => latestYearInPixels + (deltaY > 0 ? 1 : -1) * 0.2
+      );
+    } else if (isShiftPressed) {
+      setScrollLeft(scrollLeft => scrollLeft + deltaX);
+    } else {
+      const parsedMinStartDate = parseNumericalFullDate(minStartDate);
+      const parsedMaxEndDate = parseNumericalFullDate(maxEndDate);
+      const maximumScrollDistance = calculateDuration(
+        parsedMinStartDate,
+        parsedMaxEndDate,
+        yearInPixels
+      );
+
+      setScrollTop(scrollTop =>
+        Math.min(Math.max(scrollTop + deltaY, 0), maximumScrollDistance - vh)
       );
     }
   };
@@ -239,7 +242,7 @@ export const App = () => {
     return () => {
       document.removeEventListener('wheel', handleOnWheelDocument);
     };
-  }, [isCtrlPressed, minStartDate, maxEndDate]);
+  }, [isCtrlPressed, isShiftPressed, minStartDate, maxEndDate]);
 
   const [isPopup, setIsPopup] = React.useState(false);
   const [clickedIndex, setClickedIndex] = React.useState(-1);
@@ -461,7 +464,7 @@ export const App = () => {
         className="fixed"
         width={vw}
         height={vh}
-        viewBox={`0 ${scrollTop} ${vw} ${vh}`}
+        viewBox={`${scrollLeft} ${scrollTop} ${vw} ${vh}`}
         preserveAspectRatio="xMidYMid meet"
       >
         <Events
