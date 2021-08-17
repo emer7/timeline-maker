@@ -6,7 +6,7 @@ import {
   calculateDuration,
 } from '../utils';
 
-import { WIDTH } from '../consts';
+import { WIDTH, PALETTE } from '../consts';
 
 export const Bar = ({
   yearInPixels,
@@ -77,7 +77,7 @@ export const Bar = ({
         y={temporaryVerticalPosition || startDurationInPixels}
         height={Math.max(durationInPixels, 24)}
         width={WIDTH}
-        fill={color ? color : '#14213d'}
+        fill={color ? color : PALETTE[4]}
         stroke={
           isOrigin
             ? '#b7245c'
@@ -172,7 +172,7 @@ export const WithReign = ({
         }
         height={Math.max(reignDurationInPixels, 0)}
         width={WIDTH}
-        fill={color ? color : '#fca311'}
+        fill={color ? color : PALETTE[10]}
         onMouseDown={handleOnMouseDown}
         onMouseUp={handleOnMouseUp}
         onMouseLeave={handleOnMouseLeave}
