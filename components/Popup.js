@@ -90,8 +90,10 @@ export const Popup = ({
     color,
   } = popupEvent;
 
+  const { startDate: selectedStartDate } = selectedEvent;
+
   const parsedMinStartDate = parseNumericalFullDate(minStartDate);
-  const parsedStartDate = parseMultipleFormat(startDate);
+  const parsedStartDate = parseMultipleFormat(selectedStartDate);
 
   const top = calculateDuration(
     parsedMinStartDate,
