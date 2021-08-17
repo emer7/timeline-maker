@@ -29,6 +29,8 @@ export const COLORS_NAME = [
   'blue',
 ];
 
+export const WHITE = '#ffffff';
+
 export const PALETTE = Object.keys(colors)
   .filter(colorsKey => COLORS_NAME.includes(colorsKey))
   .sort(

@@ -6,7 +6,7 @@ import {
   calculateDuration,
 } from '../utils';
 
-import { WIDTH, PALETTE } from '../consts';
+import { WIDTH, PALETTE, WHITE } from '../consts';
 
 export const Bar = ({
   yearInPixels,
@@ -160,7 +160,7 @@ export const WithReign = ({
         y={temporaryVerticalPosition || startDurationInPixels}
         height={Math.max(reignStartDurationInPixels, 0)}
         width={WIDTH}
-        fill="#ffffff"
+        fill={WHITE}
         onMouseDown={handleOnMouseDown}
         onMouseUp={handleOnMouseUp}
         onMouseLeave={handleOnMouseLeave}
@@ -196,7 +196,7 @@ export const WithReign = ({
           0
         )}
         width={WIDTH}
-        fill="#ffffff"
+        fill={WHITE}
         onMouseDown={handleOnMouseDown}
         onMouseUp={handleOnMouseUp}
         onMouseLeave={handleOnMouseLeave}

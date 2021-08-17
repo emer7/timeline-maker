@@ -1,4 +1,5 @@
 import React from 'react';
+import { PALETTE } from '../consts';
 
 import {
   calculateDuration,
@@ -71,7 +72,7 @@ export const Links = ({
         key={d}
         className="cursor-pointer"
         d={d}
-        stroke="#f00"
+        stroke={PALETTE[6]}
         strokeWidth="2"
         fill="none"
         onClick={() => handleDeleteLink(linkIndex)}
