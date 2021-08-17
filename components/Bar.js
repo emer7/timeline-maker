@@ -77,7 +77,7 @@ export const Bar = ({
         y={temporaryVerticalPosition || startDurationInPixels}
         height={Math.max(durationInPixels, 24)}
         width={WIDTH}
-        fill={color ? color : PALETTE[4]}
+        fill={color ? color : PALETTE[16]}
         stroke={
           isOrigin
             ? '#b7245c'
@@ -87,7 +87,7 @@ export const Bar = ({
             ? '#5FAD41'
             : color
             ? color
-            : PALETTE[4]
+            : PALETTE[16]
         }
         strokeWidth={canMove ? 3 : 1}
         onMouseDown={handleOnMouseDown}
@@ -103,7 +103,6 @@ export const Bar = ({
           (temporaryVerticalPosition || startDurationInPixels) +
           Math.max(durationInPixels, 24) / 2
         }
-        fill="#e5e5e5"
         textAnchor="middle"
         alignmentBaseline="middle"
         onMouseDown={handleOnMouseDown}

@@ -85,7 +85,6 @@ export const Popup = ({
     reignEndDate,
     children,
     color,
-    type,
   } = popupEvent;
 
   const parsedMinStartDate = parseNumericalFullDate(minStartDate);
@@ -119,7 +118,8 @@ export const Popup = ({
           className="flex justify-end p-2 cursor-pointer"
           style={{
             backgroundColor:
-              color || (type === 'event' ? PALETTE[4] : PALETTE[10]),
+              color ||
+              (reignStartDate && reignEndDate ? PALETTE[10] : PALETTE[16]),
           }}
           onClick={handleToggleColorPicker}
         >

@@ -63,14 +63,24 @@ export const Add = ({ handleAddEvent }) => {
   };
 
   const handleReignStartDateChange = e => {
+    const { value } = e.target;
+
     setDates({
       ...dates,
-      reignStartDate: e.target.value,
-      reignEndDate: e.target.value,
+      reignStartDate: value,
+      reignEndDate: value,
     });
+
+    value ? setColor(PALETTE[10]) : setColor(PALETTE[16]);
   };
   const handleReignEndDateChange = e => {
-    setDates({ ...dates, reignEndDate: e.target.value });
+    const { value } = e.target;
+
+    setDates({ ...dates, reignEndDate: value });
+
+    value
+      ? setColor(PALETTE[10])
+      : !dates.reignStartDate && setColor(PALETTE[16]);
   };
 
   const [description, setDescription] = React.useState('');
@@ -91,8 +101,6 @@ export const Add = ({ handleAddEvent }) => {
         endDate,
       });
       setColor(PALETTE[16]);
-    } else {
-      setColor(PALETTE[10]);
     }
   };
 
@@ -114,7 +122,7 @@ export const Add = ({ handleAddEvent }) => {
     setIsColorPicker(!isColorPicker);
   };
 
-  const [color, setColor] = React.useState(PALETTE[10]);
+  const [color, setColor] = React.useState(PALETTE[16]);
   const handleOnColorChange = newColor => {
     setColor(newColor.hex);
   };
