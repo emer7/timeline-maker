@@ -3,6 +3,7 @@ import React from 'react';
 import { Bar } from './Bar';
 
 export const Events = ({
+  isShiftPressed,
   yearInPixels,
   events,
   minStartDate,
@@ -13,6 +14,7 @@ export const Events = ({
   temporaryVerticalPositions,
   clickedIndex,
   canMove,
+  canCreateGroup,
   origin,
   destination,
   groupSelection,
@@ -47,17 +49,23 @@ export const Events = ({
         isGroupSelection &&
         temporaryVerticalPositions[groupSelection.indexOf(eventIndex)];
 
-      const isThrough = isGroupSelection && canMove;
+      const isGroupSelectionMemberMoving = isGroupSelection && canMove;
+      const isThrough = isGroupSelectionMemberMoving && canCreateGroup;
 
       return (
         <Bar
           key={JSON.stringify(events[eventIndex])}
+          isShiftPressed={isShiftPressed}
           yearInPixels={yearInPixels}
           event={events[eventIndex]}
           minStartDate={minStartDate}
           position={position}
           temporaryVerticalPosition={temporaryVerticalPosition}
-          canMove={isThrough || (clickedIndex === eventIndex && canMove)}
+          canEventMove={
+            isGroupSelectionMemberMoving ||
+            (clickedIndex === eventIndex && canMove)
+          }
+          canCreateGroup={canCreateGroup}
           isThrough={isThrough}
           isOrigin={origin === eventIndex}
           isDestination={destination === eventIndex}

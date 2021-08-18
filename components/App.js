@@ -383,11 +383,11 @@ export const App = () => {
         );
       } else {
         if (!groupSelection.length) {
-        setPositions([
-          ...positions.slice(0, clickedIndex),
-          steppedX,
-          ...positions.slice(clickedIndex + 1),
-        ]);
+          setPositions([
+            ...positions.slice(0, clickedIndex),
+            steppedX,
+            ...positions.slice(clickedIndex + 1),
+          ]);
         } else {
           const relativePositionsToClickedEvent = groupSelection.map(
             groupMemberIndex =>
@@ -407,8 +407,8 @@ export const App = () => {
         }
       }
 
-        setIsPopup(false);
-      }
+      setIsPopup(false);
+    }
   };
 
   React.useEffect(() => {
@@ -509,6 +509,7 @@ export const App = () => {
         preserveAspectRatio="xMidYMid meet"
       >
         <Events
+          isShiftPressed={isShiftPressed}
           yearInPixels={yearInPixels}
           events={events}
           minStartDate={minStartDate}
@@ -519,6 +520,7 @@ export const App = () => {
           temporaryVerticalPositions={temporaryVerticalPosition}
           clickedIndex={clickedIndex}
           canMove={canMove}
+          canCreateGroup={canCreateGroup}
           origin={origin}
           destination={destination}
           groupSelection={groupSelection}
