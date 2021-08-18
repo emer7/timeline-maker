@@ -4,7 +4,6 @@ import { Bar } from './Bar';
 
 export const Events = ({
   yearInPixels,
-  vw,
   events,
   minStartDate,
   positions,
@@ -54,7 +53,6 @@ export const Events = ({
         <Bar
           key={JSON.stringify(events[eventIndex])}
           yearInPixels={yearInPixels}
-          vw={vw}
           event={events[eventIndex]}
           minStartDate={minStartDate}
           position={position}

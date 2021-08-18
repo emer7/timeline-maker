@@ -10,7 +10,6 @@ import { WIDTH, PALETTE, WHITE } from '../consts';
 
 export const Bar = ({
   yearInPixels,
-  vw,
   event,
   minStartDate,
   position,
@@ -52,7 +51,6 @@ export const Bar = ({
   return reignStartDate && reignEndDate ? (
     <WithReign
       yearInPixels={yearInPixels}
-      vw={vw}
       event={event}
       position={position}
       temporaryVerticalPosition={temporaryVerticalPosition}
@@ -117,7 +115,6 @@ export const Bar = ({
 
 export const WithReign = ({
   yearInPixels,
-  vw,
   event,
   position,
   temporaryVerticalPosition,

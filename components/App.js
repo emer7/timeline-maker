@@ -499,7 +499,6 @@ export const App = () => {
       >
         <Events
           yearInPixels={yearInPixels}
-          vw={vw}
           events={events}
           minStartDate={minStartDate}
           positions={positions}
