@@ -74,6 +74,12 @@ export const App = () => {
     }
   };
 
+  React.useEffect(() => {
+    setScrollTop(parseFloat(localStorage.getItem('scrollTop')) || 0);
+    setScrollLeft(parseFloat(localStorage.getItem('scrollLeft')) || 0);
+    setYearInPixels(parseFloat(localStorage.getItem('yearInPixels')) || 6);
+  }, []);
+
   const [scrollTop, setScrollTop] = React.useState(0);
   const [scrollLeft, setScrollLeft] = React.useState(0);
   const [yearInPixels, setYearInPixels] = React.useState(6);
@@ -457,6 +463,9 @@ export const App = () => {
       JSON.stringify(ordersByEventIndex)
     );
     localStorage.setItem('links', JSON.stringify(links));
+    localStorage.setItem('scrollLeft', scrollLeft);
+    localStorage.setItem('scrollTop', scrollTop);
+    localStorage.setItem('yearInPixels', yearInPixels);
   };
 
   return (
