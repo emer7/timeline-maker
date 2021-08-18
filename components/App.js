@@ -83,6 +83,9 @@ export const App = () => {
   const [scrollTop, setScrollTop] = React.useState(0);
   const [scrollLeft, setScrollLeft] = React.useState(0);
   const [yearInPixels, setYearInPixels] = React.useState(6);
+  const handleResetYearInPixels = () => {
+    setYearInPixels(6);
+  };
   const handleOnWheelDocument = e => {
     const { deltaY, deltaX } = e;
 
@@ -535,6 +538,14 @@ export const App = () => {
             </div>
           ) : (
             <>
+              {yearInPixels !== 6 && (
+                <div
+                  className="w-32 h-12 flex items-center justify-center rounded-full cursor-pointer text-white bg-yellow-400"
+                  onClick={handleResetYearInPixels}
+                >
+                  Reset Zoom
+                </div>
+              )}
               {origin !== -1 && destination !== -1 && (
                 <div
                   className="w-24 h-12 flex items-center justify-center rounded-full cursor-pointer text-white bg-red-400"
@@ -543,7 +554,6 @@ export const App = () => {
                   Link
                 </div>
               )}
-
               <div
                 className="w-24 h-12 flex items-center justify-center rounded-full cursor-pointer text-white bg-blue-400"
                 onClick={handleSaveData}
