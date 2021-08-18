@@ -259,7 +259,7 @@ export const App = () => {
   const [holdTimer, setHoldTimer] = React.useState();
   const handleOnMouseDownOnBar = index => {
     const timer = setTimeout(() => {
-      if (isShiftPressed && groupSelection.includes(index)) {
+      if (groupSelection.includes(index)) {
         setClickedIndex(index);
         setCanMove(true);
         setIsPopup(false);
@@ -373,11 +373,29 @@ export const App = () => {
 
         setIsPopup(false);
       } else {
+        if (!groupSelection.length) {
         setPositions([
           ...positions.slice(0, clickedIndex),
           steppedX,
           ...positions.slice(clickedIndex + 1),
         ]);
+        } else {
+          const relativePositionsToClickedEvent = groupSelection.map(
+            groupMemberIndex =>
+              positions[clickedIndex] - positions[groupMemberIndex]
+          );
+
+          const editedPositions = positions.map((position, eventIndex) =>
+            !groupSelection.includes(eventIndex)
+              ? position
+              : steppedX -
+                relativePositionsToClickedEvent[
+                  groupSelection.indexOf(eventIndex)
+                ]
+          );
+
+          setPositions(editedPositions);
+        }
 
         setIsPopup(false);
       }
