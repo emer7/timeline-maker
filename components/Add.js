@@ -121,16 +121,18 @@ export const Add = ({ handleAddEvent }) => {
     };
 
     handleAddEvent(convertEventDateToNumerical(trimEventProperties(event)));
+    handleDrawerToggle();
   };
 
   const [isColorPicker, setIsColorPicker] = React.useState(false);
-  const handleToggleColorPicker = e => {
+  const handleToggleColorPicker = () => {
     setIsColorPicker(!isColorPicker);
   };
 
   const [color, setColor] = React.useState(PALETTE[16]);
   const handleOnColorChange = newColor => {
     setColor(newColor.hex);
+    handleToggleColorPicker();
   };
 
   const { startDate, endDate, reignStartDate, reignEndDate } = dates;

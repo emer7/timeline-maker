@@ -57,6 +57,7 @@ export const Popup = ({
     const editedPopupEvent = { ...popupEvent, color: newColor.hex };
 
     handleEditEvent(trimEventProperties(editedPopupEvent));
+    handleToggleColorPicker();
   };
 
   const handleToggleChildrenVisibility = e => {
