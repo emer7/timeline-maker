@@ -12,6 +12,7 @@ import {
   convertToHumanDate,
   parseMultipleFormat,
   parseNumericalFullDate,
+  trimEventProperties,
 } from '../utils';
 import { WIDTH, PALETTE } from '../consts';
 
@@ -34,9 +35,8 @@ export const Popup = ({
   }, [selectedEvent]);
   const handleEditPopupEvent = (e, key) => {
     const { value } = e.target;
-    const trimmedValue = value.trim();
 
-    setPopupEvent({ ...popupEvent, [key]: trimmedValue });
+    setPopupEvent({ ...popupEvent, [key]: value });
   };
   const handleDescriptionChange = e => {
     handleEditPopupEvent(e, 'description');
@@ -56,7 +56,7 @@ export const Popup = ({
   const handleOnColorChange = newColor => {
     const editedPopupEvent = { ...popupEvent, color: newColor.hex };
 
-    handleEditEvent(editedPopupEvent);
+    handleEditEvent(trimEventProperties(editedPopupEvent));
   };
 
   const handleToggleChildrenVisibility = e => {

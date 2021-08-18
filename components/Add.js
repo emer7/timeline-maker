@@ -9,7 +9,7 @@ import {
 import { animated, useTransition, useSpring } from 'react-spring';
 
 import { HUMAN_FULL_DATE_FORMAT, PALETTE } from '../consts';
-import { convertToNumericalDate } from '../utils';
+import { convertToNumericalDate, trimEventProperties } from '../utils';
 
 import { ColorPicker } from './ColorPicker';
 
@@ -50,15 +50,13 @@ export const Add = ({ handleAddEvent }) => {
   });
   const handleStartDateChange = e => {
     const { value } = e.target;
-    const trimmedValue = value.trim();
 
-    setDates({ ...dates, startDate: trimmedValue, endDate: trimmedValue });
+    setDates({ ...dates, startDate: value, endDate: value });
   };
   const handleEndDateChange = e => {
     const { value } = e.target;
-    const trimmedValue = value.trim();
 
-    setDates({ ...dates, endDate: trimmedValue });
+    setDates({ ...dates, endDate: value });
   };
   const handleSetPlaceholderAsValue = () => {
     setDates({
@@ -70,23 +68,21 @@ export const Add = ({ handleAddEvent }) => {
 
   const handleReignStartDateChange = e => {
     const { value } = e.target;
-    const trimmedValue = value.trim();
 
     setDates({
       ...dates,
-      reignStartDate: trimmedValue,
-      reignEndDate: trimmedValue,
+      reignStartDate: value,
+      reignEndDate: value,
     });
 
-    trimmedValue ? setColor(PALETTE[10]) : setColor(PALETTE[16]);
+    value ? setColor(PALETTE[10]) : setColor(PALETTE[16]);
   };
   const handleReignEndDateChange = e => {
     const { value } = e.target;
-    const trimmedValue = value.trim();
 
-    setDates({ ...dates, reignEndDate: trimmedValue });
+    setDates({ ...dates, reignEndDate: value });
 
-    trimmedValue
+    value
       ? setColor(PALETTE[10])
       : !dates.reignStartDate && setColor(PALETTE[16]);
   };
@@ -94,9 +90,8 @@ export const Add = ({ handleAddEvent }) => {
   const [description, setDescription] = React.useState('');
   const handleDescriptionChange = e => {
     const { value } = e.target;
-    const trimmedValue = value.trim();
 
-    setDescription(trimmedValue);
+    setDescription(value);
   };
 
   const [type, setType] = React.useState('people');
@@ -125,7 +120,7 @@ export const Add = ({ handleAddEvent }) => {
       color,
     };
 
-    handleAddEvent(convertEventDateToNumerical(event));
+    handleAddEvent(convertEventDateToNumerical(trimEventProperties(event)));
   };
 
   const [isColorPicker, setIsColorPicker] = React.useState(false);

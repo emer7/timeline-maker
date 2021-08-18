@@ -82,3 +82,12 @@ export const calculateDuration = (
 
   return convertToPixels(duration, yearInPixels);
 };
+
+export const trimEventProperties = event =>
+  Object.entries(event).reduce(
+    (filteredEvent, [key, value]) => ({
+      ...filteredEvent,
+      [key]: typeof value === 'string' ? value.trim() : value,
+    }),
+    {}
+  );
