@@ -353,18 +353,18 @@ export const App = () => {
         );
 
         const baseEvent = events[groupSelection[groupSelection.length - 1]];
-        const { startDate } = baseEvent;
+        const { startDate, endDate } = baseEvent;
 
-        const parsedMinStartDate = parseNumericalFullDate(minStartDate);
         const parsedStartDate = parseMultipleFormat(startDate);
+        const parsedEndDate = parseMultipleFormat(endDate);
 
         const baseHeight =
-          calculateDuration(parsedMinStartDate, parsedStartDate, yearInPixels) /
-          2;
+          calculateDuration(parsedStartDate, parsedEndDate, yearInPixels) / 2;
 
         setTemporaryVerticalPosition(
           groupSelection.map(
             (_, groupMemberIndex) =>
+              scrollTop +
               clientY -
               baseHeight -
               (groupSelection.length - 1 - groupMemberIndex) * 10
