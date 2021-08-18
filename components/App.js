@@ -205,7 +205,7 @@ export const App = () => {
       setMaxEndDate(format(parsedEndDate, NUMERICAL_FULL_DATE_FORMAT));
 
     setEvents([...events, event]);
-    setPositions([...positions, 0]);
+    setPositions([...positions, scrollLeft + 25]);
     setOrders([...orders, events.length]);
     setOrdersByEventIndex([...ordersByEventIndex, events.length]);
     setVisibility([...visibility, true]);
