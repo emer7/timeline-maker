@@ -256,10 +256,15 @@ export const App = () => {
   const [isPopup, setIsPopup] = React.useState(false);
   const [clickedIndex, setClickedIndex] = React.useState(-1);
   const [canMove, setCanMove] = React.useState(false);
+  const [canCreateGroup, setCanCreateGroup] = React.useState(false);
   const [holdTimer, setHoldTimer] = React.useState();
   const handleOnMouseDownOnBar = index => {
     const timer = setTimeout(() => {
       if (groupSelection.includes(index)) {
+        if (isShiftPressed) {
+          setCanCreateGroup(true);
+        }
+
         setClickedIndex(index);
         setCanMove(true);
         setIsPopup(false);
@@ -294,10 +299,16 @@ export const App = () => {
     clearTimeout(holdTimer);
 
     if (canMove) {
+      setCanCreateGroup(false);
       setCanMove(false);
       setTemporaryHorizontalPosition();
       setTemporaryVerticalPosition();
-      if (index !== undefined && isShiftPressed && groupSelection.length) {
+      if (
+        index !== undefined &&
+        isShiftPressed &&
+        groupSelection.length &&
+        canCreateGroup
+      ) {
         handleCreateGroup(index);
       }
     } else {
