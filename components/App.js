@@ -271,7 +271,7 @@ export const App = () => {
         const lastIndex = orders.length - 1;
         const orderIndex = ordersByEventIndex[index];
         if (orderIndex !== lastIndex) {
-          setOrders([removeElementByIndex(orders, orderIndex), index]);
+          setOrders([...removeElementByIndex(orders, orderIndex), index]);
 
           const mappedOrdersByEventIndex = ordersByEventIndex.map(order =>
             order === orderIndex
