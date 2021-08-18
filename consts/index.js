@@ -35,8 +35,7 @@ export const PALETTE = Object.keys(colors)
   .filter(colorsKey => COLORS_NAME.includes(colorsKey))
   .sort(
     (colorsKeyA, colorsKeyB) =>
-      COLORS_NAME.findIndex(colorsK => colorsK === colorsKeyA) -
-      COLORS_NAME.findIndex(colorsK => colorsK === colorsKeyB)
+      COLORS_NAME.indexOf(colorsKeyA) - COLORS_NAME.indexOf(colorsKeyB)
   )
   .flatMap(colorsKey => {
     const colorsValue = colors[colorsKey];

@@ -28,18 +28,10 @@ export const Events = ({
 
       return (
         (isAGroupSelection
-          ? (groupSelection.findIndex(
-              groupMemberIndex => groupMemberIndex === eventAIndex
-            ) +
-              1) *
-            1000000
+          ? (groupSelection.indexOf(eventAIndex) + 1) * 1000000
           : ordersByEventIndex[eventAIndex]) -
         (isBGroupSelection
-          ? (groupSelection.findIndex(
-              groupMemberIndex => groupMemberIndex === eventBIndex
-            ) +
-              1) *
-            1000000
+          ? (groupSelection.indexOf(eventBIndex) + 1) * 1000000
           : ordersByEventIndex[eventBIndex])
       );
     })
@@ -48,21 +40,13 @@ export const Events = ({
       const isGroupSelection = groupSelection.includes(eventIndex);
       const position =
         temporaryHorizontalPositions && isGroupSelection
-          ? temporaryHorizontalPositions[
-              groupSelection.findIndex(
-                groupMemberIndex => groupMemberIndex === eventIndex
-              )
-            ]
+          ? temporaryHorizontalPositions[groupSelection.indexOf(eventIndex)]
           : positions[eventIndex];
 
       const temporaryVerticalPosition =
         temporaryVerticalPositions &&
         isGroupSelection &&
-        temporaryVerticalPositions[
-          groupSelection.findIndex(
-            groupMemberIndex => groupMemberIndex === eventIndex
-          )
-        ];
+        temporaryVerticalPositions[groupSelection.indexOf(eventIndex)];
 
       const isThrough = isGroupSelection && canMove;
 
