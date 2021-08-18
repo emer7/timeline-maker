@@ -370,8 +370,6 @@ export const App = () => {
               (groupSelection.length - 1 - groupMemberIndex) * 10
           )
         );
-
-        setIsPopup(false);
       } else {
         if (!groupSelection.length) {
         setPositions([
@@ -396,10 +394,10 @@ export const App = () => {
 
           setPositions(editedPositions);
         }
+      }
 
         setIsPopup(false);
       }
-    }
   };
 
   React.useEffect(() => {
