@@ -113,7 +113,7 @@ export const Popup = ({
       className="relative inline-flex flex-col space-y-4"
       style={{
         top: top - scrollTop,
-        left:  left + WIDTH / 2 + 16 - scrollLeft,
+        left: left + WIDTH / 2 + 16 - scrollLeft,
       }}
     >
       {isColorPicker && (
