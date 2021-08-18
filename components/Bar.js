@@ -8,23 +8,24 @@ import {
 
 import { WIDTH, PALETTE, WHITE } from '../consts';
 
-export const Bar = ({
-  isShiftPressed,
-  yearInPixels,
-  event,
-  minStartDate,
-  position,
-  temporaryVerticalPosition,
-  canEventMove,
-  canCreateGroup,
-  isThrough,
-  isOrigin,
-  isDestination,
-  isGroupSelection,
-  handleOnMouseDown,
-  handleOnMouseUp,
-  handleOnMouseLeave,
-}) => {
+export const Bar = ({ minStartDate, ...props }) => {
+  const {
+    isShiftPressed,
+    yearInPixels,
+    event,
+    position,
+    temporaryVerticalPosition,
+    canEventMove,
+    canCreateGroup,
+    isThrough,
+    isOrigin,
+    isDestination,
+    isGroupSelection,
+    handleOnMouseDown,
+    handleOnMouseUp,
+    handleOnMouseLeave,
+  } = props;
+
   const {
     startDate,
     endDate,
@@ -50,39 +51,32 @@ export const Bar = ({
     yearInPixels
   );
 
+  const cursorClassName = canEventMove
+    ? 'cursor-move'
+    : canCreateGroup && !isShiftPressed
+    ? 'cursor-not-allowed'
+    : 'cursor-pointer';
+  const pointerEventsClassName = isThrough ? ' pointer-events-none' : '';
+  const rectClassName = cursorClassName + pointerEventsClassName;
+  const textClassName = `select-none ${rectClassName}`;
+
+  const x = position - 25;
+  const y = temporaryVerticalPosition || startDurationInPixels;
+
   return reignStartDate && reignEndDate ? (
     <WithReign
-      isShiftPressed={isShiftPressed}
-      yearInPixels={yearInPixels}
-      event={event}
-      position={position}
-      temporaryVerticalPosition={temporaryVerticalPosition}
-      canEventMove={canEventMove}
-      canCreateGroup={canCreateGroup}
-      isThrough={isThrough}
-      isOrigin={isOrigin}
-      isDestination={isDestination}
-      isGroupSelection={isGroupSelection}
       startDurationInPixels={startDurationInPixels}
       durationInPixels={durationInPixels}
-      handleOnMouseDown={handleOnMouseDown}
-      handleOnMouseUp={handleOnMouseUp}
-      handleOnMouseLeave={handleOnMouseLeave}
+      {...props}
     >
       {description}
     </WithReign>
   ) : (
     <g>
       <rect
-        className={`${
-          canEventMove
-            ? 'cursor-move'
-            : canCreateGroup && !isShiftPressed
-            ? 'cursor-not-allowed'
-            : 'cursor-pointer'
-        }${isThrough ? ' pointer-events-none' : ''}`}
-        x={position - 25}
-        y={temporaryVerticalPosition || startDurationInPixels}
+        className={rectClassName}
+        x={x}
+        y={y}
         height={Math.max(durationInPixels, 24)}
         width={WIDTH}
         fill={color ? color : PALETTE[16]}
@@ -103,18 +97,9 @@ export const Bar = ({
         onMouseLeave={handleOnMouseLeave}
       />
       <text
-        className={`select-none ${
-          canEventMove
-            ? 'cursor-move'
-            : canCreateGroup && !isShiftPressed
-            ? 'cursor-not-allowed'
-            : 'cursor-pointer'
-        }${isThrough ? ' pointer-events-none' : ''}`}
-        x={position - 25 + WIDTH / 2}
-        y={
-          (temporaryVerticalPosition || startDurationInPixels) +
-          Math.max(durationInPixels, 24) / 2
-        }
+        className={textClassName}
+        x={x + WIDTH / 2}
+        y={y + Math.max(durationInPixels, 24) / 2}
         textAnchor="middle"
         alignmentBaseline="middle"
         onMouseDown={handleOnMouseDown}
@@ -164,18 +149,24 @@ export const WithReign = ({
     yearInPixels
   );
 
+  const cursorClassName = canEventMove
+    ? 'cursor-move'
+    : canCreateGroup && !isShiftPressed
+    ? 'cursor-not-allowed'
+    : 'cursor-pointer';
+  const pointerEventsClassName = isThrough ? ' pointer-events-none' : '';
+  const rectClassName = cursorClassName + pointerEventsClassName;
+  const textClassName = `select-none ${rectClassName}`;
+
+  const x = position - 25;
+  const y = temporaryVerticalPosition || startDurationInPixels;
+
   return (
     <g>
       <rect
-        className={`${
-          canEventMove
-            ? 'cursor-move'
-            : canCreateGroup && !isShiftPressed
-            ? 'cursor-not-allowed'
-            : 'cursor-pointer'
-        }${isThrough ? ' pointer-events-none' : ''}`}
-        x={position - 25}
-        y={temporaryVerticalPosition || startDurationInPixels}
+        className={rectClassName}
+        x={x}
+        y={y}
         height={Math.max(reignStartDurationInPixels, 0)}
         width={WIDTH}
         fill={WHITE}
@@ -184,18 +175,9 @@ export const WithReign = ({
         onMouseLeave={handleOnMouseLeave}
       />
       <rect
-        className={`${
-          canEventMove
-            ? 'cursor-move'
-            : canCreateGroup && !isShiftPressed
-            ? 'cursor-not-allowed'
-            : 'cursor-pointer'
-        }${isThrough ? ' pointer-events-none' : ''}`}
-        x={position - 25}
-        y={
-          (temporaryVerticalPosition || startDurationInPixels) +
-          reignStartDurationInPixels
-        }
+        className={rectClassName}
+        x={x}
+        y={y + reignStartDurationInPixels}
         height={Math.max(reignDurationInPixels, 0)}
         width={WIDTH}
         fill={color ? color : PALETTE[10]}
@@ -204,19 +186,9 @@ export const WithReign = ({
         onMouseLeave={handleOnMouseLeave}
       />
       <rect
-        className={`${
-          canEventMove
-            ? 'cursor-move'
-            : canCreateGroup && !isShiftPressed
-            ? 'cursor-not-allowed'
-            : 'cursor-pointer'
-        }${isThrough ? ' pointer-events-none' : ''}`}
-        x={position - 25}
-        y={
-          (temporaryVerticalPosition || startDurationInPixels) +
-          reignStartDurationInPixels +
-          reignDurationInPixels
-        }
+        className={rectClassName}
+        x={x}
+        y={y + reignStartDurationInPixels + reignDurationInPixels}
         height={Math.max(
           startDurationInPixels +
             durationInPixels -
@@ -232,18 +204,9 @@ export const WithReign = ({
         onMouseLeave={handleOnMouseLeave}
       />
       <text
-        className={`select-none ${
-          canEventMove
-            ? 'cursor-move'
-            : canCreateGroup && !isShiftPressed
-            ? 'cursor-not-allowed'
-            : 'cursor-pointer'
-        }${isThrough ? ' pointer-events-none' : ''}`}
-        x={position - 25 + WIDTH / 2}
-        y={
-          (temporaryVerticalPosition || startDurationInPixels) +
-          Math.max(durationInPixels, 24) / 2
-        }
+        className={textClassName}
+        x={x + WIDTH / 2}
+        y={y + Math.max(durationInPixels, 24) / 2}
         textAnchor="middle"
         alignmentBaseline="middle"
         onMouseDown={handleOnMouseDown}
@@ -253,9 +216,9 @@ export const WithReign = ({
         {children}
       </text>
       <rect
-        className={isThrough ? 'pointer-events-none' : ''}
-        x={position - 25}
-        y={temporaryVerticalPosition || startDurationInPixels}
+        className={pointerEventsClassName.trim()}
+        x={x}
+        y={y}
         height={Math.max(durationInPixels, 0)}
         width={WIDTH}
         fill="none"
