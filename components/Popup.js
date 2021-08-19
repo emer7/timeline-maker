@@ -41,6 +41,9 @@ export const Popup = ({
   const handleDescriptionChange = e => {
     handleEditPopupEvent(e, 'description');
   };
+  const handleTypeChange = e => {
+    handleEditPopupEvent(e, 'type');
+  };
   const handleReligionChange = e => {
     handleEditPopupEvent(e, 'religion');
   };
@@ -87,6 +90,7 @@ export const Popup = ({
 
   const {
     description,
+    type,
     religion,
     startDate,
     endDate,
@@ -169,14 +173,14 @@ export const Popup = ({
 
         <div className="flex flex-col space-y-1 p-2">
           <div className="flex space-x-2">
-          <input
-            className={`py-2 px-3 focus:outline-none rounded-lg font-bold ${
-              isEdit ? 'bg-gray-100' : 'bg-white'
-            }`}
-            value={description}
-            onChange={handleDescriptionChange}
-            disabled={!isEdit}
-          />
+            <input
+              className={`py-2 px-3 focus:outline-none rounded-lg font-bold ${
+                isEdit ? 'bg-gray-100' : 'bg-white'
+              }`}
+              value={description}
+              onChange={handleDescriptionChange}
+              disabled={!isEdit}
+            />
             <select
               className={`p-2 rounded-lg focus:outline-none cursor-pointer ${
                 isEdit ? 'bg-gray-100' : 'appearance-none'
@@ -190,6 +194,17 @@ export const Popup = ({
               <option value="Islam">Islam</option>
               <option value="Hindu">Hindu</option>
               <option value="Buddhism">Buddhism</option>
+            </select>
+            <select
+              className={`p-2 rounded-lg focus:outline-none cursor-pointer ${
+                isEdit ? 'bg-gray-100' : 'appearance-none'
+              } disabled:opacity-100 italic`}
+              onChange={handleTypeChange}
+              value={type}
+              disabled={!isEdit}
+            >
+              <option value="event">Event</option>
+              <option value="people">People</option>
             </select>
           </div>
 
