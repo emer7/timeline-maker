@@ -14,7 +14,7 @@ import {
   parseNumericalFullDate,
   trimEventProperties,
 } from '../utils';
-import { WIDTH, PALETTE } from '../consts';
+import { WIDTH, PALETTE, RELIGION_OPTIONS, TYPE_OPTIONS } from '../consts';
 
 import { ColorPicker } from './ColorPicker';
 
@@ -197,11 +197,11 @@ export const Popup = ({
               value={religion}
               disabled={!isEdit}
             >
-              <option value="">Empty</option>
-              <option value="Christian">Christian</option>
-              <option value="Islam">Islam</option>
-              <option value="Hindu">Hindu</option>
-              <option value="Buddhism">Buddhism</option>
+              {Object.entries(RELIGION_OPTIONS).map(
+                ([optionValue, optionDisplay]) => (
+                  <option value={optionValue}>{optionDisplay}</option>
+                )
+              )}
             </select>
             <select
               className={popupSelectClassName}
@@ -209,8 +209,11 @@ export const Popup = ({
               value={type}
               disabled={!isEdit}
             >
-              <option value="event">Event</option>
-              <option value="people">People</option>
+              {Object.entries(TYPE_OPTIONS).map(
+                ([optionValue, optionDisplay]) => (
+                  <option value={optionValue}>{optionDisplay}</option>
+                )
+              )}
             </select>
           </div>
 

@@ -45,3 +45,16 @@ export const PALETTE = Object.keys(colors)
           .filter(colorKey => ['300', '400', '500'].includes(colorKey))
           .map(colorKey => colorsValue[colorKey]);
   });
+
+export const RELIGION_OPTIONS = {
+  undefined: 'Empty',
+  Christian: 'Christian',
+  Islam: 'Islam',
+  Hindu: 'Hindu',
+  Buddha: 'Buddha',
+};
+
+export const TYPE_OPTIONS = {
+  event: 'Event',
+  people: 'People',
+};

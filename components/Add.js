@@ -8,7 +8,12 @@ import {
 } from '@material-ui/icons';
 import { animated, useTransition, useSpring } from 'react-spring';
 
-import { HUMAN_FULL_DATE_FORMAT, PALETTE } from '../consts';
+import {
+  HUMAN_FULL_DATE_FORMAT,
+  PALETTE,
+  RELIGION_OPTIONS,
+  TYPE_OPTIONS,
+} from '../consts';
 import { convertToNumericalDate, trimEventProperties } from '../utils';
 
 import { ColorPicker } from './ColorPicker';
@@ -229,19 +234,22 @@ export const Add = ({ handleAddEvent }) => {
                       onChange={handleTypeChange}
                       value={type}
                     >
-                      <option value="event">Event</option>
-                      <option value="people">People</option>
+                      {Object.entries(TYPE_OPTIONS).map(
+                        ([optionValue, optionDisplay]) => (
+                          <option value={optionValue}>{optionDisplay}</option>
+                        )
+                      )}
                     </select>
                     <select
                       className="p-2 rounded-lg hover:bg-gray-100 focus:outline-none cursor-pointer w-full"
                       onChange={handleReligionChange}
                       value={religion}
                     >
-                      <option value="">Empty</option>
-                      <option value="Christian">Christian</option>
-                      <option value="Islam">Islam</option>
-                      <option value="Hindu">Hindu</option>
-                      <option value="Buddhism">Buddhism</option>
+                      {Object.entries(RELIGION_OPTIONS).map(
+                        ([optionValue, optionDisplay]) => (
+                          <option value={optionValue}>{optionDisplay}</option>
+                        )
+                      )}
                     </select>
                   </div>
 
