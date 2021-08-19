@@ -42,7 +42,7 @@ export const PALETTE = Object.keys(colors)
     return typeof colorsValue === 'string'
       ? colorsValue
       : Object.keys(colorsValue)
-          .filter(colorKey => [300, 400, 500].includes(colorKey))
+          .filter(colorKey => ['300', '400', '500'].includes(colorKey))
           .map(colorKey => colorsValue[colorKey]);
   });
 
