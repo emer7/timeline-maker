@@ -132,6 +132,10 @@ export const Add = ({ handleAddEvent }) => {
       color,
     };
 
+    if (religion) {
+      event.religion = religion;
+    }
+
     handleAddEvent(convertEventDateToNumerical(trimEventProperties(event)));
     handleDrawerToggle();
   };

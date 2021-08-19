@@ -45,7 +45,16 @@ export const Popup = ({
     handleEditPopupEvent(e, 'type');
   };
   const handleReligionChange = e => {
-    handleEditPopupEvent(e, 'religion');
+    const { value } = e.target;
+
+    if (value) {
+      handleEditPopupEvent(e, 'religion');
+    } else {
+      const copiedPopupEvent = { ...popupEvent };
+      delete copiedPopupEvent.religion;
+
+      setPopupEvent(copiedPopupEvent);
+    }
   };
   const handleStartDateChange = e => {
     handleEditPopupEvent(e, 'startDate');
@@ -78,7 +87,8 @@ export const Popup = ({
 
   const handleSaveEvent = e => {
     e.stopPropagation();
-    handleEditEvent(popupEvent);
+
+    handleEditEvent(trimEventProperties(popupEvent));
     setIsEdit(false);
   };
 
@@ -91,7 +101,7 @@ export const Popup = ({
   const {
     description,
     type,
-    religion,
+    religion = '',
     startDate,
     endDate,
     reignStartDate,

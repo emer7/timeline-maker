@@ -55,7 +55,7 @@ export const RELIGION_PALETTE = {
 };
 
 export const RELIGION_OPTIONS = {
-  undefined: 'Empty',
+  '': 'Empty',
   Christian: 'Christian',
   Islam: 'Islam',
   Hindu: 'Hindu',
