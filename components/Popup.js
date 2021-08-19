@@ -199,7 +199,9 @@ export const Popup = ({
             >
               {Object.entries(RELIGION_OPTIONS).map(
                 ([optionValue, optionDisplay]) => (
-                  <option value={optionValue}>{optionDisplay}</option>
+                  <option key={optionValue} value={optionValue}>
+                    {optionDisplay}
+                  </option>
                 )
               )}
             </select>
@@ -211,7 +213,9 @@ export const Popup = ({
             >
               {Object.entries(TYPE_OPTIONS).map(
                 ([optionValue, optionDisplay]) => (
-                  <option value={optionValue}>{optionDisplay}</option>
+                  <option key={optionValue} value={optionValue}>
+                    {optionDisplay}
+                  </option>
                 )
               )}
             </select>
