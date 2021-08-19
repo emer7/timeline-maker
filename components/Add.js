@@ -110,6 +110,13 @@ export const Add = ({ handleAddEvent }) => {
     }
   };
 
+  const [religion, setReligion] = React.useState();
+  const handleReligionChange = e => {
+    const { value } = e.target;
+
+    setReligion(value);
+  };
+
   const handleOnClickAddButton = () => {
     const event = {
       ...Object.keys(dates)
@@ -215,7 +222,7 @@ export const Add = ({ handleAddEvent }) => {
                     </div>
                   )}
 
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-1">
                     {type === 'event' ? <EventIcon /> : <PeopleIcon />}
                     <select
                       className="p-2 rounded-lg hover:bg-gray-100 focus:outline-none cursor-pointer w-full"
@@ -224,6 +231,17 @@ export const Add = ({ handleAddEvent }) => {
                     >
                       <option value="event">Event</option>
                       <option value="people">People</option>
+                    </select>
+                    <select
+                      className="p-2 rounded-lg hover:bg-gray-100 focus:outline-none cursor-pointer w-full"
+                      onChange={handleReligionChange}
+                      value={religion}
+                    >
+                      <option value="">Empty</option>
+                      <option value="Christian">Christian</option>
+                      <option value="Islam">Islam</option>
+                      <option value="Hindu">Hindu</option>
+                      <option value="Buddhism">Buddhism</option>
                     </select>
                   </div>
 

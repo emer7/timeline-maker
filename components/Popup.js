@@ -41,6 +41,9 @@ export const Popup = ({
   const handleDescriptionChange = e => {
     handleEditPopupEvent(e, 'description');
   };
+  const handleReligionChange = e => {
+    handleEditPopupEvent(e, 'religion');
+  };
   const handleStartDateChange = e => {
     handleEditPopupEvent(e, 'startDate');
   };
@@ -84,6 +87,7 @@ export const Popup = ({
 
   const {
     description,
+    religion,
     startDate,
     endDate,
     reignStartDate,
@@ -164,6 +168,7 @@ export const Popup = ({
         </div>
 
         <div className="flex flex-col space-y-1 p-2">
+          <div className="flex space-x-2">
           <input
             className={`py-2 px-3 focus:outline-none rounded-lg font-bold ${
               isEdit ? 'bg-gray-100' : 'bg-white'
@@ -172,6 +177,21 @@ export const Popup = ({
             onChange={handleDescriptionChange}
             disabled={!isEdit}
           />
+            <select
+              className={`p-2 rounded-lg focus:outline-none cursor-pointer ${
+                isEdit ? 'bg-gray-100' : 'appearance-none'
+              } disabled:opacity-100 italic`}
+              onChange={handleReligionChange}
+              value={religion}
+              disabled={!isEdit}
+            >
+              <option value="">Empty</option>
+              <option value="Christian">Christian</option>
+              <option value="Islam">Islam</option>
+              <option value="Hindu">Hindu</option>
+              <option value="Buddhism">Buddhism</option>
+            </select>
+          </div>
 
           <div className="flex space-x-2">
             <div className="flex flex-col">
