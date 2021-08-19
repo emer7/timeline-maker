@@ -17,6 +17,7 @@ export const Events = ({
   canCreateGroup,
   origin,
   destination,
+  isReligion,
   groupSelection,
   handleOnMouseDownOnBar,
   handleOnMouseUp,
@@ -70,6 +71,7 @@ export const Events = ({
           isOrigin={origin === eventIndex}
           isDestination={destination === eventIndex}
           isGroupSelection={isGroupSelection}
+          isReligion={isReligion}
           handleOnMouseDown={() => handleOnMouseDownOnBar(eventIndex)}
           handleOnMouseUp={e => handleOnMouseUp(e, eventIndex)}
           handleOnMouseLeave={handleOnMouseLeave}

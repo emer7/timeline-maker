@@ -42,9 +42,17 @@ export const PALETTE = Object.keys(colors)
     return typeof colorsValue === 'string'
       ? colorsValue
       : Object.keys(colorsValue)
-          .filter(colorKey => ['300', '400', '500'].includes(colorKey))
+          .filter(colorKey => [300, 400, 500].includes(colorKey))
           .map(colorKey => colorsValue[colorKey]);
   });
+
+export const RELIGION_PALETTE = {
+  undefined: colors.gray[300],
+  Christian: colors.violet[400],
+  Islam: colors.emerald[700],
+  Hindu: colors.yellow[500],
+  Buddha: colors.yellow[400],
+};
 
 export const RELIGION_OPTIONS = {
   undefined: 'Empty',

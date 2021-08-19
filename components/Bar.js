@@ -6,7 +6,7 @@ import {
   calculateDuration,
 } from '../utils';
 
-import { WIDTH, PALETTE, WHITE } from '../consts';
+import { WIDTH, PALETTE, WHITE, RELIGION_PALETTE } from '../consts';
 
 export const Bar = ({ minStartDate, ...props }) => {
   const {
@@ -21,6 +21,7 @@ export const Bar = ({ minStartDate, ...props }) => {
     isOrigin,
     isDestination,
     isGroupSelection,
+    isReligion,
     handleOnMouseDown,
     handleOnMouseUp,
     handleOnMouseLeave,
@@ -33,6 +34,7 @@ export const Bar = ({ minStartDate, ...props }) => {
     reignStartDate,
     reignEndDate,
     color,
+    religion,
   } = event;
 
   const parsedMinStartDate = parseNumericalFullDate(minStartDate);
@@ -79,7 +81,9 @@ export const Bar = ({ minStartDate, ...props }) => {
         y={y}
         height={Math.max(durationInPixels, 24)}
         width={WIDTH}
-        fill={color ? color : PALETTE[16]}
+        fill={
+          isReligion ? RELIGION_PALETTE[religion] : color ? color : PALETTE[16]
+        }
         stroke={
           isOrigin
             ? '#b7245c'
@@ -124,6 +128,7 @@ export const WithReign = ({
   isOrigin,
   isDestination,
   isGroupSelection,
+  isReligion,
   startDurationInPixels,
   durationInPixels,
   handleOnMouseDown,
@@ -131,7 +136,7 @@ export const WithReign = ({
   handleOnMouseLeave,
   children,
 }) => {
-  const { reignStartDate, reignEndDate, startDate, color } = event;
+  const { reignStartDate, reignEndDate, startDate, color, religion } = event;
 
   const parsedReignStartDate = parseMultipleFormat(reignStartDate);
   const parsedReignEndDate = parseMultipleFormat(reignEndDate);
@@ -180,7 +185,9 @@ export const WithReign = ({
         y={y + reignStartDurationInPixels}
         height={Math.max(reignDurationInPixels, 0)}
         width={WIDTH}
-        fill={color ? color : PALETTE[10]}
+        fill={
+          isReligion ? RELIGION_PALETTE[religion] : color ? color : PALETTE[10]
+        }
         onMouseDown={handleOnMouseDown}
         onMouseUp={handleOnMouseUp}
         onMouseLeave={handleOnMouseLeave}

@@ -484,6 +484,11 @@ export const App = () => {
     );
   };
 
+  const [isReligion, setIsReligion] = React.useState(false);
+  const handleToggleIsReligion = () => {
+    setIsReligion(!isReligion);
+  };
+
   const handleSaveData = () => {
     localStorage.setItem('events', JSON.stringify(events));
     localStorage.setItem('positions', JSON.stringify(positions));
@@ -497,6 +502,9 @@ export const App = () => {
     localStorage.setItem('scrollTop', scrollTop);
     localStorage.setItem('yearInPixels', yearInPixels);
   };
+
+  const bottomButtonClassName =
+    'px-8 h-12 flex items-center justify-center rounded-full cursor-pointer select-none';
 
   return (
     <div>
@@ -524,6 +532,7 @@ export const App = () => {
           origin={origin}
           destination={destination}
           groupSelection={groupSelection}
+          isReligion={isReligion}
           handleOnMouseDownOnBar={handleOnMouseDownOnBar}
           handleOnMouseUp={handleOnMouseUp}
           handleOnMouseLeave={handleOnMouseLeave}
@@ -559,7 +568,7 @@ export const App = () => {
         <div className="flex space-x-2">
           {groupSelection.length ? (
             <div
-              className="w-24 h-12 flex items-center justify-center rounded-full cursor-pointer text-white bg-green-400"
+              className={`${bottomButtonClassName} text-white bg-green-400`}
               onClick={handleClearGroupSelection}
             >
               Clear
@@ -568,7 +577,7 @@ export const App = () => {
             <>
               {yearInPixels !== 6 && (
                 <div
-                  className="w-32 h-12 flex items-center justify-center rounded-full cursor-pointer text-white bg-yellow-400"
+                  className={`${bottomButtonClassName} text-white bg-yellow-400`}
                   onClick={handleResetYearInPixels}
                 >
                   Reset Zoom
@@ -576,14 +585,20 @@ export const App = () => {
               )}
               {origin !== -1 && destination !== -1 && (
                 <div
-                  className="w-24 h-12 flex items-center justify-center rounded-full cursor-pointer text-white bg-red-400"
+                  className={`${bottomButtonClassName} text-white bg-red-400`}
                   onClick={handleAddLink}
                 >
                   Link
                 </div>
               )}
               <div
-                className="w-24 h-12 flex items-center justify-center rounded-full cursor-pointer text-white bg-blue-400"
+                className={`${bottomButtonClassName} text-white bg-gradient-to-r bg-gray-400`}
+                onClick={handleToggleIsReligion}
+              >
+                Toggle Religion
+              </div>
+              <div
+                className={`${bottomButtonClassName} text-white bg-blue-400`}
                 onClick={handleSaveData}
               >
                 Save
