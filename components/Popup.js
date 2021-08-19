@@ -116,6 +116,18 @@ export const Popup = ({
     setIsColorPicker(!isColorPicker);
   };
 
+  const popupActionButtonClassName =
+    'w-8 h-8 flex items-center justify-center rounded-full cursor-pointer hover:bg-gray-600';
+  const popupActionIconClassName = 'cursor-pointer text-white';
+
+  const popupSelectClassName = `p-2 rounded-lg focus:outline-none cursor-pointer ${
+    isEdit ? 'bg-gray-100' : 'appearance-none'
+  } disabled:opacity-100 italic`;
+
+  const popupInputClassName = `py-2 px-3 focus:outline-none rounded-lg ${
+    isEdit ? 'bg-gray-100' : 'bg-white'
+  }`;
+
   return (
     <div
       className="relative inline-flex flex-col space-y-4"
@@ -140,51 +152,47 @@ export const Popup = ({
         >
           {isEdit && (
             <div
-              className="w-8 h-8 flex items-center justify-center rounded-full cursor-pointer hover:bg-gray-600"
+              className={popupActionButtonClassName}
               onClick={handleSaveEvent}
             >
-              <SaveIcon className="cursor-pointer text-white" />
+              <SaveIcon className={popupActionIconClassName} />
             </div>
           )}
           <div
-            className="w-8 h-8 flex items-center justify-center rounded-full cursor-pointer hover:bg-gray-600"
+            className={popupActionButtonClassName}
             onClick={handleToggleEdit}
           >
-            <EditIcon className="cursor-pointer text-white" />
+            <EditIcon className={popupActionIconClassName} />
           </div>
           <div
-            className="w-8 h-8 flex items-center justify-center rounded-full cursor-pointer hover:bg-gray-600"
+            className={popupActionButtonClassName}
             onClick={handleOnClickDelete}
           >
-            <DeleteIcon className="cursor-pointer text-white" />
+            <DeleteIcon className={popupActionIconClassName} />
           </div>
           {children && (
-            <div className="w-8 h-8 flex items-center justify-center rounded-full cursor-pointer hover:bg-gray-600">
+            <div className={popupActionButtonClassName}>
               <GroupIcon
-                className="cursor-pointer text-white"
+                className={popupActionIconClassName}
                 onClick={handleToggleChildrenVisibility}
               />
             </div>
           )}
-          <div className="w-8 h-8 flex items-center justify-center rounded-full cursor-pointer hover:bg-gray-600">
-            <PaletteIcon className="cursor-pointer text-white" />
+          <div className={popupActionButtonClassName}>
+            <PaletteIcon className={popupActionIconClassName} />
           </div>
         </div>
 
         <div className="flex flex-col space-y-1 p-2">
           <div className="flex space-x-2">
             <input
-              className={`py-2 px-3 focus:outline-none rounded-lg font-bold ${
-                isEdit ? 'bg-gray-100' : 'bg-white'
-              }`}
+              className={`${popupInputClassName} font-bold`}
               value={description}
               onChange={handleDescriptionChange}
               disabled={!isEdit}
             />
             <select
-              className={`p-2 rounded-lg focus:outline-none cursor-pointer ${
-                isEdit ? 'bg-gray-100' : 'appearance-none'
-              } disabled:opacity-100 italic`}
+              className={popupSelectClassName}
               onChange={handleReligionChange}
               value={religion}
               disabled={!isEdit}
@@ -196,9 +204,7 @@ export const Popup = ({
               <option value="Buddhism">Buddhism</option>
             </select>
             <select
-              className={`p-2 rounded-lg focus:outline-none cursor-pointer ${
-                isEdit ? 'bg-gray-100' : 'appearance-none'
-              } disabled:opacity-100 italic`}
+              className={popupSelectClassName}
               onChange={handleTypeChange}
               value={type}
               disabled={!isEdit}
@@ -212,9 +218,7 @@ export const Popup = ({
             <div className="flex flex-col">
               <div className="pl-3 font-medium">Start date</div>
               <input
-                className={`py-2 px-3 focus:outline-none rounded-lg ${
-                  isEdit ? 'bg-gray-100' : 'bg-white'
-                }`}
+                className={popupInputClassName}
                 value={convertToHumanDate(startDate)}
                 onChange={handleStartDateChange}
                 disabled={!isEdit}
@@ -225,9 +229,7 @@ export const Popup = ({
               <div className="flex flex-col">
                 <div className="pl-3 font-medium">End date</div>
                 <input
-                  className={`py-2 px-3 focus:outline-none rounded-lg ${
-                    isEdit ? 'bg-gray-100' : 'bg-white'
-                  }`}
+                  className={popupInputClassName}
                   value={convertToHumanDate(endDate)}
                   onChange={handleEndDateChange}
                   disabled={!isEdit}
@@ -242,9 +244,7 @@ export const Popup = ({
                 <div className="flex flex-col">
                   <div className="pl-3 font-medium">Reign start date</div>
                   <input
-                    className={`py-2 px-3 focus:outline-none rounded-lg ${
-                      isEdit ? 'bg-gray-100' : 'bg-white'
-                    }`}
+                    className={popupInputClassName}
                     value={convertToHumanDate(reignStartDate)}
                     onChange={handleReignStartDateChange}
                     disabled={!isEdit}
@@ -256,9 +256,7 @@ export const Popup = ({
                 <div className="flex flex-col">
                   <div className="pl-3 font-medium">Reign end date</div>
                   <input
-                    className={`py-2 px-3 focus:outline-none rounded-lg ${
-                      isEdit ? 'bg-gray-100' : 'bg-white'
-                    }`}
+                    className={popupInputClassName}
                     value={convertToHumanDate(reignEndDate)}
                     onChange={handleReignEndDateChange}
                     disabled={!isEdit}
