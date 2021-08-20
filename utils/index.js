@@ -1,4 +1,4 @@
-import { format, intervalToDuration, parse } from 'date-fns';
+import { format, intervalToDuration, isBefore, parse } from 'date-fns';
 import {
   NUMERICAL_FULL_DATE_FORMAT,
   HUMAN_FULL_DATE_FORMAT,
@@ -91,3 +91,23 @@ export const trimEventProperties = event =>
     }),
     {}
   );
+
+// Inspired by date-fns/eachYearOfInterval
+// https://github.com/date-fns/date-fns/blob/4544f0cb1d724bfa7ee846b762bacb8fc303a961/src/eachYearOfInterval/index.js#L31
+export const eachCenturyOfInterval = ({ start, end }) => {
+  const currentDate = new Date(start);
+  currentDate.setHours(0, 0, 0, 0);
+  currentDate.setMonth(0, 1);
+
+  const currentYear = currentDate.getFullYear();
+  currentDate.setFullYear(Math.ceil(currentYear / 100) * 100);
+
+  const dates = [];
+  while (isBefore(currentDate, end)) {
+    dates.push(new Date(currentDate));
+
+    currentDate.setFullYear(currentDate.getFullYear() + 100);
+  }
+
+  return dates;
+};

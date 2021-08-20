@@ -1,6 +1,5 @@
 import React from 'react';
 import { isAfter, isBefore, max, min, format } from 'date-fns';
-import { Clear as ClearIcon } from '@material-ui/icons';
 
 import {
   parseNumericalFullDate,
@@ -13,6 +12,8 @@ import { Add } from './Add';
 import { Events } from './Events';
 import { Popup } from './Popup';
 import { Links } from './Links';
+import { Grid } from './Grid';
+import { Years } from './Years';
 
 const calculateMinStartDate = events => {
   const mappedEvents = events
@@ -516,6 +517,14 @@ export const App = () => {
         viewBox={`${scrollLeft} ${scrollTop} ${vw} ${vh}`}
         preserveAspectRatio="xMidYMid meet"
       >
+        <Grid
+          scrollLeft={scrollLeft}
+          yearInPixels={yearInPixels}
+          vw={vw}
+          minStartDate={minStartDate}
+          maxEndDate={maxEndDate}
+        />
+
         <Events
           isShiftPressed={isShiftPressed}
           yearInPixels={yearInPixels}
@@ -545,6 +554,13 @@ export const App = () => {
           positions={positions}
           links={links}
           handleDeleteLink={handleDeleteLink}
+        />
+
+        <Years
+          scrollLeft={scrollLeft}
+          yearInPixels={yearInPixels}
+          minStartDate={minStartDate}
+          maxEndDate={maxEndDate}
         />
       </svg>
 

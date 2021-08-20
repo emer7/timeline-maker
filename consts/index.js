@@ -30,6 +30,7 @@ export const COLORS_NAME = [
 ];
 
 export const WHITE = '#ffffff';
+export const BLACK = '#000000';
 
 export const PALETTE = Object.keys(colors)
   .filter(colorsKey => COLORS_NAME.includes(colorsKey))
