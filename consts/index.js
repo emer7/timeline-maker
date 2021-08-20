@@ -49,6 +49,7 @@ export const PALETTE = Object.keys(colors)
 export const RELIGION_PALETTE = {
   undefined: colors.gray[300],
   Christian: colors.violet[400],
+  Arianism: colors.indigo[500],
   Islam: colors.emerald[700],
   Hindu: colors.yellow[500],
   Buddha: colors.yellow[400],
@@ -60,6 +61,7 @@ export const RELIGION_OPTIONS = {
   Islam: 'Islam',
   Hindu: 'Hindu',
   Buddha: 'Buddha',
+  Arianism: 'Arianism',
 };
 
 export const TYPE_OPTIONS = {
