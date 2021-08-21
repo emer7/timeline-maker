@@ -31,11 +31,12 @@ const convertEventDateToNumerical = event => ({
     ),
 });
 
-export const Add = ({ handleAddEvent }) => {
+export const Add = ({ handleAddEvent, handlePreviewEventChange }) => {
   const [isPopupOpen, setIsPopupOpen] = React.useState(false);
   const handleDrawerToggle = () => {
     setIsPopupOpen(!isPopupOpen);
     setIsColorPicker(false);
+    handlePreviewEventChange();
   };
 
   const popupTransition = useTransition(isPopupOpen, {
@@ -57,15 +58,21 @@ export const Add = ({ handleAddEvent }) => {
     const { value } = e.target;
 
     setDates({ ...dates, startDate: value, endDate: value });
+    handlePreviewEventChange({ startDate: value, endDate: value });
   };
   const handleEndDateChange = e => {
     const { value } = e.target;
 
     setDates({ ...dates, endDate: value });
+    handlePreviewEventChange({ endDate: value });
   };
   const handleSetPlaceholderAsValue = () => {
     setDates({
       ...dates,
+      startDate: format(new Date(), HUMAN_FULL_DATE_FORMAT),
+      endDate: format(new Date(), HUMAN_FULL_DATE_FORMAT),
+    });
+    handlePreviewEventChange({
       startDate: format(new Date(), HUMAN_FULL_DATE_FORMAT),
       endDate: format(new Date(), HUMAN_FULL_DATE_FORMAT),
     });
@@ -81,15 +88,26 @@ export const Add = ({ handleAddEvent }) => {
     });
 
     value ? setColor(PALETTE[10]) : setColor(PALETTE[16]);
+
+    handlePreviewEventChange({
+      reignStartDate: value,
+      reignEndDate: value,
+      color: value ? PALETTE[10] : PALETTE[16],
+    });
   };
   const handleReignEndDateChange = e => {
     const { value } = e.target;
 
     setDates({ ...dates, reignEndDate: value });
 
-    value
+    value || dates.reignStartDate
       ? setColor(PALETTE[10])
-      : !dates.reignStartDate && setColor(PALETTE[16]);
+      : setColor(PALETTE[16]);
+
+    handlePreviewEventChange({
+      reignEndDate: value,
+      color: value || dates.reignStartDate ? PALETTE[10] : PALETTE[16],
+    });
   };
 
   const [description, setDescription] = React.useState('');
@@ -97,21 +115,25 @@ export const Add = ({ handleAddEvent }) => {
     const { value } = e.target;
 
     setDescription(value);
+    handlePreviewEventChange({ description: value });
   };
 
   const [type, setType] = React.useState('people');
   const handleTypeChange = e => {
-    const newType = e.target.value;
+    const { value } = e.target;
 
-    setType(newType);
+    setType(value);
 
-    if (newType === 'event') {
-      const { startDate, endDate } = dates;
-      setDates({
-        startDate,
-        endDate,
-      });
+    if (value === 'event') {
       setColor(PALETTE[16]);
+      handlePreviewEventChange({
+        type: value,
+        color: PALETTE[16],
+      });
+    } else {
+      handlePreviewEventChange({
+        type: value,
+      });
     }
   };
 
@@ -120,6 +142,7 @@ export const Add = ({ handleAddEvent }) => {
     const { value } = e.target;
 
     setReligion(value);
+    handlePreviewEventChange({ religion: value });
   };
 
   const handleOnClickAddButton = () => {
@@ -146,8 +169,9 @@ export const Add = ({ handleAddEvent }) => {
   };
 
   const [color, setColor] = React.useState(PALETTE[16]);
-  const handleOnColorChange = newColor => {
-    setColor(newColor.hex);
+  const handleOnColorChange = ({ hex }) => {
+    setColor(hex);
+    handlePreviewEventChange({ color: hex });
     handleToggleColorPicker();
   };
 

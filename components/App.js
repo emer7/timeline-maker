@@ -14,6 +14,7 @@ import { Popup } from './Popup';
 import { Links } from './Links';
 import { Grid } from './Grid';
 import { Years } from './Years';
+import { Bar } from './Bar';
 
 const calculateMinStartDate = events => {
   const mappedEvents = events
@@ -490,6 +491,16 @@ export const App = () => {
     setIsReligion(!isReligion);
   };
 
+  const [previewEvent, setPreviewEvent] = React.useState();
+  const handlePreviewEventChange = newFields => {
+    newFields
+      ? setPreviewEvent({
+          ...previewEvent,
+          ...newFields,
+        })
+      : setPreviewEvent();
+  };
+
   const handleSaveData = () => {
     localStorage.setItem('events', JSON.stringify(events));
     localStorage.setItem('positions', JSON.stringify(positions));
@@ -546,6 +557,16 @@ export const App = () => {
           handleOnMouseUp={handleOnMouseUp}
           handleOnMouseLeave={handleOnMouseLeave}
         />
+
+        {previewEvent && previewEvent.startDate && previewEvent.endDate && (
+          <Bar
+            yearInPixels={yearInPixels}
+            event={previewEvent}
+            minStartDate={minStartDate}
+            position={scrollLeft}
+            isReligion={isReligion}
+          />
+        )}
 
         <Links
           yearInPixels={yearInPixels}
@@ -619,7 +640,10 @@ export const App = () => {
               >
                 Save
               </div>
-              <Add handleAddEvent={handleAddEvent} />
+              <Add
+                handleAddEvent={handleAddEvent}
+                handlePreviewEventChange={handlePreviewEventChange}
+              />
             </>
           )}
         </div>
