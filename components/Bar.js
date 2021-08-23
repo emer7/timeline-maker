@@ -42,17 +42,23 @@ export const Bar = ({ minStartDate, ...props }) => {
   const parsedStartDate = parseMultipleFormat(startDate);
   const parsedEndDate = parseMultipleFormat(endDate);
 
-  const durationInPixels = calculateDuration(
-    parsedStartDate,
-    parsedEndDate,
-    yearInPixels
-  );
+  let durationInPixels;
+  let startDurationInPixels;
+  try {
+    durationInPixels = Math.max(
+      24,
+      calculateDuration(parsedStartDate, parsedEndDate, yearInPixels)
+    );
 
-  const startDurationInPixels = calculateDuration(
-    parsedMinStartDate,
-    parsedStartDate,
-    yearInPixels
-  );
+    startDurationInPixels = calculateDuration(
+      parsedMinStartDate,
+      parsedStartDate,
+      yearInPixels
+    );
+  } catch {
+    durationInPixels = 0;
+    startDurationInPixels = 0;
+  }
 
   const cursorClassName = canEventMove
     ? 'cursor-move'
@@ -81,7 +87,7 @@ export const Bar = ({ minStartDate, ...props }) => {
         className={rectClassName}
         x={x}
         y={y}
-        height={Math.max(durationInPixels, 24)}
+        height={durationInPixels}
         width={WIDTH}
         fill={fill}
         stroke={
@@ -103,7 +109,7 @@ export const Bar = ({ minStartDate, ...props }) => {
       <text
         className={textClassName}
         x={x + WIDTH / 2}
-        y={y + Math.max(durationInPixels, 24) / 2}
+        y={y + durationInPixels / 2}
         textAnchor="middle"
         alignmentBaseline="middle"
         fill={getFontWhiteOrBlack(fill)}
@@ -143,16 +149,30 @@ export const WithReign = ({
   const parsedReignEndDate = parseMultipleFormat(reignEndDate);
   const parsedStartDate = parseMultipleFormat(startDate);
 
-  const reignDurationInPixels = calculateDuration(
-    parsedReignStartDate,
-    parsedReignEndDate,
-    yearInPixels
-  );
+  let reignDurationInPixels;
+  let reignStartDurationInPixels;
+  try {
+    reignDurationInPixels = Math.max(
+      24,
+      calculateDuration(parsedReignStartDate, parsedReignEndDate, yearInPixels)
+    );
 
-  const reignStartDurationInPixels = calculateDuration(
-    parsedStartDate,
-    parsedReignStartDate,
-    yearInPixels
+    reignStartDurationInPixels = Math.max(
+      24,
+      calculateDuration(parsedStartDate, parsedReignStartDate, yearInPixels)
+    );
+  } catch {
+    reignDurationInPixels = 0;
+    reignStartDurationInPixels = 0;
+  }
+
+  const postReignDurationInPixels = Math.max(
+    24,
+    startDurationInPixels +
+      durationInPixels -
+      (startDurationInPixels +
+        reignStartDurationInPixels +
+        reignDurationInPixels)
   );
 
   const cursorClassName = canEventMove
@@ -174,7 +194,7 @@ export const WithReign = ({
         className={rectClassName}
         x={x}
         y={y}
-        height={Math.max(reignStartDurationInPixels, 0)}
+        height={reignStartDurationInPixels}
         width={WIDTH}
         fill={WHITE}
         onMouseDown={handleOnMouseDown}
@@ -185,7 +205,7 @@ export const WithReign = ({
         className={rectClassName}
         x={x}
         y={y + reignStartDurationInPixels}
-        height={Math.max(reignDurationInPixels, 0)}
+        height={reignDurationInPixels}
         width={WIDTH}
         fill={fill}
         onMouseDown={handleOnMouseDown}
@@ -196,14 +216,7 @@ export const WithReign = ({
         className={rectClassName}
         x={x}
         y={y + reignStartDurationInPixels + reignDurationInPixels}
-        height={Math.max(
-          startDurationInPixels +
-            durationInPixels -
-            (startDurationInPixels +
-              reignStartDurationInPixels +
-              reignDurationInPixels),
-          0
-        )}
+        height={postReignDurationInPixels}
         width={WIDTH}
         fill={WHITE}
         onMouseDown={handleOnMouseDown}
@@ -213,7 +226,7 @@ export const WithReign = ({
       <text
         className={textClassName}
         x={x + WIDTH / 2}
-        y={y + Math.max(durationInPixels, 24) / 2}
+        y={y + durationInPixels / 2}
         textAnchor="middle"
         alignmentBaseline="middle"
         fill={getFontWhiteOrBlack(fill)}
@@ -227,7 +240,7 @@ export const WithReign = ({
         className={pointerEventsNoneClassName}
         x={x}
         y={y}
-        height={Math.max(durationInPixels, 0)}
+        height={durationInPixels}
         width={WIDTH}
         fill="none"
         stroke={
