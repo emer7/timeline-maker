@@ -180,6 +180,11 @@ export const Add = ({ handleAddEvent, handlePreviewEventChange }) => {
 
   const isBlackOrWhite = getFontWhiteOrBlack(color);
 
+  const inputClassName = value =>
+    `py-2 px-3 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none rounded-lg ${
+      value ? 'bg-gray-100' : ''
+    }`;
+
   return (
     <>
       <div className="absolute bottom-16 right-0 flex flex-col space-y-4 items-end">
@@ -211,9 +216,7 @@ export const Add = ({ handleAddEvent, handlePreviewEventChange }) => {
                 <div className="flex flex-col space-y-2 p-4">
                   <div className="flex space-x-1">
                     <input
-                      className={`py-2 px-3 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none rounded-lg ${
-                        startDate ? 'bg-gray-100' : ''
-                      }`}
+                      className={inputClassName(startDate)}
                       onChange={handleStartDateChange}
                       onClick={
                         !startDate && !endDate
@@ -224,9 +227,7 @@ export const Add = ({ handleAddEvent, handlePreviewEventChange }) => {
                       placeholder="Add start date"
                     />
                     <input
-                      className={`py-2 px-3 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none rounded-lg ${
-                        endDate ? 'bg-gray-100' : ''
-                      }`}
+                      className={inputClassName(endDate)}
                       onChange={handleEndDateChange}
                       onClick={
                         !startDate && !endDate
@@ -240,17 +241,13 @@ export const Add = ({ handleAddEvent, handlePreviewEventChange }) => {
                   {type === 'people' && (
                     <div className="flex space-x-1">
                       <input
-                        className={`py-2 px-3 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none rounded-lg ${
-                          reignStartDate || '' ? 'bg-gray-100' : ''
-                        }`}
+                        className={inputClassName(reignStartDate || '')}
                         onChange={handleReignStartDateChange}
                         value={reignStartDate || ''}
                         placeholder="Add reign start date"
                       />
                       <input
-                        className={`py-2 px-3 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none rounded-lg ${
-                          reignEndDate || '' ? 'bg-gray-100' : ''
-                        }`}
+                        className={inputClassName(reignEndDate || '')}
                         onChange={handleReignEndDateChange}
                         value={reignEndDate || ''}
                         placeholder="Add reign end date"
