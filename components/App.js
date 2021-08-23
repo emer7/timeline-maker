@@ -563,7 +563,7 @@ export const App = () => {
             yearInPixels={yearInPixels}
             event={previewEvent}
             minStartDate={minStartDate}
-            position={scrollLeft}
+            position={scrollLeft + 80}
             isReligion={isReligion}
           />
         )}
