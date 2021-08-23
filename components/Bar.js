@@ -108,6 +108,7 @@ export const Bar = ({ minStartDate, ...props }) => {
       />
       <text
         className={textClassName}
+        style={{ clipPath: 'inset(0px calc(50% - 18px))' }}
         x={x + WIDTH / 2}
         y={y + durationInPixels / 2}
         textAnchor="middle"
@@ -225,6 +226,7 @@ export const WithReign = ({
       />
       <text
         className={textClassName}
+        style={{ clipPath: 'inset(0px calc(50% - 18px))' }}
         x={x + WIDTH / 2}
         y={y + durationInPixels / 2}
         textAnchor="middle"
