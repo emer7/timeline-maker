@@ -5,6 +5,7 @@ import {
   parseMultipleFormat,
   calculateDuration,
 } from '../utils';
+import { getFontWhiteOrBlack } from '../utils/color';
 
 import { WIDTH, PALETTE, WHITE, RELIGION_PALETTE } from '../consts';
 
@@ -64,6 +65,7 @@ export const Bar = ({ minStartDate, ...props }) => {
 
   const x = position - 25;
   const y = temporaryVerticalPosition || startDurationInPixels;
+  const fill = isReligion ? RELIGION_PALETTE[religion] : color ?? PALETTE[16];
 
   return reignStartDate && reignEndDate ? (
     <WithReign
@@ -81,9 +83,7 @@ export const Bar = ({ minStartDate, ...props }) => {
         y={y}
         height={Math.max(durationInPixels, 24)}
         width={WIDTH}
-        fill={
-          isReligion ? RELIGION_PALETTE[religion] : color ? color : PALETTE[16]
-        }
+        fill={fill}
         stroke={
           isOrigin
             ? '#b7245c'
@@ -106,6 +106,7 @@ export const Bar = ({ minStartDate, ...props }) => {
         y={y + Math.max(durationInPixels, 24) / 2}
         textAnchor="middle"
         alignmentBaseline="middle"
+        fill={getFontWhiteOrBlack(fill)}
         onMouseDown={handleOnMouseDown}
         onMouseUp={handleOnMouseUp}
         onMouseLeave={handleOnMouseLeave}
@@ -165,7 +166,8 @@ export const WithReign = ({
 
   const x = position - 25;
   const y = temporaryVerticalPosition || startDurationInPixels;
-
+  const fill = isReligion ? RELIGION_PALETTE[religion] : color ?? PALETTE[10];
+  
   return (
     <g>
       <rect
@@ -185,9 +187,7 @@ export const WithReign = ({
         y={y + reignStartDurationInPixels}
         height={Math.max(reignDurationInPixels, 0)}
         width={WIDTH}
-        fill={
-          isReligion ? RELIGION_PALETTE[religion] : color ? color : PALETTE[10]
-        }
+        fill={fill}
         onMouseDown={handleOnMouseDown}
         onMouseUp={handleOnMouseUp}
         onMouseLeave={handleOnMouseLeave}
@@ -216,6 +216,7 @@ export const WithReign = ({
         y={y + Math.max(durationInPixels, 24) / 2}
         textAnchor="middle"
         alignmentBaseline="middle"
+        fill={getFontWhiteOrBlack(fill)}
         onMouseDown={handleOnMouseDown}
         onMouseUp={handleOnMouseUp}
         onMouseLeave={handleOnMouseLeave}

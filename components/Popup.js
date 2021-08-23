@@ -14,6 +14,7 @@ import {
   parseNumericalFullDate,
   trimEventProperties,
 } from '../utils';
+import { getFontWhiteOrBlack } from '../utils/color';
 import { WIDTH, PALETTE, RELIGION_OPTIONS, TYPE_OPTIONS } from '../consts';
 
 import { ColorPicker } from './ColorPicker';
@@ -107,7 +108,7 @@ export const Popup = ({
     reignStartDate,
     reignEndDate,
     children,
-    color,
+    color = reignStartDate && reignEndDate ? PALETTE[10] : PALETTE[16],
   } = popupEvent;
 
   const { startDate: selectedStartDate } = selectedEvent;
@@ -128,7 +129,6 @@ export const Popup = ({
 
   const popupActionButtonClassName =
     'w-8 h-8 flex items-center justify-center rounded-full cursor-pointer hover:bg-gray-600';
-  const popupActionIconClassName = 'cursor-pointer text-white';
 
   const popupSelectClassName = `p-2 rounded-lg focus:outline-none cursor-pointer ${
     isEdit ? 'bg-gray-100' : 'appearance-none'
@@ -137,6 +137,8 @@ export const Popup = ({
   const popupInputClassName = `py-2 px-3 focus:outline-none rounded-lg ${
     isEdit ? 'bg-gray-100' : 'bg-white'
   }`;
+
+  const isBlackOrWhite = getFontWhiteOrBlack(color);
 
   return (
     <div
@@ -152,11 +154,9 @@ export const Popup = ({
 
       <div className="inline-block rounded-lg bg-white shadow-lg overflow-hidden">
         <div
-          className="flex justify-end p-2 cursor-pointer"
+          className={`flex justify-end p-2 cursor-pointer text-${isBlackOrWhite}`}
           style={{
-            backgroundColor:
-              color ||
-              (reignStartDate && reignEndDate ? PALETTE[10] : PALETTE[16]),
+            backgroundColor: color,
           }}
           onClick={handleToggleColorPicker}
         >
@@ -165,31 +165,28 @@ export const Popup = ({
               className={popupActionButtonClassName}
               onClick={handleSaveEvent}
             >
-              <SaveIcon className={popupActionIconClassName} />
+              <SaveIcon />
             </div>
           )}
           <div
             className={popupActionButtonClassName}
             onClick={handleToggleEdit}
           >
-            <EditIcon className={popupActionIconClassName} />
+            <EditIcon />
           </div>
           <div
             className={popupActionButtonClassName}
             onClick={handleOnClickDelete}
           >
-            <DeleteIcon className={popupActionIconClassName} />
+            <DeleteIcon />
           </div>
           {children && (
             <div className={popupActionButtonClassName}>
-              <GroupIcon
-                className={popupActionIconClassName}
-                onClick={handleToggleChildrenVisibility}
-              />
+              <GroupIcon onClick={handleToggleChildrenVisibility} />
             </div>
           )}
           <div className={popupActionButtonClassName}>
-            <PaletteIcon className={popupActionIconClassName} />
+            <PaletteIcon />
           </div>
         </div>
 

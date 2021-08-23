@@ -15,6 +15,7 @@ import {
   TYPE_OPTIONS,
 } from '../consts';
 import { convertToNumericalDate, trimEventProperties } from '../utils';
+import { getFontWhiteOrBlack } from '../utils/color';
 
 import { ColorPicker } from './ColorPicker';
 
@@ -177,6 +178,8 @@ export const Add = ({ handleAddEvent, handlePreviewEventChange }) => {
 
   const { startDate, endDate, reignStartDate, reignEndDate } = dates;
 
+  const isBlackOrWhite = getFontWhiteOrBlack(color);
+
   return (
     <>
       <div className="absolute bottom-16 right-0 flex flex-col space-y-4 items-end">
@@ -192,13 +195,13 @@ export const Add = ({ handleAddEvent, handlePreviewEventChange }) => {
                 style={styles}
               >
                 <div
-                  className="relative flex items-center justify-center text-white cursor-pointer"
+                  className={`relative flex items-center justify-center text-${isBlackOrWhite} cursor-pointer`}
                   style={{ backgroundColor: color }}
                   onClick={handleToggleColorPicker}
                 >
                   <PaletteIcon className="absolute right-4" />
                   <input
-                    className="my-2 py-1 px-3 box-border text-center focus:outline-none placeholder-white hover:border-white focus:border-white border-b-2 border-transparent bg-transparent"
+                    className={`my-2 py-1 px-3 box-border text-center focus:outline-none placeholder-${isBlackOrWhite} hover:border-${isBlackOrWhite} focus:border-${isBlackOrWhite} border-b-2 border-transparent bg-transparent`}
                     onChange={handleDescriptionChange}
                     onClick={e => e.stopPropagation()}
                     value={description}
