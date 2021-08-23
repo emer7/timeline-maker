@@ -74,11 +74,7 @@ export const Bar = ({ minStartDate, ...props }) => {
   const fill = isReligion ? RELIGION_PALETTE[religion] : color ?? PALETTE[16];
 
   return reignStartDate && reignEndDate ? (
-    <WithReign
-      startDurationInPixels={startDurationInPixels}
-      durationInPixels={durationInPixels}
-      {...props}
-    >
+    <WithReign startDurationInPixels={startDurationInPixels} {...props}>
       {description}
     </WithReign>
   ) : (
@@ -138,43 +134,63 @@ export const WithReign = ({
   isGroupSelection,
   isReligion,
   startDurationInPixels,
-  durationInPixels,
   handleOnMouseDown,
   handleOnMouseUp,
   handleOnMouseLeave,
   children,
 }) => {
-  const { reignStartDate, reignEndDate, startDate, color, religion } = event;
+  const { reignStartDate, reignEndDate, startDate, endDate, color, religion } =
+    event;
 
   const parsedReignStartDate = parseMultipleFormat(reignStartDate);
   const parsedReignEndDate = parseMultipleFormat(reignEndDate);
   const parsedStartDate = parseMultipleFormat(startDate);
+  const parsedEndDate = parseMultipleFormat(endDate);
 
   let reignDurationInPixels;
   let reignStartDurationInPixels;
+  let postReignDurationInPixels;
+  let durationInPixels;
   try {
-    reignDurationInPixels = Math.max(
-      0,
-      calculateDuration(parsedReignStartDate, parsedReignEndDate, yearInPixels)
+    const calculatedReignDurationInPixels = calculateDuration(
+      parsedReignStartDate,
+      parsedReignEndDate,
+      yearInPixels
     );
+    const calculatedReignStartDurationInPixels = calculateDuration(
+      parsedStartDate,
+      parsedReignStartDate,
+      yearInPixels
+    );
+    const calculatedPostReignDurationInPixels = calculateDuration(
+      parsedReignEndDate,
+      parsedEndDate,
+      yearInPixels
+    );
+    const calculatedDurationInPixels =
+      calculatedReignStartDurationInPixels +
+      calculatedReignDurationInPixels +
+      calculatedPostReignDurationInPixels;
 
-    reignStartDurationInPixels = Math.max(
-      0,
-      calculateDuration(parsedStartDate, parsedReignStartDate, yearInPixels)
+    reignDurationInPixels = Math.max(
+      (calculatedReignDurationInPixels / calculatedDurationInPixels) * 24,
+      calculatedReignDurationInPixels
     );
+    reignStartDurationInPixels = Math.max(
+      (calculatedReignStartDurationInPixels / calculatedDurationInPixels) * 24,
+      calculatedReignStartDurationInPixels
+    );
+    postReignDurationInPixels = Math.max(
+      (calculatedPostReignDurationInPixels / calculatedDurationInPixels) * 24,
+      calculatedPostReignDurationInPixels
+    );
+    durationInPixels = Math.max(24, calculatedDurationInPixels);
   } catch {
     reignDurationInPixels = 0;
     reignStartDurationInPixels = 0;
+    postReignDurationInPixels = 0;
+    durationInPixels = 0;
   }
-
-  const postReignDurationInPixels = Math.max(
-    0,
-    startDurationInPixels +
-      durationInPixels -
-      (startDurationInPixels +
-        reignStartDurationInPixels +
-        reignDurationInPixels)
-  );
 
   const cursorClassName = canEventMove
     ? 'cursor-move'
