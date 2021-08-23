@@ -516,7 +516,7 @@ export const App = () => {
   };
 
   const bottomButtonClassName =
-    'px-8 h-12 flex items-center justify-center rounded-full cursor-pointer select-none';
+    'px-8 h-12 flex items-center justify-center rounded-full cursor-pointer select-none text-white';
 
   return (
     <div>
@@ -605,7 +605,7 @@ export const App = () => {
         <div className="flex space-x-2">
           {groupSelection.length ? (
             <div
-              className={`${bottomButtonClassName} text-white bg-green-400`}
+              className={`${bottomButtonClassName} bg-green-400`}
               onClick={handleClearGroupSelection}
             >
               Clear
@@ -614,7 +614,7 @@ export const App = () => {
             <>
               {yearInPixels !== 6 && (
                 <div
-                  className={`${bottomButtonClassName} text-white bg-yellow-400`}
+                  className={`${bottomButtonClassName} bg-yellow-400`}
                   onClick={handleResetYearInPixels}
                 >
                   Reset Zoom
@@ -622,20 +622,20 @@ export const App = () => {
               )}
               {origin !== -1 && destination !== -1 && (
                 <div
-                  className={`${bottomButtonClassName} text-white bg-red-400`}
+                  className={`${bottomButtonClassName} bg-red-400`}
                   onClick={handleAddLink}
                 >
                   Link
                 </div>
               )}
               <div
-                className={`${bottomButtonClassName} text-white bg-gradient-to-r bg-gray-400`}
+                className={`${bottomButtonClassName} bg-gray-400`}
                 onClick={handleToggleIsReligion}
               >
                 Toggle Religion
               </div>
               <div
-                className={`${bottomButtonClassName} text-white bg-blue-400`}
+                className={`${bottomButtonClassName} bg-blue-400`}
                 onClick={handleSaveData}
               >
                 Save

@@ -130,9 +130,9 @@ export const Popup = ({
   const popupActionButtonClassName =
     'w-8 h-8 flex items-center justify-center rounded-full cursor-pointer hover:bg-gray-600';
 
-  const popupSelectClassName = `p-2 rounded-lg focus:outline-none cursor-pointer ${
+  const popupSelectClassName = `p-2 rounded-lg focus:outline-none cursor-pointer disabled:opacity-100 italic ${
     isEdit ? 'bg-gray-100' : 'appearance-none'
-  } disabled:opacity-100 italic`;
+  }`;
 
   const popupInputClassName = `py-2 px-3 focus:outline-none rounded-lg ${
     isEdit ? 'bg-gray-100' : 'bg-white'
@@ -154,7 +154,9 @@ export const Popup = ({
 
       <div className="inline-block rounded-lg bg-white shadow-lg overflow-hidden">
         <div
-          className={`flex justify-end p-2 cursor-pointer text-${isBlackOrWhite}`}
+          className={`flex justify-end p-2 cursor-pointer ${
+            isBlackOrWhite === 'black' ? 'text-black' : 'text-white'
+          }`}
           style={{
             backgroundColor: color,
           }}

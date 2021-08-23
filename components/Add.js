@@ -200,13 +200,19 @@ export const Add = ({ handleAddEvent, handlePreviewEventChange }) => {
                 style={styles}
               >
                 <div
-                  className={`relative flex items-center justify-center text-${isBlackOrWhite} cursor-pointer`}
+                  className={`relative flex items-center justify-center cursor-pointer ${
+                    isBlackOrWhite === 'black' ? 'text-black' : 'text-white'
+                  }`}
                   style={{ backgroundColor: color }}
                   onClick={handleToggleColorPicker}
                 >
                   <PaletteIcon className="absolute right-4" />
                   <input
-                    className={`my-2 py-1 px-3 box-border text-center focus:outline-none placeholder-${isBlackOrWhite} hover:border-${isBlackOrWhite} focus:border-${isBlackOrWhite} border-b-2 border-transparent bg-transparent`}
+                    className={`my-2 py-1 px-3 box-border text-center focus:outline-none border-b-2 border-transparent bg-transparent ${
+                      isBlackOrWhite === 'black'
+                        ? 'placeholder-black hover:border-black focus:border-black'
+                        : 'placeholder-white hover:border-white focus:border-white'
+                    }`}
                     onChange={handleDescriptionChange}
                     onClick={e => e.stopPropagation()}
                     value={description}
@@ -241,13 +247,13 @@ export const Add = ({ handleAddEvent, handlePreviewEventChange }) => {
                   {type === 'people' && (
                     <div className="flex space-x-1">
                       <input
-                        className={inputClassName(reignStartDate || '')}
+                        className={inputClassName(reignStartDate)}
                         onChange={handleReignStartDateChange}
                         value={reignStartDate || ''}
                         placeholder="Add reign start date"
                       />
                       <input
-                        className={inputClassName(reignEndDate || '')}
+                        className={inputClassName(reignEndDate)}
                         onChange={handleReignEndDateChange}
                         value={reignEndDate || ''}
                         placeholder="Add reign end date"

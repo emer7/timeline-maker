@@ -59,9 +59,9 @@ export const Bar = ({ minStartDate, ...props }) => {
     : canCreateGroup && !isShiftPressed
     ? 'cursor-not-allowed'
     : 'cursor-pointer';
-  const pointerEventsClassName = isThrough ? ' pointer-events-none' : '';
-  const rectClassName = cursorClassName + pointerEventsClassName;
-  const textClassName = `select-none ${rectClassName}`;
+  const pointerEventsNoneClassName = isThrough ? 'pointer-events-none' : '';
+  const rectClassName = `${cursorClassName} ${pointerEventsNoneClassName}`;
+  const textClassName = `${rectClassName} select-none`;
 
   const x = position - 25;
   const y = temporaryVerticalPosition || startDurationInPixels;
@@ -160,14 +160,14 @@ export const WithReign = ({
     : canCreateGroup && !isShiftPressed
     ? 'cursor-not-allowed'
     : 'cursor-pointer';
-  const pointerEventsClassName = isThrough ? ' pointer-events-none' : '';
-  const rectClassName = cursorClassName + pointerEventsClassName;
-  const textClassName = `select-none ${rectClassName}`;
+  const pointerEventsNoneClassName = isThrough ? 'pointer-events-none' : '';
+  const rectClassName = `${cursorClassName} ${pointerEventsNoneClassName}`;
+  const textClassName = `${rectClassName} select-none`;
 
   const x = position - 25;
   const y = temporaryVerticalPosition || startDurationInPixels;
   const fill = isReligion ? RELIGION_PALETTE[religion] : color ?? PALETTE[10];
-  
+
   return (
     <g>
       <rect
@@ -224,7 +224,7 @@ export const WithReign = ({
         {children}
       </text>
       <rect
-        className={pointerEventsClassName.trim()}
+        className={pointerEventsNoneClassName}
         x={x}
         y={y}
         height={Math.max(durationInPixels, 0)}
