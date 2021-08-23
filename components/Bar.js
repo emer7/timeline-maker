@@ -154,12 +154,12 @@ export const WithReign = ({
   let reignStartDurationInPixels;
   try {
     reignDurationInPixels = Math.max(
-      24,
+      0,
       calculateDuration(parsedReignStartDate, parsedReignEndDate, yearInPixels)
     );
 
     reignStartDurationInPixels = Math.max(
-      24,
+      0,
       calculateDuration(parsedStartDate, parsedReignStartDate, yearInPixels)
     );
   } catch {
@@ -168,7 +168,7 @@ export const WithReign = ({
   }
 
   const postReignDurationInPixels = Math.max(
-    24,
+    0,
     startDurationInPixels +
       durationInPixels -
       (startDurationInPixels +
