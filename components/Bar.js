@@ -7,7 +7,7 @@ import {
 } from '../utils';
 import { getFontWhiteOrBlack } from '../utils/color';
 
-import { WIDTH, PALETTE, WHITE, RELIGION_PALETTE } from '../consts';
+import { WIDTH, PALETTE, WHITE, RELIGION_PALETTE, BLACK } from '../consts';
 
 export const Bar = ({ minStartDate, ...props }) => {
   const {
@@ -93,9 +93,7 @@ export const Bar = ({ minStartDate, ...props }) => {
             ? '#00a6fb'
             : isGroupSelection
             ? '#5FAD41'
-            : color
-            ? color
-            : PALETTE[16]
+            : BLACK
         }
         strokeWidth={canEventMove ? 3 : 1}
         onMouseDown={handleOnMouseDown}
@@ -268,9 +266,7 @@ export const WithReign = ({
             ? '#00a6fb'
             : isGroupSelection
             ? '#5FAD41'
-            : color
-            ? color
-            : PALETTE[10]
+            : BLACK
         }
         strokeWidth={canEventMove ? 3 : 1}
       />
