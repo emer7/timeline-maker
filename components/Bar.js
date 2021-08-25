@@ -83,6 +83,7 @@ export const Bar = ({ minStartDate, ...props }) => {
         className={rectClassName}
         x={x}
         y={y}
+        rx="4"
         height={durationInPixels}
         width={WIDTH}
         fill={fill}
@@ -209,13 +210,33 @@ export const WithReign = ({
         className={rectClassName}
         x={x}
         y={y}
-        height={reignStartDurationInPixels}
+        rx="4"
+        height={durationInPixels}
         width={WIDTH}
         fill={WHITE}
+        stroke={
+          isOrigin
+            ? '#b7245c'
+            : isDestination
+            ? '#00a6fb'
+            : isGroupSelection
+            ? '#5FAD41'
+            : BLACK
+        }
+        strokeWidth={canEventMove ? 3 : 1}
         onMouseDown={handleOnMouseDown}
         onMouseUp={handleOnMouseUp}
         onMouseLeave={handleOnMouseLeave}
       />
+      <clipPath id={parsedReignStartDate.getTime()}>
+        <rect
+          x={x + (canEventMove ? 1.5 : 0.5)}
+          y={y + (canEventMove ? 1.5 : 0.5)}
+          rx={canEventMove ? 2.5 : 3.5}
+          height={Math.max(0, durationInPixels - (canEventMove ? 3 : 1))}
+          width={WIDTH - (canEventMove ? 3 : 1)}
+        />
+      </clipPath>
       <rect
         className={rectClassName}
         x={x}
@@ -226,17 +247,7 @@ export const WithReign = ({
         onMouseDown={handleOnMouseDown}
         onMouseUp={handleOnMouseUp}
         onMouseLeave={handleOnMouseLeave}
-      />
-      <rect
-        className={rectClassName}
-        x={x}
-        y={y + reignStartDurationInPixels + reignDurationInPixels}
-        height={postReignDurationInPixels}
-        width={WIDTH}
-        fill={WHITE}
-        onMouseDown={handleOnMouseDown}
-        onMouseUp={handleOnMouseUp}
-        onMouseLeave={handleOnMouseLeave}
+        clipPath={`url(#${parsedReignStartDate.getTime()})`}
       />
       <text
         className={textClassName}
@@ -252,24 +263,6 @@ export const WithReign = ({
       >
         {children}
       </text>
-      <rect
-        className={pointerEventsNoneClassName}
-        x={x}
-        y={y}
-        height={durationInPixels}
-        width={WIDTH}
-        fill="none"
-        stroke={
-          isOrigin
-            ? '#b7245c'
-            : isDestination
-            ? '#00a6fb'
-            : isGroupSelection
-            ? '#5FAD41'
-            : BLACK
-        }
-        strokeWidth={canEventMove ? 3 : 1}
-      />
     </g>
   );
 };
