@@ -187,18 +187,21 @@ export const Add = ({ handleAddEvent, handlePreviewEventChange }) => {
 
   return (
     <>
-      <div className="absolute bottom-16 right-0 flex flex-col space-y-4 items-end">
-        {isColorPicker && (
-          <ColorPicker color={color} onChangeComplete={handleOnColorChange} />
-        )}
+      {popupTransition(
+        (styles, isShown) =>
+          isShown && (
+            <animated.div
+              className="absolute bottom-16 right-0 flex flex-col space-y-4 items-end"
+              style={styles}
+            >
+              {isColorPicker && (
+                <ColorPicker
+                  color={color}
+                  onChangeComplete={handleOnColorChange}
+                />
+              )}
 
-        {popupTransition(
-          (styles, isShown) =>
-            isShown && (
-              <animated.div
-                className="flex flex-col rounded-lg bg-white shadow-lg overflow-hidden"
-                style={styles}
-              >
+              <div className="flex flex-col rounded-lg bg-white shadow-lg overflow-hidden">
                 <div
                   className={`relative flex items-center justify-center cursor-pointer ${
                     isBlackOrWhite === 'black' ? 'text-black' : 'text-white'
@@ -298,10 +301,10 @@ export const Add = ({ handleAddEvent, handlePreviewEventChange }) => {
                     Add
                   </button>
                 </div>
-              </animated.div>
-            )
-        )}
-      </div>
+              </div>
+            </animated.div>
+          )
+      )}
 
       <animated.div
         className="w-12 h-12 flex items-center justify-center rounded-full cursor-pointer text-white bg-gray-600"
