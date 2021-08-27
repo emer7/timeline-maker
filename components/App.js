@@ -233,6 +233,17 @@ export const App = () => {
 
     setBoundaryDate(slicedEvents, setMinStartDate, setMaxEndDate);
 
+    const editedLinks = links
+      .filter(
+        ({ origin, destination }) => origin !== index && destination !== index
+      )
+      .map(({ origin, destination }) => ({
+        origin: origin < index ? origin : origin - 1,
+        destination: destination < index ? destination : destination - 1,
+      }));
+
+    setLinks(editedLinks);
+
     setIsPopup(false);
   };
   const handleEditEvent = (index, editedEvent) => {
