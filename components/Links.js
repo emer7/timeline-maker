@@ -75,6 +75,7 @@ export const Links = ({
         stroke={PALETTE[6]}
         strokeWidth="2"
         fill="none"
+        marker-end="url(#arrowhead)"
         onClick={() => handleDeleteLink(linkIndex)}
       />
     );

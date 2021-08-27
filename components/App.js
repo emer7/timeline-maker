@@ -15,6 +15,7 @@ import { Links } from './Links';
 import { Grid } from './Grid';
 import { Years } from './Years';
 import { Bar } from './Bar';
+import { Defs } from './Defs';
 
 const calculateMinStartDate = events => {
   const mappedEvents = events
@@ -539,6 +540,8 @@ export const App = () => {
         viewBox={`${scrollLeft} ${scrollTop} ${vw} ${vh}`}
         preserveAspectRatio="xMidYMid meet"
       >
+        <Defs />
+
         <Grid
           scrollLeft={scrollLeft}
           yearInPixels={yearInPixels}
