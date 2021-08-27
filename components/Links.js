@@ -1,5 +1,5 @@
 import React from 'react';
-import { PALETTE } from '../consts';
+import { PALETTE, WIDTH } from '../consts';
 
 import {
   calculateDuration,
@@ -16,7 +16,7 @@ export const Links = ({
   handleDeleteLink,
 }) =>
   links.map((link, linkIndex) => {
-    const { origin, destination } = link;
+    const { origin, destination, type } = link;
 
     const { startDate: originStartDate, endDate: originEndDate } =
       events[origin];
@@ -51,21 +51,30 @@ export const Links = ({
 
     const isOriginLaterThanDestination =
       originTop + originHeight > destinationTop;
+    const isOriginToTheLeftOfDestination = originLeft < destinationLeft;
 
     const horizontalDistance = destinationLeft - originLeft;
     const verticalDistance = destinationTop - (originTop + originHeight);
 
-    const d = isOriginLaterThanDestination
-      ? `M ${originLeft} ${originTop + originHeight} 
+    const d =
+      !type || type === 'continuation'
+        ? isOriginLaterThanDestination
+          ? `M ${originLeft} ${originTop + originHeight} 
           v 20 
           h ${horizontalDistance / 2} 
           v ${verticalDistance - 40} 
           h ${horizontalDistance / 2} 
-          v 20`
-      : `M ${originLeft} ${originTop + originHeight} 
+          v ${20 - 8}`
+          : `M ${originLeft} ${originTop + originHeight} 
           v ${verticalDistance / 2} 
           h ${horizontalDistance} 
-          v ${verticalDistance / 2}`;
+          v ${verticalDistance / 2 - 8}`
+        : `M ${
+            originLeft + ((isOriginToTheLeftOfDestination ? 1 : -1) * WIDTH) / 2
+          } ${originTop + originHeight} h ${
+            horizontalDistance +
+            (isOriginToTheLeftOfDestination ? -1 : 1) * (WIDTH + 8)
+          } `;
 
     return (
       <path

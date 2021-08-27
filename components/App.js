@@ -15,6 +15,7 @@ import { Links } from './Links';
 import { Grid } from './Grid';
 import { Years } from './Years';
 import { Bar } from './Bar';
+import { AddLink } from './AddLink';
 import { Defs } from './Defs';
 
 const calculateMinStartDate = events => {
@@ -454,10 +455,10 @@ export const App = () => {
   const [links, setLinks] = React.useState([{ origin: 0, destination: 0 }]);
   const [origin, setOrigin] = React.useState(-1);
   const [destination, setDestination] = React.useState(-1);
-  const handleAddLink = () => {
+  const handleAddLink = type => {
     origin !== -1 &&
       destination !== -1 &&
-      setLinks([...links, { origin, destination }]);
+      setLinks([...links, { origin, destination, type }]);
     setOrigin(-1);
     setDestination(-1);
   };
@@ -635,12 +636,7 @@ export const App = () => {
                 </div>
               )}
               {origin !== -1 && destination !== -1 && (
-                <div
-                  className={`${bottomButtonClassName} bg-red-400`}
-                  onClick={handleAddLink}
-                >
-                  Link
-                </div>
+                <AddLink handleAddLink={handleAddLink} />
               )}
               <div
                 className={`${bottomButtonClassName} bg-gray-400`}
