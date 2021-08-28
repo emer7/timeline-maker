@@ -142,16 +142,12 @@ export const Popup = ({
 
   return (
     <div
-      className="relative inline-flex flex-col space-y-4"
+      className="relative inline-flex flex space-x-4 items-start"
       style={{
         top: top - scrollTop,
         left: left + WIDTH / 2 + 16 - scrollLeft,
       }}
     >
-      {isColorPicker && (
-        <ColorPicker color={color} onChangeComplete={handleOnColorChange} />
-      )}
-
       <div className="inline-block rounded-lg bg-white shadow-lg overflow-hidden">
         <div
           className={`flex justify-end p-2 cursor-pointer ${
@@ -283,6 +279,10 @@ export const Popup = ({
           )}
         </div>
       </div>
+
+      {isColorPicker && (
+        <ColorPicker color={color} onChangeComplete={handleOnColorChange} />
+      )}
     </div>
   );
 };
