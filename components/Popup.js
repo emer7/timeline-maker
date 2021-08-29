@@ -102,6 +102,11 @@ export const Popup = ({
   const [isEdit, setIsEdit] = React.useState(false);
   const handleToggleEdit = e => {
     e.stopPropagation();
+
+    if (isEdit) {
+      setPopupEvent(selectedEvent);
+    }
+
     setIsEdit(!isEdit);
   };
 
