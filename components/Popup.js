@@ -15,7 +15,13 @@ import {
   trimEventProperties,
 } from '../utils';
 import { getFontWhiteOrBlack } from '../utils/color';
-import { WIDTH, PALETTE, RELIGION_OPTIONS, TYPE_OPTIONS } from '../consts';
+import {
+  WIDTH,
+  PALETTE,
+  RELIGION_OPTIONS,
+  TYPE_OPTIONS,
+  RELIGION_PALETTE,
+} from '../consts';
 
 import { ColorPicker } from './ColorPicker';
 
@@ -130,9 +136,8 @@ export const Popup = ({
   const popupActionButtonClassName =
     'w-8 h-8 flex items-center justify-center rounded-full cursor-pointer hover:bg-gray-600';
 
-  const popupSelectClassName = `p-2 rounded-lg focus:outline-none cursor-pointer disabled:opacity-100 italic ${
-    isEdit ? 'bg-gray-100' : 'appearance-none'
-  }`;
+  const popupSelectClassName = `p-2 rounded-full focus:outline-none cursor-pointer bg-gray-100`;
+  const tagClassName = `px-3 py-1.5 rounded-full focus:outline-none cursor-pointer bg-gray-100`;
 
   const popupInputClassName = `py-2 px-3 focus:outline-none rounded-lg ${
     isEdit ? 'bg-gray-100' : 'bg-white'
@@ -150,7 +155,7 @@ export const Popup = ({
     >
       <div className="inline-block rounded-lg bg-white shadow-lg overflow-hidden">
         <div
-          className={`flex justify-end p-2 cursor-pointer ${
+          className={`flex space-x-4 justify-between p-2 cursor-pointer ${
             isBlackOrWhite === 'black' ? 'text-black' : 'text-white'
           }`}
           style={{
@@ -158,74 +163,47 @@ export const Popup = ({
           }}
           onClick={handleToggleColorPicker}
         >
-          {isEdit && (
+          <input
+            className={`ml-1 py-1 box-border border-b-2 border-transparent focus:outline-none bg-transparent w-full ${
+              isEdit ? 'border-black' : ''
+            }`}
+            value={description}
+            onChange={handleDescriptionChange}
+            disabled={!isEdit}
+          />
+          <div className="flex">
+            {isEdit && (
+              <div
+                className={popupActionButtonClassName}
+                onClick={handleSaveEvent}
+              >
+                <SaveIcon />
+              </div>
+            )}
             <div
               className={popupActionButtonClassName}
-              onClick={handleSaveEvent}
+              onClick={handleToggleEdit}
             >
-              <SaveIcon />
+              <EditIcon />
             </div>
-          )}
-          <div
-            className={popupActionButtonClassName}
-            onClick={handleToggleEdit}
-          >
-            <EditIcon />
-          </div>
-          <div
-            className={popupActionButtonClassName}
-            onClick={handleOnClickDelete}
-          >
-            <DeleteIcon />
-          </div>
-          {children && (
+            <div
+              className={popupActionButtonClassName}
+              onClick={handleOnClickDelete}
+            >
+              <DeleteIcon />
+            </div>
+            {children && (
+              <div className={popupActionButtonClassName}>
+                <GroupIcon onClick={handleToggleChildrenVisibility} />
+              </div>
+            )}
             <div className={popupActionButtonClassName}>
-              <GroupIcon onClick={handleToggleChildrenVisibility} />
+              <PaletteIcon />
             </div>
-          )}
-          <div className={popupActionButtonClassName}>
-            <PaletteIcon />
           </div>
         </div>
 
         <div className="flex flex-col space-y-1 p-2">
-          <div className="flex space-x-2">
-            <input
-              className={`${popupInputClassName} font-bold`}
-              value={description}
-              onChange={handleDescriptionChange}
-              disabled={!isEdit}
-            />
-            <select
-              className={popupSelectClassName}
-              onChange={handleReligionChange}
-              value={religion}
-              disabled={!isEdit}
-            >
-              {Object.entries(RELIGION_OPTIONS).map(
-                ([optionValue, optionDisplay]) => (
-                  <option key={optionValue} value={optionValue}>
-                    {optionDisplay}
-                  </option>
-                )
-              )}
-            </select>
-            <select
-              className={popupSelectClassName}
-              onChange={handleTypeChange}
-              value={type}
-              disabled={!isEdit}
-            >
-              {Object.entries(TYPE_OPTIONS).map(
-                ([optionValue, optionDisplay]) => (
-                  <option key={optionValue} value={optionValue}>
-                    {optionDisplay}
-                  </option>
-                )
-              )}
-            </select>
-          </div>
-
           <div className="flex space-x-2">
             <div className="flex flex-col">
               <div className="pl-3 font-medium">Start date</div>
@@ -277,6 +255,54 @@ export const Popup = ({
               )}
             </div>
           )}
+
+          <div className="flex space-x-2">
+            {isEdit ? (
+              <>
+                <select
+                  className={popupSelectClassName}
+                  onChange={handleTypeChange}
+                  value={type}
+                >
+                  {Object.entries(TYPE_OPTIONS).map(
+                    ([optionValue, optionDisplay]) => (
+                      <option key={optionValue} value={optionValue}>
+                        {optionDisplay}
+                      </option>
+                    )
+                  )}
+                </select>
+                <select
+                  className={popupSelectClassName}
+                  style={{
+                    backgroundColor: RELIGION_PALETTE[religion],
+                  }}
+                  onChange={handleReligionChange}
+                  value={religion}
+                >
+                  {Object.entries(RELIGION_OPTIONS).map(
+                    ([optionValue, optionDisplay]) => (
+                      <option key={optionValue} value={optionValue}>
+                        {optionDisplay}
+                      </option>
+                    )
+                  )}
+                </select>
+              </>
+            ) : (
+              <>
+                <div className={tagClassName}>{TYPE_OPTIONS[type]}</div>
+                <div
+                  className={tagClassName}
+                  style={{
+                    backgroundColor: RELIGION_PALETTE[religion],
+                  }}
+                >
+                  {RELIGION_OPTIONS[religion]}
+                </div>
+              </>
+            )}
+          </div>
         </div>
       </div>
 
