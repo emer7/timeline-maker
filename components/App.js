@@ -645,7 +645,15 @@ export const App = () => {
               >
                 Toggle Religion
               </div>
-              <Storage handleSaveData={handleSaveData} />
+              <Storage
+                handleSaveData={handleSaveData}
+                setEvents={setEvents}
+                setPositions={setPositions}
+                setOrders={setOrders}
+                setOrdersByEventIndex={setOrdersByEventIndex}
+                setLinks={setLinks}
+                setVisibility={setVisibility}
+              />
               <Add
                 handleAddEvent={handleAddEvent}
                 handlePreviewEventChange={handlePreviewEventChange}

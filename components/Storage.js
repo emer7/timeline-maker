@@ -1,9 +1,35 @@
 import React from 'react';
 
-export const Storage = ({ handleSaveData }) => {
+export const Storage = ({
+  handleSaveData,
+  setEvents,
+  setPositions,
+  setOrders,
+  setOrdersByEventIndex,
+  setLinks,
+  setVisibility,
+}) => {
   const [isPopupOpen, setIsPopupOpen] = React.useState(false);
   const handlePopupToggle = () => {
     setIsPopupOpen(!isPopupOpen);
+  };
+
+  const [importJson, setImportJson] = React.useState('');
+  const handleImportJsonChange = e => {
+    const { value } = e.target;
+
+    setImportJson(value);
+  };
+  const handleImportFromJson = () => {
+    const { events, positions, orders, ordersByEventIndex, links } =
+      JSON.parse(importJson);
+
+    setEvents(events);
+    setPositions(positions);
+    setOrders(orders);
+    setOrdersByEventIndex(ordersByEventIndex);
+    setLinks(links);
+    setVisibility(events.map(_ => true));
   };
 
   const handleDownloadAsJson = () => {
@@ -51,6 +77,20 @@ export const Storage = ({ handleSaveData }) => {
           style={{ left: buttonRef.current.offsetLeft }}
         >
           <div className="flex flex-col rounded-2xl bg-white shadow-lg overflow-hidden">
+            <div className="p-4 text-center cursor-pointer">
+              <textarea
+                rows="3"
+                className="font-mono text-xs p-2 border-2 border-gray-200 rounded-lg focus:outline-none"
+                value={importJson}
+                onChange={handleImportJsonChange}
+              />
+            </div>
+            <div
+              className="p-4 text-center cursor-pointer hover:bg-gray-200 border-b-2"
+              onClick={handleImportFromJson}
+            >
+              Import from JSON
+            </div>
             <div
               className="p-4 text-center cursor-pointer hover:bg-gray-200 border-b-2"
               onClick={handleDownloadAsJson}
