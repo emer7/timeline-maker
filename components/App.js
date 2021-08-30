@@ -17,6 +17,7 @@ import { Years } from './Years';
 import { Bar } from './Bar';
 import { AddLink } from './AddLink';
 import { Defs } from './Defs';
+import { Storage } from './Storage';
 
 const calculateMinStartDate = events => {
   const mappedEvents = events
@@ -644,12 +645,7 @@ export const App = () => {
               >
                 Toggle Religion
               </div>
-              <div
-                className={`${bottomButtonClassName} bg-blue-400`}
-                onClick={handleSaveData}
-              >
-                Save
-              </div>
+              <Storage handleSaveData={handleSaveData} />
               <Add
                 handleAddEvent={handleAddEvent}
                 handlePreviewEventChange={handlePreviewEventChange}
