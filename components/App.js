@@ -1,5 +1,6 @@
 import React from 'react';
 import { isAfter, isBefore, max, min, format } from 'date-fns';
+import { throttle } from 'lodash';
 
 import {
   parseNumericalFullDate,
@@ -114,6 +115,48 @@ export const App = () => {
       );
     }
   };
+
+  const previousClientY = React.useRef();
+  const previousClientX = React.useRef();
+
+  const handleOnPointerUp = e => {
+    const { pointerType } = e;
+
+    if (pointerType !== 'touch') {
+      return;
+    }
+
+    previousClientY.current = null;
+    previousClientX.current = null;
+  };
+
+  const handleOnPointerMove = e => {
+    const { pointerType, clientY, clientX } = e;
+
+    if (pointerType !== 'touch') {
+      return;
+    }
+
+    const parsedMinStartDate = parseNumericalFullDate(minStartDate);
+    const parsedMaxEndDate = parseNumericalFullDate(maxEndDate);
+    const maximumScrollDistance = calculateDuration(
+      parsedMinStartDate,
+      parsedMaxEndDate,
+      yearInPixels
+    );
+
+    const deltaY = (previousClientY.current ?? clientY) - clientY;
+    const deltaX = (previousClientX.current ?? clientX) - clientX;
+
+    previousClientY.current = clientY;
+    previousClientX.current = clientX;
+
+    setScrollTop(scrollTop =>
+      Math.min(Math.max(scrollTop + deltaY, 0), maximumScrollDistance - vh)
+    );
+    setScrollLeft(scrollLeft => scrollLeft + deltaX);
+  };
+  const handleOnPointerMoveThrottled = throttle(handleOnPointerMove, 100);
 
   React.useEffect(() => {
     setVw(
@@ -263,9 +306,13 @@ export const App = () => {
 
   React.useEffect(() => {
     document.addEventListener('wheel', handleOnWheelDocument);
+    document.addEventListener('pointerup', handleOnPointerUp);
+    document.addEventListener('pointermove', handleOnPointerMoveThrottled);
 
     return () => {
       document.removeEventListener('wheel', handleOnWheelDocument);
+      document.removeEventListener('pointerup', handleOnPointerUp);
+      document.removeEventListener('pointermove', handleOnPointerMoveThrottled);
     };
   }, [isCtrlPressed, isShiftPressed, minStartDate, maxEndDate]);
 
@@ -537,6 +584,7 @@ export const App = () => {
       <svg
         id="main-svg"
         className="fixed"
+        style={{ touchAction: 'none' }}
         width={vw}
         height={vh}
         viewBox={`${scrollLeft} ${scrollTop} ${vw} ${vh}`}
