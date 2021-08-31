@@ -116,8 +116,20 @@ export const App = () => {
     }
   };
 
-  const previousClientY = React.useRef();
-  const previousClientX = React.useRef();
+  const [pointerEvents, setPointerEvents] = React.useState({});
+  const [previousDifference, setPreviousDifference] = React.useState();
+  const [previousClientY, setPreviousClientY] = React.useState();
+  const [previousClientX, setPreviousClientX] = React.useState();
+
+  const handleOnPointerDown = e => {
+    const { pointerId, pointerType } = e;
+
+    if (pointerType !== 'touch') {
+      return;
+    }
+
+    setPointerEvents(pointerEvents => ({ ...pointerEvents, [pointerId]: e }));
+  };
 
   const handleOnPointerUp = e => {
     const { pointerType } = e;
@@ -126,35 +138,58 @@ export const App = () => {
       return;
     }
 
-    previousClientY.current = null;
-    previousClientX.current = null;
+    setPointerEvents({});
+    setPreviousDifference();
+    setPreviousClientY();
+    setPreviousClientX();
   };
 
   const handleOnPointerMove = e => {
-    const { pointerType, clientY, clientX } = e;
+    const { pointerId, pointerType, clientY, clientX } = e;
 
     if (pointerType !== 'touch') {
       return;
     }
 
-    const parsedMinStartDate = parseNumericalFullDate(minStartDate);
-    const parsedMaxEndDate = parseNumericalFullDate(maxEndDate);
-    const maximumScrollDistance = calculateDuration(
-      parsedMinStartDate,
-      parsedMaxEndDate,
-      yearInPixels
-    );
+    setPointerEvents(pointerEvents => ({ ...pointerEvents, [pointerId]: e }));
 
-    const deltaY = (previousClientY.current ?? clientY) - clientY;
-    const deltaX = (previousClientX.current ?? clientX) - clientX;
+    if (Object.keys(pointerEvents).length === 2) {
+      const [a, b] = Object.values(pointerEvents);
+      const { clientX: aClientX } = a;
+      const { clientX: bClientX } = b;
 
-    previousClientY.current = clientY;
-    previousClientX.current = clientX;
+      const currentDifference = Math.abs(aClientX - bClientX);
 
-    setScrollTop(scrollTop =>
-      Math.min(Math.max(scrollTop + deltaY, 0), maximumScrollDistance - vh)
-    );
-    setScrollLeft(scrollLeft => scrollLeft + deltaX);
+      setYearInPixels(
+        latestYearInPixels =>
+          latestYearInPixels +
+          (currentDifference - (previousDifference ?? currentDifference) > 0
+            ? 1
+            : -1) *
+            0.2
+      );
+
+      setPreviousDifference(currentDifference);
+    } else {
+      const parsedMinStartDate = parseNumericalFullDate(minStartDate);
+      const parsedMaxEndDate = parseNumericalFullDate(maxEndDate);
+      const maximumScrollDistance = calculateDuration(
+        parsedMinStartDate,
+        parsedMaxEndDate,
+        yearInPixels
+      );
+
+      const deltaY = (previousClientY ?? clientY) - clientY;
+      const deltaX = (previousClientX ?? clientX) - clientX;
+
+      setPreviousClientY(clientY);
+      setPreviousClientX(clientX);
+
+      setScrollTop(scrollTop =>
+        Math.min(Math.max(scrollTop + deltaY, 0), maximumScrollDistance - vh)
+      );
+      setScrollLeft(scrollLeft => scrollLeft + deltaX);
+    }
   };
   const handleOnPointerMoveThrottled = throttle(handleOnPointerMove, 100);
 
@@ -305,14 +340,22 @@ export const App = () => {
   };
 
   React.useEffect(() => {
-    document.addEventListener('wheel', handleOnWheelDocument);
+    document.addEventListener('pointerdown', handleOnPointerDown);
     document.addEventListener('pointerup', handleOnPointerUp);
     document.addEventListener('pointermove', handleOnPointerMoveThrottled);
 
     return () => {
-      document.removeEventListener('wheel', handleOnWheelDocument);
+      document.removeEventListener('pointerdown', handleOnPointerDown);
       document.removeEventListener('pointerup', handleOnPointerUp);
       document.removeEventListener('pointermove', handleOnPointerMoveThrottled);
+    };
+  }, [pointerEvents, previousDifference, previousClientY, previousClientX]);
+
+  React.useEffect(() => {
+    document.addEventListener('wheel', handleOnWheelDocument);
+
+    return () => {
+      document.removeEventListener('wheel', handleOnWheelDocument);
     };
   }, [isCtrlPressed, isShiftPressed, minStartDate, maxEndDate]);
 
