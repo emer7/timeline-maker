@@ -622,6 +622,13 @@ export const App = () => {
   const bottomButtonClassName =
     'px-8 h-12 flex items-center justify-center rounded-full cursor-pointer select-none text-white';
 
+  React.useEffect(() => {
+    window.addEventListener('contextmenu', e => {
+      e.preventDefault();
+      e.stopPropagation();
+    });
+  }, []);
+
   return (
     <div>
       <svg
