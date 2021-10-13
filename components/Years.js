@@ -1,5 +1,5 @@
 import {
-  parseFullNumericalFormat,
+  parseFullNumericalEraFormat,
   eachCenturyOfInterval,
   calculateDuration,
 } from '../utils';
@@ -10,8 +10,8 @@ export const Years = ({
   minStartDate,
   maxEndDate,
 }) => {
-  const parsedMinStartDate = parseFullNumericalFormat(minStartDate);
-  const parsedMaxEndDate = parseFullNumericalFormat(maxEndDate);
+  const parsedMinStartDate = parseFullNumericalEraFormat(minStartDate);
+  const parsedMaxEndDate = parseFullNumericalEraFormat(maxEndDate);
 
   const centuries = eachCenturyOfInterval({
     start: parsedMinStartDate,

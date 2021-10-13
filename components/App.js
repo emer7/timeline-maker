@@ -2,11 +2,11 @@ import React from 'react';
 import { isAfter, isBefore, max, min, format } from 'date-fns';
 
 import {
-  parseFullNumericalFormat,
+  parseFullNumericalEraFormat,
   parseMultipleFormat,
   calculateDuration,
 } from '../utils';
-import { NUMERICAL_FULL_DATE_FORMAT, SAMPLE_EVENT } from '../consts';
+import { FULL_NUMERICAL_ERA_FORMAT, SAMPLE_EVENT } from '../consts';
 
 import { Add } from './Add';
 import { Events } from './Events';
@@ -26,7 +26,7 @@ const calculateMinStartDate = events => {
 
   const minStartDate = min(mappedEvents);
 
-  return format(minStartDate, NUMERICAL_FULL_DATE_FORMAT);
+  return format(minStartDate, FULL_NUMERICAL_ERA_FORMAT);
 };
 
 const calculateMaxEndDate = events => {
@@ -36,7 +36,7 @@ const calculateMaxEndDate = events => {
 
   const maxEndDate = max(mappedEvents);
 
-  return format(maxEndDate, NUMERICAL_FULL_DATE_FORMAT);
+  return format(maxEndDate, FULL_NUMERICAL_ERA_FORMAT);
 };
 
 const setBoundaryDate = (events, setMinStartDate, setMaxEndDate) => {
@@ -101,8 +101,8 @@ export const App = () => {
     } else if (isShiftPressed) {
       setScrollLeft(scrollLeft => scrollLeft + deltaX);
     } else {
-      const parsedMinStartDate = parseFullNumericalFormat(minStartDate);
-      const parsedMaxEndDate = parseFullNumericalFormat(maxEndDate);
+      const parsedMinStartDate = parseFullNumericalEraFormat(minStartDate);
+      const parsedMaxEndDate = parseFullNumericalEraFormat(maxEndDate);
       const maximumScrollDistance = calculateDuration(
         parsedMinStartDate,
         parsedMaxEndDate,
@@ -201,13 +201,13 @@ export const App = () => {
 
     const parsedStartDate = parseMultipleFormat(startDate);
     const parsedEndDate = parseMultipleFormat(endDate);
-    const parsedMinStartDate = parseFullNumericalFormat(minStartDate);
-    const parsedMaxEndDate = parseFullNumericalFormat(maxEndDate);
+    const parsedMinStartDate = parseFullNumericalEraFormat(minStartDate);
+    const parsedMaxEndDate = parseFullNumericalEraFormat(maxEndDate);
 
     isBefore(parsedStartDate, parsedMinStartDate) &&
-      setMinStartDate(format(parsedStartDate, NUMERICAL_FULL_DATE_FORMAT));
+      setMinStartDate(format(parsedStartDate, FULL_NUMERICAL_ERA_FORMAT));
     isAfter(parsedEndDate, parsedMaxEndDate) &&
-      setMaxEndDate(format(parsedEndDate, NUMERICAL_FULL_DATE_FORMAT));
+      setMaxEndDate(format(parsedEndDate, FULL_NUMERICAL_ERA_FORMAT));
 
     setEvents([...events, event]);
     setPositions([...positions, scrollLeft + 25]);

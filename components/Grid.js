@@ -1,6 +1,6 @@
 import { BLACK, PALETTE } from '../consts';
 import {
-  parseFullNumericalFormat,
+  parseFullNumericalEraFormat,
   eachCenturyOfInterval,
   calculateDuration,
 } from '../utils';
@@ -12,8 +12,8 @@ export const Grid = ({
   minStartDate,
   maxEndDate,
 }) => {
-  const parsedMinStartDate = parseFullNumericalFormat(minStartDate);
-  const parsedMaxEndDate = parseFullNumericalFormat(maxEndDate);
+  const parsedMinStartDate = parseFullNumericalEraFormat(minStartDate);
+  const parsedMaxEndDate = parseFullNumericalEraFormat(maxEndDate);
 
   const centuries = eachCenturyOfInterval({
     start: parsedMinStartDate,

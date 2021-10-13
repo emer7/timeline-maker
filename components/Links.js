@@ -4,7 +4,7 @@ import { PALETTE, WIDTH } from '../consts';
 import {
   calculateDuration,
   parseMultipleFormat,
-  parseFullNumericalFormat,
+  parseFullNumericalEraFormat,
 } from '../utils';
 
 export const Links = ({
@@ -22,7 +22,7 @@ export const Links = ({
       events[origin];
     const { startDate: destinationStartDate } = events[destination];
 
-    const parsedMinStartDate = parseFullNumericalFormat(minStartDate);
+    const parsedMinStartDate = parseFullNumericalEraFormat(minStartDate);
 
     const parsedOriginStartDate = parseMultipleFormat(originStartDate);
     const parsedOriginEndDate = parseMultipleFormat(originEndDate);

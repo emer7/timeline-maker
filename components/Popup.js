@@ -11,7 +11,7 @@ import {
   calculateDuration,
   convertToHumanDate,
   parseMultipleFormat,
-  parseFullNumericalFormat,
+  parseFullNumericalEraFormat,
   trimEventProperties,
 } from '../utils';
 import { getFontWhiteOrBlack } from '../utils/color';
@@ -124,7 +124,7 @@ export const Popup = ({
 
   const { startDate: selectedStartDate } = selectedEvent;
 
-  const parsedMinStartDate = parseFullNumericalFormat(minStartDate);
+  const parsedMinStartDate = parseFullNumericalEraFormat(minStartDate);
   const parsedStartDate = parseMultipleFormat(selectedStartDate);
 
   const top = calculateDuration(

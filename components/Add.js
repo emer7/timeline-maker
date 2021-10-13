@@ -9,7 +9,7 @@ import {
 import { animated, useTransition, useSpring } from 'react-spring';
 
 import {
-  HUMAN_FULL_DATE_FORMAT,
+  FULL_HUMAN_FORMAT,
   PALETTE,
   RELIGION_OPTIONS,
   TYPE_OPTIONS,
@@ -70,12 +70,12 @@ export const Add = ({ handleAddEvent, handlePreviewEventChange }) => {
   const handleSetPlaceholderAsValue = () => {
     setDates({
       ...dates,
-      startDate: format(new Date(), HUMAN_FULL_DATE_FORMAT),
-      endDate: format(new Date(), HUMAN_FULL_DATE_FORMAT),
+      startDate: format(new Date(), FULL_HUMAN_FORMAT),
+      endDate: format(new Date(), FULL_HUMAN_FORMAT),
     });
     handlePreviewEventChange({
-      startDate: format(new Date(), HUMAN_FULL_DATE_FORMAT),
-      endDate: format(new Date(), HUMAN_FULL_DATE_FORMAT),
+      startDate: format(new Date(), FULL_HUMAN_FORMAT),
+      endDate: format(new Date(), FULL_HUMAN_FORMAT),
     });
   };
 

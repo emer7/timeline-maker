@@ -1,14 +1,19 @@
 import colors from 'tailwindcss/colors';
 
-export const NUMERICAL_FULL_DATE_FORMAT = 'd/M/yyyy';
-export const HUMAN_FULL_DATE_FORMAT = 'd MMMM yyyy';
+export const FULL_NUMERICAL_FORMAT = 'd/M/yyyy';
+export const FULL_NUMERICAL_ERA_FORMAT = 'd/M/yyyy G';
+export const FULL_HUMAN_FORMAT = 'd MMMM yyyy';
+export const FULL_HUMAN_ERA_FORMAT = 'd MMMM yyyy G';
+export const FULL_US_FORMAT = 'MMMM d, yyyy';
+export const FULL_US_ERA_FORMAT = 'MMMM d, yyyy G';
 
-export const NUMERICAL_MONTH_YEAR_FORMAT = 'M/yyyy';
-export const HUMAN_MONTH_YEAR_FORMAT = 'MMMM yyyy';
+export const MONTH_YEAR_NUMERICAL_FORMAT = 'M/yyyy';
+export const MONTH_YEAR_NUMERICAL_ERA_FORMAT = 'M/yyyy G';
+export const MONTH_YEAR_HUMAN_FORMAT = 'MMMM yyyy';
+export const MONTH_YEAR_HUMAN_ERA_FORMAT = 'MMMM yyyy G';
 
 export const YEAR_ONLY_FORMAT = 'yyyy';
-
-export const US_FULL_DATE_FORMAT = 'MMMM d, yyyy';
+export const YEAR_ONLY_ERA_FORMAT = 'yyyy G';
 
 export const WIDTH = 50;
 
