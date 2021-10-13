@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {
-  parseNumericalFullDate,
+  parseFullNumericalFormat,
   parseMultipleFormat,
   calculateDuration,
 } from '../utils';
@@ -38,7 +38,7 @@ export const Bar = ({ minStartDate, ...props }) => {
     religion,
   } = event;
 
-  const parsedMinStartDate = parseNumericalFullDate(minStartDate);
+  const parsedMinStartDate = parseFullNumericalFormat(minStartDate);
   const parsedStartDate = parseMultipleFormat(startDate);
   const parsedEndDate = parseMultipleFormat(endDate);
 

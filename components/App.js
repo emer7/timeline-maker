@@ -2,7 +2,7 @@ import React from 'react';
 import { isAfter, isBefore, max, min, format } from 'date-fns';
 
 import {
-  parseNumericalFullDate,
+  parseFullNumericalFormat,
   parseMultipleFormat,
   calculateDuration,
 } from '../utils';
@@ -101,8 +101,8 @@ export const App = () => {
     } else if (isShiftPressed) {
       setScrollLeft(scrollLeft => scrollLeft + deltaX);
     } else {
-      const parsedMinStartDate = parseNumericalFullDate(minStartDate);
-      const parsedMaxEndDate = parseNumericalFullDate(maxEndDate);
+      const parsedMinStartDate = parseFullNumericalFormat(minStartDate);
+      const parsedMaxEndDate = parseFullNumericalFormat(maxEndDate);
       const maximumScrollDistance = calculateDuration(
         parsedMinStartDate,
         parsedMaxEndDate,
@@ -201,8 +201,8 @@ export const App = () => {
 
     const parsedStartDate = parseMultipleFormat(startDate);
     const parsedEndDate = parseMultipleFormat(endDate);
-    const parsedMinStartDate = parseNumericalFullDate(minStartDate);
-    const parsedMaxEndDate = parseNumericalFullDate(maxEndDate);
+    const parsedMinStartDate = parseFullNumericalFormat(minStartDate);
+    const parsedMaxEndDate = parseFullNumericalFormat(maxEndDate);
 
     isBefore(parsedStartDate, parsedMinStartDate) &&
       setMinStartDate(format(parsedStartDate, NUMERICAL_FULL_DATE_FORMAT));
