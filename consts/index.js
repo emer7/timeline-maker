@@ -8,6 +8,8 @@ export const HUMAN_MONTH_YEAR_FORMAT = 'MMMM yyyy';
 
 export const YEAR_ONLY_FORMAT = 'yyyy';
 
+export const US_FULL_DATE_FORMAT = 'MMMM d, yyyy';
+
 export const WIDTH = 50;
 
 export const SAMPLE_EVENT = {

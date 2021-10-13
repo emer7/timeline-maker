@@ -5,41 +5,51 @@ import {
   NUMERICAL_MONTH_YEAR_FORMAT,
   HUMAN_MONTH_YEAR_FORMAT,
   YEAR_ONLY_FORMAT,
+  US_FULL_DATE_FORMAT,
 } from '../consts';
 
 export const convertToNumericalDate = humanDate =>
-  humanDate.includes(' ')
-    ? humanDate.split(' ').length === 2
-      ? format(parseMonthYearOnlyFormat(humanDate), NUMERICAL_MONTH_YEAR_FORMAT)
-      : format(parseFullFormat(humanDate), NUMERICAL_FULL_DATE_FORMAT)
-    : humanDate;
+  !humanDate.includes(' ')
+    ? humanDate
+    : isAmericanFullFormat(humanDate)
+    ? format(parseAmericanFullFormat(humanDate), NUMERICAL_FULL_DATE_FORMAT)
+    : isMonthYearOnlyFormat(humanDate)
+    ? format(parseMonthYearOnlyFormat(humanDate), NUMERICAL_MONTH_YEAR_FORMAT)
+    : format(parseFullFormat(humanDate), NUMERICAL_FULL_DATE_FORMAT);
 
 export const convertToHumanDate = numericalDate =>
-  numericalDate.includes('/')
-    ? numericalDate.split('/').length === 2
-      ? format(parseMonthYearOnlyFormat(numericalDate), HUMAN_MONTH_YEAR_FORMAT)
-      : format(parseFullFormat(numericalDate), HUMAN_FULL_DATE_FORMAT)
-    : numericalDate;
+  !numericalDate.includes('/')
+    ? numericalDate
+    : isMonthYearOnlyFormat(numericalDate)
+    ? format(parseMonthYearOnlyFormat(numericalDate), HUMAN_MONTH_YEAR_FORMAT)
+    : format(parseFullFormat(numericalDate), HUMAN_FULL_DATE_FORMAT);
 
-export const parseMultipleFormat = date =>
-  !date
+export const parseMultipleFormat = dateString =>
+  !dateString
     ? todayDate()
-    : isYearOnly(date)
-    ? parseYearOnlyFormat(date)
-    : isMonthYearOnly(date)
-    ? parseMonthYearOnlyFormat(date)
-    : parseFullFormat(date);
+    : isAmericanFullFormat(dateString)
+    ? parseAmericanFullFormat(dateString)
+    : isYearOnlyFormat(dateString)
+    ? parseYearOnlyFormat(dateString)
+    : isMonthYearOnlyFormat(dateString)
+    ? parseMonthYearOnlyFormat(dateString)
+    : parseFullFormat(dateString);
 
 export const todayDate = () =>
   parseFullNumericalFormat(format(new Date(), NUMERICAL_FULL_DATE_FORMAT));
 
-export const isYearOnly = dateString =>
+export const isAmericanFullFormat = dateString => dateString.includes(',');
+
+export const parseAmericanFullFormat = dateString =>
+  parse(dateString, US_FULL_DATE_FORMAT, new Date());
+
+export const isYearOnlyFormat = dateString =>
   !dateString.includes(' ') && !dateString.includes('/');
 
 export const parseYearOnlyFormat = dateString =>
   parse(dateString, YEAR_ONLY_FORMAT, new Date(0, 1, 1));
 
-export const isMonthYearOnly = dateString =>
+export const isMonthYearOnlyFormat = dateString =>
   dateString.split(' ').length === 2 || dateString.split('/').length === 2;
 
 export const parseMonthYearOnlyFormat = dateString =>
