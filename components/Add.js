@@ -36,7 +36,6 @@ export const Add = ({ handleAddEvent, handlePreviewEventChange }) => {
   const [isPopupOpen, setIsPopupOpen] = React.useState(false);
   const handleDrawerToggle = () => {
     setIsPopupOpen(!isPopupOpen);
-    setIsColorPicker(false);
     handlePreviewEventChange();
   };
 
@@ -51,6 +50,40 @@ export const Add = ({ handleAddEvent, handlePreviewEventChange }) => {
     transform: `rotate(${isPopupOpen ? 45 : 0}deg)`,
   });
 
+  return (
+    <>
+      {popupTransition(
+        (styles, isShown) =>
+          isShown && (
+            <animated.div
+              className="absolute bottom-16 right-0 flex flex-col space-y-4 items-end"
+              style={styles}
+            >
+              <AddForm
+                handleAddEvent={handleAddEvent}
+                handlePreviewEventChange={handlePreviewEventChange}
+                handleDrawerToggle={handleDrawerToggle}
+              />
+            </animated.div>
+          )
+      )}
+
+      <animated.div
+        className="w-12 h-12 flex items-center justify-center rounded-full cursor-pointer text-white bg-gray-600"
+        style={buttonRotation}
+        onClick={handleDrawerToggle}
+      >
+        <AddIcon />
+      </animated.div>
+    </>
+  );
+};
+
+const AddForm = ({
+  handleAddEvent,
+  handlePreviewEventChange,
+  handleDrawerToggle,
+}) => {
   const [dates, setDates] = React.useState({
     startDate: '',
     endDate: '',
@@ -187,132 +220,107 @@ export const Add = ({ handleAddEvent, handlePreviewEventChange }) => {
 
   return (
     <>
-      {popupTransition(
-        (styles, isShown) =>
-          isShown && (
-            <animated.div
-              className="absolute bottom-16 right-0 flex flex-col space-y-4 items-end"
-              style={styles}
-            >
-              {isColorPicker && (
-                <ColorPicker
-                  color={color}
-                  onChangeComplete={handleOnColorChange}
-                />
-              )}
-
-              <div className="flex flex-col rounded-lg bg-white shadow-lg overflow-hidden">
-                <div
-                  className={`relative flex items-center justify-center cursor-pointer ${
-                    isBlackOrWhite === 'black' ? 'text-black' : 'text-white'
-                  }`}
-                  style={{ backgroundColor: color }}
-                  onClick={handleToggleColorPicker}
-                >
-                  <PaletteIcon className="absolute right-4" />
-                  <input
-                    className={`my-2 py-1 px-3 box-border text-center focus:outline-none border-b-2 border-transparent bg-transparent ${
-                      isBlackOrWhite === 'black'
-                        ? 'placeholder-black hover:border-black focus:border-black'
-                        : 'placeholder-white hover:border-white focus:border-white'
-                    }`}
-                    onChange={handleDescriptionChange}
-                    onClick={e => e.stopPropagation()}
-                    value={description}
-                    placeholder="Add a description"
-                  />
-                </div>
-                <div className="flex flex-col space-y-2 p-4">
-                  <div className="flex space-x-1">
-                    <input
-                      className={inputClassName(startDate)}
-                      onChange={handleStartDateChange}
-                      onClick={
-                        !startDate && !endDate
-                          ? handleSetPlaceholderAsValue
-                          : () => {}
-                      }
-                      value={startDate}
-                      placeholder="Add start date"
-                    />
-                    <input
-                      className={inputClassName(endDate)}
-                      onChange={handleEndDateChange}
-                      onClick={
-                        !startDate && !endDate
-                          ? handleSetPlaceholderAsValue
-                          : () => {}
-                      }
-                      value={endDate}
-                      placeholder="Add end date"
-                    />
-                  </div>
-                  {type === 'people' && (
-                    <div className="flex space-x-1">
-                      <input
-                        className={inputClassName(reignStartDate)}
-                        onChange={handleReignStartDateChange}
-                        value={reignStartDate || ''}
-                        placeholder="Add reign start date"
-                      />
-                      <input
-                        className={inputClassName(reignEndDate)}
-                        onChange={handleReignEndDateChange}
-                        value={reignEndDate || ''}
-                        placeholder="Add reign end date"
-                      />
-                    </div>
-                  )}
-
-                  <div className="flex items-center space-x-1">
-                    {type === 'event' ? <EventIcon /> : <PeopleIcon />}
-                    <select
-                      className="p-2 rounded-lg hover:bg-gray-100 focus:outline-none cursor-pointer w-full"
-                      onChange={handleTypeChange}
-                      value={type}
-                    >
-                      {Object.entries(TYPE_OPTIONS).map(
-                        ([optionValue, optionDisplay]) => (
-                          <option key={optionValue} value={optionValue}>
-                            {optionDisplay}
-                          </option>
-                        )
-                      )}
-                    </select>
-                    <select
-                      className="p-2 rounded-lg hover:bg-gray-100 focus:outline-none cursor-pointer w-full"
-                      onChange={handleReligionChange}
-                      value={religion}
-                    >
-                      {Object.entries(RELIGION_OPTIONS).map(
-                        ([optionValue, optionDisplay]) => (
-                          <option key={optionValue} value={optionValue}>
-                            {optionDisplay}
-                          </option>
-                        )
-                      )}
-                    </select>
-                  </div>
-
-                  <button
-                    className="py-1 w-full text-white bg-blue-400 rounded-lg"
-                    onClick={handleOnClickAddButton}
-                  >
-                    Add
-                  </button>
-                </div>
-              </div>
-            </animated.div>
-          )
+      {isColorPicker && (
+        <ColorPicker color={color} onChangeComplete={handleOnColorChange} />
       )}
 
-      <animated.div
-        className="w-12 h-12 flex items-center justify-center rounded-full cursor-pointer text-white bg-gray-600"
-        style={buttonRotation}
-        onClick={handleDrawerToggle}
-      >
-        <AddIcon />
-      </animated.div>
+      <div className="flex flex-col rounded-lg bg-white shadow-lg overflow-hidden">
+        <div
+          className={`relative flex items-center justify-center cursor-pointer ${
+            isBlackOrWhite === 'black' ? 'text-black' : 'text-white'
+          }`}
+          style={{ backgroundColor: color }}
+          onClick={handleToggleColorPicker}
+        >
+          <PaletteIcon className="absolute right-4" />
+          <input
+            className={`my-2 py-1 px-3 box-border text-center focus:outline-none border-b-2 border-transparent bg-transparent ${
+              isBlackOrWhite === 'black'
+                ? 'placeholder-black hover:border-black focus:border-black'
+                : 'placeholder-white hover:border-white focus:border-white'
+            }`}
+            onChange={handleDescriptionChange}
+            onClick={e => e.stopPropagation()}
+            value={description}
+            placeholder="Add a description"
+          />
+        </div>
+        <div className="flex flex-col space-y-2 p-4">
+          <div className="flex space-x-1">
+            <input
+              className={inputClassName(startDate)}
+              onChange={handleStartDateChange}
+              onClick={
+                !startDate && !endDate ? handleSetPlaceholderAsValue : () => {}
+              }
+              value={startDate}
+              placeholder="Add start date"
+            />
+            <input
+              className={inputClassName(endDate)}
+              onChange={handleEndDateChange}
+              onClick={
+                !startDate && !endDate ? handleSetPlaceholderAsValue : () => {}
+              }
+              value={endDate}
+              placeholder="Add end date"
+            />
+          </div>
+          {type === 'people' && (
+            <div className="flex space-x-1">
+              <input
+                className={inputClassName(reignStartDate)}
+                onChange={handleReignStartDateChange}
+                value={reignStartDate || ''}
+                placeholder="Add reign start date"
+              />
+              <input
+                className={inputClassName(reignEndDate)}
+                onChange={handleReignEndDateChange}
+                value={reignEndDate || ''}
+                placeholder="Add reign end date"
+              />
+            </div>
+          )}
+
+          <div className="flex items-center space-x-1">
+            {type === 'event' ? <EventIcon /> : <PeopleIcon />}
+            <select
+              className="p-2 rounded-lg hover:bg-gray-100 focus:outline-none cursor-pointer w-full"
+              onChange={handleTypeChange}
+              value={type}
+            >
+              {Object.entries(TYPE_OPTIONS).map(
+                ([optionValue, optionDisplay]) => (
+                  <option key={optionValue} value={optionValue}>
+                    {optionDisplay}
+                  </option>
+                )
+              )}
+            </select>
+            <select
+              className="p-2 rounded-lg hover:bg-gray-100 focus:outline-none cursor-pointer w-full"
+              onChange={handleReligionChange}
+              value={religion}
+            >
+              {Object.entries(RELIGION_OPTIONS).map(
+                ([optionValue, optionDisplay]) => (
+                  <option key={optionValue} value={optionValue}>
+                    {optionDisplay}
+                  </option>
+                )
+              )}
+            </select>
+          </div>
+
+          <button
+            className="py-1 w-full text-white bg-blue-400 rounded-lg"
+            onClick={handleOnClickAddButton}
+          >
+            Add
+          </button>
+        </div>
+      </div>
     </>
   );
 };
