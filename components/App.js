@@ -225,9 +225,10 @@ export const App = () => {
       .filter(
         ({ origin, destination }) => origin !== index && destination !== index
       )
-      .map(({ origin, destination }) => ({
+      .map(({ origin, destination, ...linkProps }) => ({
         origin: origin < index ? origin : origin - 1,
         destination: destination < index ? destination : destination - 1,
+        ...linkProps,
       }));
 
     setLinks(editedLinks);
