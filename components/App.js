@@ -1,12 +1,8 @@
 import React from 'react';
-import { isAfter, isBefore, max, min, format } from 'date-fns';
+import { isAfter, isBefore, max, min } from 'date-fns';
 
-import {
-  parseFullNumericalEraFormat,
-  parseMultipleFormat,
-  calculateDuration,
-} from '../utils';
-import { FULL_NUMERICAL_ERA_FORMAT, SAMPLE_EVENT } from '../consts';
+import { parseMultipleFormat, calculateDuration } from '../utils';
+import { SAMPLE_EVENT } from '../consts';
 
 import { Add } from './Add';
 import { Events } from './Events';
@@ -24,9 +20,7 @@ const calculateMinStartDate = events => {
     .map(({ startDate }) => startDate)
     .map(startDate => parseMultipleFormat(startDate));
 
-  const minStartDate = min(mappedEvents);
-
-  return format(minStartDate, FULL_NUMERICAL_ERA_FORMAT);
+  return min(mappedEvents);
 };
 
 const calculateMaxEndDate = events => {
@@ -34,9 +28,7 @@ const calculateMaxEndDate = events => {
     .map(({ endDate }) => endDate)
     .map(endDate => parseMultipleFormat(endDate));
 
-  const maxEndDate = max(mappedEvents);
-
-  return format(maxEndDate, FULL_NUMERICAL_ERA_FORMAT);
+  return max(mappedEvents);
 };
 
 const setBoundaryDate = (events, setMinStartDate, setMaxEndDate) => {
@@ -101,11 +93,9 @@ export const App = () => {
     } else if (isShiftPressed) {
       setScrollLeft(scrollLeft => scrollLeft + deltaX);
     } else {
-      const parsedMinStartDate = parseFullNumericalEraFormat(minStartDate);
-      const parsedMaxEndDate = parseFullNumericalEraFormat(maxEndDate);
       const maximumScrollDistance = calculateDuration(
-        parsedMinStartDate,
-        parsedMaxEndDate,
+        minStartDate,
+        maxEndDate,
         yearInPixels
       );
 
@@ -168,8 +158,7 @@ export const App = () => {
 
     if (parsedEvents) {
       setEvents(parsedEvents);
-      setMinStartDate(calculateMinStartDate(parsedEvents));
-      setMaxEndDate(calculateMaxEndDate(parsedEvents));
+      setBoundaryDate(parsedEvents, setMinStartDate, setMaxEndDate);
       setVisibility(parsedEvents.map(_ => true));
     }
     parsedPositions && setPositions(parsedPositions);
@@ -201,13 +190,9 @@ export const App = () => {
 
     const parsedStartDate = parseMultipleFormat(startDate);
     const parsedEndDate = parseMultipleFormat(endDate);
-    const parsedMinStartDate = parseFullNumericalEraFormat(minStartDate);
-    const parsedMaxEndDate = parseFullNumericalEraFormat(maxEndDate);
 
-    isBefore(parsedStartDate, parsedMinStartDate) &&
-      setMinStartDate(format(parsedStartDate, FULL_NUMERICAL_ERA_FORMAT));
-    isAfter(parsedEndDate, parsedMaxEndDate) &&
-      setMaxEndDate(format(parsedEndDate, FULL_NUMERICAL_ERA_FORMAT));
+    isBefore(parsedStartDate, minStartDate) && setMinStartDate(parsedStartDate);
+    isAfter(parsedEndDate, maxEndDate) && setMaxEndDate(parsedEndDate);
 
     setEvents([...events, event]);
     setPositions([...positions, scrollLeft + 25]);

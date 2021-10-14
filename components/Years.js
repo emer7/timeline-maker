@@ -1,8 +1,4 @@
-import {
-  parseFullNumericalEraFormat,
-  eachCenturyOfInterval,
-  calculateDuration,
-} from '../utils';
+import { eachCenturyOfInterval, calculateDuration } from '../utils';
 
 export const Years = ({
   scrollLeft,
@@ -10,19 +6,16 @@ export const Years = ({
   minStartDate,
   maxEndDate,
 }) => {
-  const parsedMinStartDate = parseFullNumericalEraFormat(minStartDate);
-  const parsedMaxEndDate = parseFullNumericalEraFormat(maxEndDate);
-
   const centuries = eachCenturyOfInterval({
-    start: parsedMinStartDate,
-    end: parsedMaxEndDate,
+    start: minStartDate,
+    end: maxEndDate,
   });
 
   return (
     <g>
       {centuries.map(century => {
         const centuryDuration = calculateDuration(
-          parsedMinStartDate,
+          minStartDate,
           century,
           yearInPixels
         );

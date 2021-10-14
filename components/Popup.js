@@ -11,7 +11,6 @@ import {
   calculateDuration,
   convertToHumanDate,
   parseMultipleFormat,
-  parseFullNumericalEraFormat,
   trimEventProperties,
 } from '../utils';
 import { getFontWhiteOrBlack } from '../utils/color';
@@ -124,14 +123,9 @@ export const Popup = ({
 
   const { startDate: selectedStartDate } = selectedEvent;
 
-  const parsedMinStartDate = parseFullNumericalEraFormat(minStartDate);
   const parsedStartDate = parseMultipleFormat(selectedStartDate);
 
-  const top = calculateDuration(
-    parsedMinStartDate,
-    parsedStartDate,
-    yearInPixels
-  );
+  const top = calculateDuration(minStartDate, parsedStartDate, yearInPixels);
 
   const [isColorPicker, setIsColorPicker] = React.useState(false);
   const handleToggleColorPicker = e => {

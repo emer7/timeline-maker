@@ -1,11 +1,7 @@
 import React from 'react';
 import { PALETTE, WIDTH } from '../consts';
 
-import {
-  calculateDuration,
-  parseMultipleFormat,
-  parseFullNumericalEraFormat,
-} from '../utils';
+import { calculateDuration, parseMultipleFormat } from '../utils';
 
 export const Links = ({
   yearInPixels,
@@ -22,8 +18,6 @@ export const Links = ({
       events[origin];
     const { startDate: destinationStartDate } = events[destination];
 
-    const parsedMinStartDate = parseFullNumericalEraFormat(minStartDate);
-
     const parsedOriginStartDate = parseMultipleFormat(originStartDate);
     const parsedOriginEndDate = parseMultipleFormat(originEndDate);
 
@@ -36,14 +30,14 @@ export const Links = ({
       yearInPixels
     );
     const originTop = calculateDuration(
-      parsedMinStartDate,
+      minStartDate,
       parsedOriginStartDate,
       yearInPixels
     );
     const originLeft = positions[origin];
 
     const destinationTop = calculateDuration(
-      parsedMinStartDate,
+      minStartDate,
       parsedDestinationStartDate,
       yearInPixels
     );

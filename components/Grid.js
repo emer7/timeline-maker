@@ -1,9 +1,5 @@
-import { BLACK, PALETTE } from '../consts';
-import {
-  parseFullNumericalEraFormat,
-  eachCenturyOfInterval,
-  calculateDuration,
-} from '../utils';
+import { PALETTE } from '../consts';
+import { eachCenturyOfInterval, calculateDuration } from '../utils';
 
 export const Grid = ({
   scrollLeft,
@@ -12,19 +8,16 @@ export const Grid = ({
   minStartDate,
   maxEndDate,
 }) => {
-  const parsedMinStartDate = parseFullNumericalEraFormat(minStartDate);
-  const parsedMaxEndDate = parseFullNumericalEraFormat(maxEndDate);
-
   const centuries = eachCenturyOfInterval({
-    start: parsedMinStartDate,
-    end: parsedMaxEndDate,
+    start: minStartDate,
+    end: maxEndDate,
   });
 
   return (
     <g>
       {centuries.map(century => {
         const centuryDuration = calculateDuration(
-          parsedMinStartDate,
+          minStartDate,
           century,
           yearInPixels
         );

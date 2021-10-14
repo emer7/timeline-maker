@@ -1,10 +1,6 @@
 import React from 'react';
 
-import {
-  parseFullNumericalEraFormat,
-  parseMultipleFormat,
-  calculateDuration,
-} from '../utils';
+import { parseMultipleFormat, calculateDuration } from '../utils';
 import { getFontWhiteOrBlack } from '../utils/color';
 
 import { WIDTH, PALETTE, WHITE, RELIGION_PALETTE, BLACK } from '../consts';
@@ -38,7 +34,6 @@ export const Bar = ({ minStartDate, ...props }) => {
     religion,
   } = event;
 
-  const parsedMinStartDate = parseFullNumericalEraFormat(minStartDate);
   const parsedStartDate = parseMultipleFormat(startDate);
   const parsedEndDate = parseMultipleFormat(endDate);
 
@@ -51,7 +46,7 @@ export const Bar = ({ minStartDate, ...props }) => {
     );
 
     startDurationInPixels = calculateDuration(
-      parsedMinStartDate,
+      minStartDate,
       parsedStartDate,
       yearInPixels
     );
