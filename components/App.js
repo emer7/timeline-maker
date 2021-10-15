@@ -501,6 +501,11 @@ export const App = () => {
       : setPreviewEvent();
   };
 
+  const [isTitleClipped, setIsTitleClipped] = React.useState(true);
+  const handleTitleClippingToggle = () => {
+    setIsTitleClipped(!isTitleClipped);
+  };
+
   const handleSaveData = () => {
     localStorage.setItem('events', JSON.stringify(events));
     localStorage.setItem('positions', JSON.stringify(positions));
@@ -555,6 +560,7 @@ export const App = () => {
           destination={destination}
           groupSelection={groupSelection}
           isReligion={isReligion}
+          isTitleClipped={isTitleClipped}
           handleOnMouseDownOnBar={handleOnMouseDownOnBar}
           handleOnMouseUp={handleOnMouseUp}
           handleOnMouseLeave={handleOnMouseLeave}
@@ -625,6 +631,12 @@ export const App = () => {
               {origin !== -1 && destination !== -1 && (
                 <AddLink handleAddLink={handleAddLink} />
               )}
+              <div
+                className={`${bottomButtonClassName} bg-blue-400`}
+                onClick={handleTitleClippingToggle}
+              >
+                Toggle Title
+              </div>
               <div
                 className={`${bottomButtonClassName} bg-gray-400`}
                 onClick={handleToggleIsReligion}

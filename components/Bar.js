@@ -19,6 +19,7 @@ export const Bar = ({ minStartDate, ...props }) => {
     isDestination,
     isGroupSelection,
     isReligion,
+    isTitleClipped,
     handleOnMouseDown,
     handleOnMouseUp,
     handleOnMouseLeave,
@@ -98,7 +99,11 @@ export const Bar = ({ minStartDate, ...props }) => {
       />
       <text
         className={textClassName}
-        style={{ clipPath: 'inset(0px calc(50% - 18px))' }}
+        style={
+          isTitleClipped
+            ? { clipPath: 'inset(0px calc(50% - 18px))' }
+            : undefined
+        }
         x={x + WIDTH / 2}
         y={y + durationInPixels / 2}
         textAnchor="middle"
@@ -127,6 +132,7 @@ export const WithReign = ({
   isDestination,
   isGroupSelection,
   isReligion,
+  isTitleClipped,
   startDurationInPixels,
   handleOnMouseDown,
   handleOnMouseUp,
@@ -143,7 +149,6 @@ export const WithReign = ({
 
   let reignDurationInPixels;
   let reignStartDurationInPixels;
-  let postReignDurationInPixels;
   let durationInPixels;
   try {
     const calculatedReignDurationInPixels = calculateDuration(
@@ -174,15 +179,10 @@ export const WithReign = ({
       (calculatedReignStartDurationInPixels / calculatedDurationInPixels) * 24,
       calculatedReignStartDurationInPixels
     );
-    postReignDurationInPixels = Math.max(
-      (calculatedPostReignDurationInPixels / calculatedDurationInPixels) * 24,
-      calculatedPostReignDurationInPixels
-    );
     durationInPixels = Math.max(24, calculatedDurationInPixels);
   } catch {
     reignDurationInPixels = 0;
     reignStartDurationInPixels = 0;
-    postReignDurationInPixels = 0;
     durationInPixels = 0;
   }
 
@@ -246,7 +246,11 @@ export const WithReign = ({
       />
       <text
         className={textClassName}
-        style={{ clipPath: 'inset(0px calc(50% - 18px))' }}
+        style={
+          isTitleClipped
+            ? { clipPath: 'inset(0px calc(50% - 18px))' }
+            : undefined
+        }
         x={x + WIDTH / 2}
         y={y + durationInPixels / 2}
         textAnchor="middle"
