@@ -18,6 +18,7 @@ export const Events = ({
   origin,
   destination,
   isReligion,
+  isTitleClipped,
   groupSelection,
   handleOnMouseDownOnBar,
   handleOnMouseUp,
@@ -72,6 +73,7 @@ export const Events = ({
           isDestination={destination === eventIndex}
           isGroupSelection={isGroupSelection}
           isReligion={isReligion}
+          isTitleClipped={isTitleClipped}
           handleOnMouseDown={() => handleOnMouseDownOnBar(eventIndex)}
           handleOnMouseUp={e => handleOnMouseUp(e, eventIndex)}
           handleOnMouseLeave={handleOnMouseLeave}
