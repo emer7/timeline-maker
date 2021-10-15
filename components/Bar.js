@@ -69,6 +69,8 @@ export const Bar = ({ minStartDate, ...props }) => {
   const y = temporaryVerticalPosition || startDurationInPixels;
   const fill = isReligion ? RELIGION_PALETTE[religion] : color ?? PALETTE[16];
 
+  const isHeightLargerThanWidth = durationInPixels > WIDTH;
+
   return reignStartDate && reignEndDate ? (
     <WithReign startDurationInPixels={startDurationInPixels} {...props}>
       {description}
@@ -108,6 +110,11 @@ export const Bar = ({ minStartDate, ...props }) => {
         y={y + durationInPixels / 2}
         textAnchor="middle"
         alignmentBaseline="middle"
+        transform={
+          isHeightLargerThanWidth
+            ? `rotate(270,${x + WIDTH / 2},${y + durationInPixels / 2})`
+            : undefined
+        }
         fill={getFontWhiteOrBlack(fill)}
         onMouseDown={handleOnMouseDown}
         onMouseUp={handleOnMouseUp}
@@ -199,6 +206,8 @@ export const WithReign = ({
   const y = temporaryVerticalPosition || startDurationInPixels;
   const fill = isReligion ? RELIGION_PALETTE[religion] : color ?? PALETTE[10];
 
+  const isHeightLargerThanWidth = durationInPixels > WIDTH;
+
   return (
     <g>
       <rect
@@ -255,6 +264,11 @@ export const WithReign = ({
         y={y + durationInPixels / 2}
         textAnchor="middle"
         alignmentBaseline="middle"
+        transform={
+          isHeightLargerThanWidth
+            ? `rotate(270,${x + WIDTH / 2},${y + durationInPixels / 2})`
+            : undefined
+        }
         fill={getFontWhiteOrBlack(fill)}
         onMouseDown={handleOnMouseDown}
         onMouseUp={handleOnMouseUp}
