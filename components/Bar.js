@@ -99,29 +99,41 @@ export const Bar = ({ minStartDate, ...props }) => {
         onMouseUp={handleOnMouseUp}
         onMouseLeave={handleOnMouseLeave}
       />
-      <text
-        className={textClassName}
-        style={
+      <clipPath id={`${parsedStartDate.getTime()}${parsedEndDate.getTime()}`}>
+        <rect
+          x={x + (canEventMove ? 1.5 : 0.5)}
+          y={y + (canEventMove ? 1.5 : 0.5)}
+          rx={canEventMove ? 2.5 : 3.5}
+          height={Math.max(0, durationInPixels - (canEventMove ? 3 : 1))}
+          width={WIDTH - (canEventMove ? 3 : 1)}
+        />
+      </clipPath>
+      <g
+        clipPath={
           isTitleClipped
-            ? { clipPath: 'inset(0px calc(50% - 18px))' }
+            ? `url(#${parsedStartDate.getTime()}${parsedEndDate.getTime()})`
             : undefined
         }
-        x={x + WIDTH / 2}
-        y={y + durationInPixels / 2}
-        textAnchor="middle"
-        alignmentBaseline="middle"
-        transform={
-          isHeightLargerThanWidth
-            ? `rotate(270,${x + WIDTH / 2},${y + durationInPixels / 2})`
-            : undefined
-        }
-        fill={getFontWhiteOrBlack(fill)}
-        onMouseDown={handleOnMouseDown}
-        onMouseUp={handleOnMouseUp}
-        onMouseLeave={handleOnMouseLeave}
       >
-        {description}
-      </text>
+        <text
+          className={textClassName}
+          x={x + WIDTH / 2}
+          y={y + durationInPixels / 2}
+          textAnchor="middle"
+          alignmentBaseline="middle"
+          transform={
+            isHeightLargerThanWidth
+              ? `rotate(270,${x + WIDTH / 2},${y + durationInPixels / 2})`
+              : undefined
+          }
+          fill={getFontWhiteOrBlack(fill)}
+          onMouseDown={handleOnMouseDown}
+          onMouseUp={handleOnMouseUp}
+          onMouseLeave={handleOnMouseLeave}
+        >
+          {description}
+        </text>
+      </g>
     </g>
   );
 };
@@ -232,7 +244,7 @@ export const WithReign = ({
         onMouseUp={handleOnMouseUp}
         onMouseLeave={handleOnMouseLeave}
       />
-      <clipPath id={parsedReignStartDate.getTime()}>
+      <clipPath id={`${parsedStartDate.getTime()}${parsedEndDate.getTime()}`}>
         <rect
           x={x + (canEventMove ? 1.5 : 0.5)}
           y={y + (canEventMove ? 1.5 : 0.5)}
@@ -253,29 +265,32 @@ export const WithReign = ({
         onMouseLeave={handleOnMouseLeave}
         clipPath={`url(#${parsedReignStartDate.getTime()})`}
       />
-      <text
-        className={textClassName}
-        style={
+      <g
+        clipPath={
           isTitleClipped
-            ? { clipPath: 'inset(0px calc(50% - 18px))' }
+            ? `url(#${parsedStartDate.getTime()}${parsedEndDate.getTime()})`
             : undefined
         }
-        x={x + WIDTH / 2}
-        y={y + durationInPixels / 2}
-        textAnchor="middle"
-        alignmentBaseline="middle"
-        transform={
-          isHeightLargerThanWidth
-            ? `rotate(270,${x + WIDTH / 2},${y + durationInPixels / 2})`
-            : undefined
-        }
-        fill={getFontWhiteOrBlack(fill)}
-        onMouseDown={handleOnMouseDown}
-        onMouseUp={handleOnMouseUp}
-        onMouseLeave={handleOnMouseLeave}
       >
-        {children}
-      </text>
+        <text
+          className={textClassName}
+          x={x + WIDTH / 2}
+          y={y + durationInPixels / 2}
+          textAnchor="middle"
+          alignmentBaseline="middle"
+          transform={
+            isHeightLargerThanWidth
+              ? `rotate(270,${x + WIDTH / 2},${y + durationInPixels / 2})`
+              : undefined
+          }
+          fill={getFontWhiteOrBlack(fill)}
+          onMouseDown={handleOnMouseDown}
+          onMouseUp={handleOnMouseUp}
+          onMouseLeave={handleOnMouseLeave}
+        >
+          {children}
+        </text>
+      </g>
     </g>
   );
 };
