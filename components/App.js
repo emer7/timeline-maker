@@ -506,6 +506,83 @@ export const App = () => {
     setIsTitleClipped(!isTitleClipped);
   };
 
+  const [selectBoxStartingX, setSelectBoxStartingX] = React.useState(-1);
+  const [selectBoxStartingY, setSelectBoxStartingY] = React.useState(-1);
+  const [selectBoxEndingX, setSelectBoxEndingX] = React.useState(-1);
+  const [selectBoxEndingY, setSelectBoxEndingY] = React.useState(-1);
+  const handleSvgMouseDown = e => {
+    const { clientX, clientY } = e;
+
+    const calculatedX = clientX + scrollLeft;
+    const calculatedY = clientY + scrollTop;
+
+    setSelectBoxStartingX(calculatedX);
+    setSelectBoxStartingY(calculatedY);
+    setSelectBoxEndingY(calculatedX);
+    setSelectBoxEndingY(calculatedY);
+  };
+
+  const handleSvgMouseMove = e => {
+    const { clientX, clientY } = e;
+
+    const calculatedX = clientX + scrollLeft;
+    const calculatedY = clientY + scrollTop;
+
+    setSelectBoxEndingX(calculatedX);
+    setSelectBoxEndingY(calculatedY);
+
+    const selectedEvent = events
+      .map((_, eventIndex) => eventIndex)
+      .filter(eventIndex => {
+        const position = positions[eventIndex] - 25;
+
+        const { startDate, endDate } = events[eventIndex];
+        const parsedStartDate = parseMultipleFormat(startDate);
+        const parsedEndDate = parseMultipleFormat(endDate);
+
+        let durationInPixels;
+        let startDurationInPixels;
+        try {
+          durationInPixels = Math.max(
+            24,
+            calculateDuration(parsedStartDate, parsedEndDate, yearInPixels)
+          );
+
+          startDurationInPixels = calculateDuration(
+            minStartDate,
+            parsedStartDate,
+            yearInPixels
+          );
+        } catch {
+          durationInPixels = 0;
+          startDurationInPixels = 0;
+        }
+
+        const endDurationInPixels = startDurationInPixels + durationInPixels;
+
+        return (
+          position <= Math.max(selectBoxStartingX, calculatedX) &&
+          Math.min(selectBoxStartingX, calculatedX) <= position + 50 &&
+          startDurationInPixels <= Math.max(selectBoxStartingY, calculatedY) &&
+          Math.min(selectBoxStartingY, calculatedY) <= endDurationInPixels
+        );
+      });
+
+    setGroupSelection(
+      selectedEvent.sort(
+        (eventAIndex, eventBIndex) =>
+          positions[eventAIndex] - positions[eventBIndex]
+      )
+    );
+  };
+
+  const handleSvgMouseUp = () => {
+    setSelectBoxStartingX(-1);
+    setSelectBoxStartingY(-1);
+    setSelectBoxEndingY(-1);
+    setSelectBoxEndingY(-1);
+  };
+
   const handleSaveData = () => {
     localStorage.setItem('events', JSON.stringify(events));
     localStorage.setItem('positions', JSON.stringify(positions));
@@ -532,6 +609,13 @@ export const App = () => {
         height={vh}
         viewBox={`${scrollLeft} ${scrollTop} ${vw} ${vh}`}
         preserveAspectRatio="xMidYMid meet"
+        onMouseDown={handleSvgMouseDown}
+        onMouseMove={
+          selectBoxStartingX !== -1 && selectBoxStartingY !== -1
+            ? handleSvgMouseMove
+            : () => {}
+        }
+        onMouseUp={handleSvgMouseUp}
       >
         <Defs />
 
@@ -590,6 +674,16 @@ export const App = () => {
           yearInPixels={yearInPixels}
           minStartDate={minStartDate}
           maxEndDate={maxEndDate}
+        />
+
+        <rect
+          x={Math.min(selectBoxStartingX, selectBoxEndingX)}
+          y={Math.min(selectBoxStartingY, selectBoxEndingY)}
+          height={Math.abs(selectBoxEndingY - selectBoxStartingY)}
+          width={Math.abs(selectBoxEndingX - selectBoxStartingX)}
+          fill="transparent"
+          stroke="black"
+          strokeWidth={1}
         />
       </svg>
 

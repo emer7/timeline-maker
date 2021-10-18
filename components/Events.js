@@ -74,7 +74,10 @@ export const Events = ({
           isGroupSelection={isGroupSelection}
           isReligion={isReligion}
           isTitleClipped={isTitleClipped}
-          handleOnMouseDown={() => handleOnMouseDownOnBar(eventIndex)}
+          handleOnMouseDown={e => {
+            e.stopPropagation();
+            handleOnMouseDownOnBar(eventIndex);
+          }}
           handleOnMouseUp={e => handleOnMouseUp(e, eventIndex)}
           handleOnMouseLeave={handleOnMouseLeave}
         />
