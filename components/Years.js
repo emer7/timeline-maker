@@ -1,3 +1,5 @@
+import { format } from 'date-fns';
+
 import { eachCenturyOfInterval, calculateDuration } from '../utils';
 
 export const Years = ({
@@ -29,7 +31,8 @@ export const Years = ({
             textAnchor="start"
             alignmentBaseline="baseline"
           >
-            {century.getFullYear()}
+            {Math.abs(century.getFullYear())}
+            {century.getFullYear() < 0 && format(century, ' G')}
           </text>
         );
       })}
