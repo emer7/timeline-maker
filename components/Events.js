@@ -57,6 +57,7 @@ export const Events = ({
       return (
         <Bar
           key={JSON.stringify(events[eventIndex])}
+          eventIndex={eventIndex}
           isShiftPressed={isShiftPressed}
           yearInPixels={yearInPixels}
           event={events[eventIndex]}

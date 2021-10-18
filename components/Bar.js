@@ -7,6 +7,7 @@ import { WIDTH, PALETTE, WHITE, RELIGION_PALETTE, BLACK } from '../consts';
 
 export const Bar = ({ minStartDate, ...props }) => {
   const {
+    eventIndex,
     isShiftPressed,
     yearInPixels,
     event,
@@ -99,7 +100,7 @@ export const Bar = ({ minStartDate, ...props }) => {
         onMouseUp={handleOnMouseUp}
         onMouseLeave={handleOnMouseLeave}
       />
-      <clipPath id={`${parsedStartDate.getTime()}${parsedEndDate.getTime()}`}>
+      <clipPath id={eventIndex}>
         <rect
           x={x + (canEventMove ? 1.5 : 0.5)}
           y={y + (canEventMove ? 1.5 : 0.5)}
@@ -108,13 +109,7 @@ export const Bar = ({ minStartDate, ...props }) => {
           width={WIDTH - (canEventMove ? 3 : 1)}
         />
       </clipPath>
-      <g
-        clipPath={
-          isTitleClipped
-            ? `url(#${parsedStartDate.getTime()}${parsedEndDate.getTime()})`
-            : undefined
-        }
-      >
+      <g clipPath={isTitleClipped ? `url(#${eventIndex})` : undefined}>
         <text
           className={textClassName}
           x={x + WIDTH / 2}
@@ -139,6 +134,7 @@ export const Bar = ({ minStartDate, ...props }) => {
 };
 
 export const WithReign = ({
+  eventIndex,
   isShiftPressed,
   yearInPixels,
   event,
@@ -244,7 +240,7 @@ export const WithReign = ({
         onMouseUp={handleOnMouseUp}
         onMouseLeave={handleOnMouseLeave}
       />
-      <clipPath id={`${parsedStartDate.getTime()}${parsedEndDate.getTime()}`}>
+      <clipPath id={eventIndex}>
         <rect
           x={x + (canEventMove ? 1.5 : 0.5)}
           y={y + (canEventMove ? 1.5 : 0.5)}
@@ -265,13 +261,7 @@ export const WithReign = ({
         onMouseLeave={handleOnMouseLeave}
         clipPath={`url(#${parsedReignStartDate.getTime()})`}
       />
-      <g
-        clipPath={
-          isTitleClipped
-            ? `url(#${parsedStartDate.getTime()}${parsedEndDate.getTime()})`
-            : undefined
-        }
-      >
+      <g clipPath={isTitleClipped ? `url(#${eventIndex})` : undefined}>
         <text
           className={textClassName}
           x={x + WIDTH / 2}
