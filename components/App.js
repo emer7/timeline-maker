@@ -751,6 +751,8 @@ export const App = () => {
           scrollTop={scrollTop}
           scrollLeft={scrollLeft}
           yearInPixels={yearInPixels}
+          vw={vw}
+          vh={vh}
           minStartDate={minStartDate}
           selectedEvent={events[clickedIndex] || {}}
           left={positions[clickedIndex]}
