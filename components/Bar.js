@@ -3,7 +3,15 @@ import React from 'react';
 import { parseMultipleFormat, calculateDuration } from '../utils';
 import { getFontWhiteOrBlack } from '../utils/color';
 
-import { WIDTH, PALETTE, WHITE, RELIGION_PALETTE, BLACK } from '../consts';
+import {
+  WIDTH,
+  PALETTE,
+  WHITE,
+  RELIGION_PALETTE,
+  BLACK,
+  RESIZE_LEFT,
+  RESIZE_RIGHT,
+} from '../consts';
 
 export const Bar = ({ minStartDate, ...props }) => {
   const {
@@ -25,6 +33,7 @@ export const Bar = ({ minStartDate, ...props }) => {
     handleOnMouseDown,
     handleOnMouseUp,
     handleOnMouseLeave,
+    handleWidthResize,
   } = props;
 
   const {
@@ -73,6 +82,20 @@ export const Bar = ({ minStartDate, ...props }) => {
 
   const isHeightLargerThanWidth = durationInPixels > width;
 
+  const stroke = isOrigin
+    ? '#b7245c'
+    : isDestination
+    ? '#00a6fb'
+    : isGroupSelection
+    ? '#5FAD41'
+    : BLACK;
+
+  const handleWidthResizeStart = (e, direction) => {
+    const { clientX } = e;
+
+    handleWidthResize(eventIndex, clientX, direction, width, position);
+  };
+
   return reignStartDate && reignEndDate ? (
     <WithReign startDurationInPixels={startDurationInPixels} {...props}>
       {description}
@@ -87,20 +110,32 @@ export const Bar = ({ minStartDate, ...props }) => {
         height={durationInPixels}
         width={width}
         fill={fill}
-        stroke={
-          isOrigin
-            ? '#b7245c'
-            : isDestination
-            ? '#00a6fb'
-            : isGroupSelection
-            ? '#5FAD41'
-            : BLACK
-        }
+        stroke={stroke}
         strokeWidth={canEventMove ? 3 : 1}
         onMouseDown={handleOnMouseDown}
         onMouseUp={handleOnMouseUp}
         onMouseLeave={handleOnMouseLeave}
       />
+
+      <line
+        className="cursor-col-resize"
+        x1={x}
+        y1={y}
+        x2={x}
+        y2={y + durationInPixels}
+        stroke={stroke}
+        onMouseDown={e => handleWidthResizeStart(e, RESIZE_LEFT)}
+      />
+      <line
+        className="cursor-col-resize"
+        x1={x + width}
+        y1={y}
+        x2={x + width}
+        y2={y + durationInPixels}
+        stroke={stroke}
+        onMouseDown={e => handleWidthResizeStart(e, RESIZE_RIGHT)}
+      />
+
       <clipPath id={eventIndex}>
         <rect
           x={x + (canEventMove ? 1.5 : 0.5)}
@@ -154,6 +189,7 @@ export const WithReign = ({
   handleOnMouseDown,
   handleOnMouseUp,
   handleOnMouseLeave,
+  handleWidthResize,
   children,
 }) => {
   const { reignStartDate, reignEndDate, startDate, endDate, color, religion } =
@@ -218,6 +254,20 @@ export const WithReign = ({
 
   const isHeightLargerThanWidth = durationInPixels > width;
 
+  const stroke = isOrigin
+    ? '#b7245c'
+    : isDestination
+    ? '#00a6fb'
+    : isGroupSelection
+    ? '#5FAD41'
+    : BLACK;
+
+  const handleWidthResizeStart = (e, direction) => {
+    const { clientX } = e;
+
+    handleWidthResize(eventIndex, clientX, direction, width, position);
+  };
+
   return (
     <g>
       <rect
@@ -228,20 +278,32 @@ export const WithReign = ({
         height={durationInPixels}
         width={width}
         fill={WHITE}
-        stroke={
-          isOrigin
-            ? '#b7245c'
-            : isDestination
-            ? '#00a6fb'
-            : isGroupSelection
-            ? '#5FAD41'
-            : BLACK
-        }
+        stroke={stroke}
         strokeWidth={canEventMove ? 3 : 1}
         onMouseDown={handleOnMouseDown}
         onMouseUp={handleOnMouseUp}
         onMouseLeave={handleOnMouseLeave}
       />
+
+      <line
+        className="cursor-col-resize"
+        x1={x}
+        y1={y}
+        x2={x}
+        y2={y + durationInPixels}
+        stroke={stroke}
+        onMouseDown={e => handleWidthResizeStart(e, RESIZE_LEFT)}
+      />
+      <line
+        className="cursor-col-resize"
+        x1={x + width}
+        y1={y}
+        x2={x + width}
+        y2={y + durationInPixels}
+        stroke={stroke}
+        onMouseDown={e => handleWidthResizeStart(e, RESIZE_RIGHT)}
+      />
+
       <clipPath id={eventIndex}>
         <rect
           x={x + (canEventMove ? 1.5 : 0.5)}

@@ -24,6 +24,7 @@ export const Events = ({
   handleOnMouseDownOnBar,
   handleOnMouseUp,
   handleOnMouseLeave,
+  handleWidthResize,
 }) =>
   [...events.keys()]
     .sort((eventAIndex, eventBIndex) => {
@@ -84,6 +85,7 @@ export const Events = ({
           }}
           handleOnMouseUp={e => handleOnMouseUp(e, eventIndex)}
           handleOnMouseLeave={handleOnMouseLeave}
+          handleWidthResize={handleWidthResize}
         />
       );
     });
