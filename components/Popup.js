@@ -5,6 +5,7 @@ import {
   SaveOutlined as SaveIcon,
   PaletteOutlined as PaletteIcon,
   AccountTreeOutlined as GroupIcon,
+  VisibilityOff as VisibilityIcon,
 } from '@material-ui/icons';
 
 import {
@@ -38,6 +39,7 @@ export const Popup = ({
   handleDeleteEvent,
   handleEditEvent,
   handleChildrenVisibility,
+  handleHideEvent,
 }) => {
   const [popupEvent, setPopupEvent] = React.useState(selectedEvent);
   React.useEffect(() => {
@@ -93,6 +95,11 @@ export const Popup = ({
   const handleOnClickDelete = e => {
     e.stopPropagation();
     handleDeleteEvent();
+  };
+
+  const handleOnClickHide = e => {
+    e.stopPropagation();
+    handleHideEvent();
   };
 
   const handleSaveEvent = e => {
@@ -227,6 +234,12 @@ export const Popup = ({
                 <GroupIcon onClick={handleToggleChildrenVisibility} />
               </div>
             )}
+            <div
+              className={popupActionButtonClassName}
+              onClick={handleOnClickHide}
+            >
+              <VisibilityIcon />
+            </div>
             <div className={popupActionButtonClassName}>
               <PaletteIcon />
             </div>

@@ -262,6 +262,14 @@ export const App = () => {
 
     setBoundaryDate(slicedEvents, setMinStartDate, setMaxEndDate);
   };
+  const handleHideEvent = index => {
+    setVisibility([
+      ...visibility.slice(0, index),
+      false,
+      ...visibility.slice(index + 1),
+    ]);
+    setIsPopup(false);
+  };
 
   React.useEffect(() => {
     document.addEventListener('wheel', handleOnWheelDocument);
@@ -763,6 +771,7 @@ export const App = () => {
             handleEditEvent(clickedIndex, editedEvent)
           }
           handleChildrenVisibility={handleChildrenVisibility}
+          handleHideEvent={() => handleHideEvent(clickedIndex)}
         />
       )}
 
