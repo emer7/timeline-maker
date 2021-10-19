@@ -14,9 +14,13 @@ export const Links = ({
   links.map((link, linkIndex) => {
     const { origin, destination, type } = link;
 
-    const { startDate: originStartDate, endDate: originEndDate } =
-      events[origin];
-    const { startDate: destinationStartDate } = events[destination];
+    const {
+      startDate: originStartDate,
+      endDate: originEndDate,
+      width: originWidth = WIDTH,
+    } = events[origin];
+    const { startDate: destinationStartDate, width: destinationWidth = WIDTH } =
+      events[destination];
 
     const parsedOriginStartDate = parseMultipleFormat(originStartDate);
     const parsedOriginEndDate = parseMultipleFormat(originEndDate);
@@ -64,10 +68,11 @@ export const Links = ({
           h ${horizontalDistance} 
           v ${verticalDistance / 2 - 8}`
         : `M ${
-            originLeft + ((isOriginToTheLeftOfDestination ? 1 : -1) * WIDTH) / 2
+            originLeft +
+            ((isOriginToTheLeftOfDestination ? 1 : -1) * originWidth) / 2
           } ${originTop + originHeight} h ${
             horizontalDistance +
-            (isOriginToTheLeftOfDestination ? -1 : 1) * (WIDTH + 8)
+            (isOriginToTheLeftOfDestination ? -1 : 1) * (destinationWidth + 8) // 8 is arrow dimension
           } `;
 
     return (

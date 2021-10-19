@@ -76,3 +76,6 @@ export const TYPE_OPTIONS = {
   event: 'Event',
   people: 'People',
 };
+
+export const RESIZE_LEFT = -1;
+export const RESIZE_RIGHT = 1;

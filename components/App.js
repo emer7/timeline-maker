@@ -2,7 +2,7 @@ import React from 'react';
 import { isAfter, isBefore, max, min } from 'date-fns';
 
 import { parseMultipleFormat, calculateDuration } from '../utils';
-import { SAMPLE_EVENT } from '../consts';
+import { RESIZE_RIGHT, SAMPLE_EVENT, WIDTH } from '../consts';
 
 import { Add } from './Add';
 import { Events } from './Events';
@@ -147,6 +147,7 @@ export const App = () => {
   React.useEffect(() => {
     const parsedEvents = JSON.parse(localStorage.getItem('events'));
     const parsedPositions = JSON.parse(localStorage.getItem('positions'));
+    const parsedWidths = JSON.parse(localStorage.getItem('widths'));
     const parsedOrders = JSON.parse(localStorage.getItem('orders'));
     const parsedOrdersByEventIndex = JSON.parse(
       localStorage.getItem('ordersByEventIndex')
@@ -161,8 +162,19 @@ export const App = () => {
       setBoundaryDate(parsedEvents, setMinStartDate, setMaxEndDate);
       setVisibility(parsedEvents.map(_ => true));
     }
-    parsedPositions && setPositions(parsedPositions);
+
+    setPositions(
+      parsedPositions
+        ? parsedPositions
+        : parsedEvents && parsedEvents.map(_ => 0)
+    );
+
+    setWidths(
+      parsedWidths ? parsedWidths : parsedEvents && parsedEvents.map(_ => WIDTH)
+    );
+
     calculatedOrders && setOrders(calculatedOrders);
+
     parsedOrdersByEventIndex
       ? setOrdersByEventIndex(parsedOrdersByEventIndex)
       : calculatedOrders &&
@@ -182,6 +194,7 @@ export const App = () => {
     calculateMaxEndDate(events)
   );
   const [positions, setPositions] = React.useState([0]);
+  const [widths, setWidths] = React.useState([WIDTH]);
   const [orders, setOrders] = React.useState([0]);
   const [ordersByEventIndex, setOrdersByEventIndex] = React.useState([0]);
   const [visibility, setVisibility] = React.useState([true]);
@@ -195,7 +208,8 @@ export const App = () => {
     isAfter(parsedEndDate, maxEndDate) && setMaxEndDate(parsedEndDate);
 
     setEvents([...events, event]);
-    setPositions([...positions, scrollLeft + 25]);
+    setPositions([...positions, scrollLeft + WIDTH / 2]);
+    setWidths([...widths, WIDTH]);
     setOrders([...orders, events.length]);
     setOrdersByEventIndex([...ordersByEventIndex, events.length]);
     setVisibility([...visibility, true]);
@@ -203,6 +217,7 @@ export const App = () => {
   const handleDeleteEvent = index => {
     const slicedEvents = removeElementByIndex(events, index);
     const slicedPositions = removeElementByIndex(positions, index);
+    const slicedWidths = removeElementByIndex(widths, index);
 
     const orderIndex = ordersByEventIndex[index];
     const slicedOrders = removeElementByIndex(orders, orderIndex);
@@ -215,6 +230,7 @@ export const App = () => {
 
     setEvents(slicedEvents);
     setPositions(slicedPositions);
+    setWidths(slicedWidths);
     setOrders(slicedOrders);
     setOrdersByEventIndex(slicedAndMappedOrdersByEventIndex);
     setVisibility(slicedVisibility);
@@ -523,69 +539,110 @@ export const App = () => {
   };
 
   const handleSvgMouseMove = e => {
-    const { clientX, clientY } = e;
+    if (resizeStartingX !== -1) {
+      const { clientX } = e;
 
-    const calculatedX = clientX + scrollLeft;
-    const calculatedY = clientY + scrollTop;
+      const deltaWidth = clientX - resizeStartingX;
 
-    setSelectBoxEndingX(calculatedX);
-    setSelectBoxEndingY(calculatedY);
+      setWidths([
+        ...widths.slice(0, resizeIndex),
+        resizeOriginalWidth + deltaWidth * resizeDirection,
+        ...widths.slice(resizeIndex + 1),
+      ]);
+      setPositions([
+        ...positions.slice(0, resizeIndex),
+        resizeOriginalPosition + deltaWidth / 2,
+        ...positions.slice(resizeIndex + 1),
+      ]);
+    } else if (selectBoxStartingX !== -1 && selectBoxStartingY !== -1) {
+      const { clientX, clientY } = e;
 
-    const selectedEvent = events
-      .map((_, eventIndex) => eventIndex)
-      .filter(eventIndex => {
-        const position = positions[eventIndex] - 25;
+      const calculatedX = clientX + scrollLeft;
+      const calculatedY = clientY + scrollTop;
 
-        const { startDate, endDate } = events[eventIndex];
-        const parsedStartDate = parseMultipleFormat(startDate);
-        const parsedEndDate = parseMultipleFormat(endDate);
+      setSelectBoxEndingX(calculatedX);
+      setSelectBoxEndingY(calculatedY);
 
-        let durationInPixels;
-        let startDurationInPixels;
-        try {
-          durationInPixels = Math.max(
-            24,
-            calculateDuration(parsedStartDate, parsedEndDate, yearInPixels)
+      const selectedEvent = events
+        .map((_, eventIndex) => eventIndex)
+        .filter(eventIndex => {
+          const position = positions[eventIndex] - widths[eventIndex] / 2;
+
+          const { startDate, endDate } = events[eventIndex];
+          const parsedStartDate = parseMultipleFormat(startDate);
+          const parsedEndDate = parseMultipleFormat(endDate);
+
+          let durationInPixels;
+          let startDurationInPixels;
+          try {
+            durationInPixels = Math.max(
+              24,
+              calculateDuration(parsedStartDate, parsedEndDate, yearInPixels)
+            );
+
+            startDurationInPixels = calculateDuration(
+              minStartDate,
+              parsedStartDate,
+              yearInPixels
+            );
+          } catch {
+            durationInPixels = 0;
+            startDurationInPixels = 0;
+          }
+
+          const endDurationInPixels = startDurationInPixels + durationInPixels;
+
+          return (
+            position <= Math.max(selectBoxStartingX, calculatedX) &&
+            Math.min(selectBoxStartingX, calculatedX) <=
+              position + widths[eventIndex] &&
+            startDurationInPixels <=
+              Math.max(selectBoxStartingY, calculatedY) &&
+            Math.min(selectBoxStartingY, calculatedY) <= endDurationInPixels
           );
+        });
 
-          startDurationInPixels = calculateDuration(
-            minStartDate,
-            parsedStartDate,
-            yearInPixels
-          );
-        } catch {
-          durationInPixels = 0;
-          startDurationInPixels = 0;
-        }
-
-        const endDurationInPixels = startDurationInPixels + durationInPixels;
-
-        return (
-          position <= Math.max(selectBoxStartingX, calculatedX) &&
-          Math.min(selectBoxStartingX, calculatedX) <= position + 50 &&
-          startDurationInPixels <= Math.max(selectBoxStartingY, calculatedY) &&
-          Math.min(selectBoxStartingY, calculatedY) <= endDurationInPixels
-        );
-      });
-
-    setGroupSelection(
-      selectedEvent.sort(
-        (eventAIndex, eventBIndex) =>
-          positions[eventAIndex] - positions[eventBIndex]
-      )
-    );
+      setGroupSelection(
+        selectedEvent.sort(
+          (eventAIndex, eventBIndex) =>
+            positions[eventAIndex] - positions[eventBIndex]
+        )
+      );
+    }
   };
 
   const handleSvgMouseUp = () => {
+    setResizeStartingX(-1);
     setSelectBoxStartingX(-1);
     setSelectBoxStartingY(-1);
     setSelectBoxEndingY(-1);
     setSelectBoxEndingY(-1);
   };
 
+  const [resizeIndex, setResizeIndex] = React.useState(-1);
+  const [resizeStartingX, setResizeStartingX] = React.useState(-1);
+  const [resizeDirection, setResizeDirection] = React.useState(RESIZE_RIGHT);
+  const [resizeOriginalWidth, setResizeOriginalWidth] = React.useState(-1);
+  const [resizeOriginalPosition, setResizeOriginalPosition] =
+    React.useState(-1);
+  const handleWidthResize = (
+    index,
+    startingX,
+    direction,
+    originalWidth,
+    originalPosition
+  ) => {
+    setResizeIndex(index);
+    setResizeStartingX(startingX);
+    setResizeDirection(direction);
+    setResizeOriginalWidth(originalWidth);
+    setResizeOriginalPosition(originalPosition);
+  };
+
   const handleSaveData = () => {
     localStorage.setItem('events', JSON.stringify(events));
     localStorage.setItem('positions', JSON.stringify(positions));
+    localStorage.setItem('widths', JSON.stringify(widths));
     localStorage.setItem('orders', JSON.stringify(orders));
     localStorage.setItem(
       'ordersByEventIndex',
@@ -633,6 +690,7 @@ export const App = () => {
           events={events}
           minStartDate={minStartDate}
           positions={positions}
+          widths={widths}
           ordersByEventIndex={ordersByEventIndex}
           visibility={visibility}
           temporaryHorizontalPositions={temporaryHorizontalPositions}
@@ -648,6 +706,7 @@ export const App = () => {
           handleOnMouseDownOnBar={handleOnMouseDownOnBar}
           handleOnMouseUp={handleOnMouseUp}
           handleOnMouseLeave={handleOnMouseLeave}
+          handleWidthResize={handleWidthResize}
         />
 
         {previewEvent && previewEvent.startDate && previewEvent.endDate && (
@@ -695,6 +754,7 @@ export const App = () => {
           minStartDate={minStartDate}
           selectedEvent={events[clickedIndex] || {}}
           left={positions[clickedIndex]}
+          width={widths[clickedIndex]}
           handleDeleteEvent={() => handleDeleteEvent(clickedIndex)}
           handleEditEvent={editedEvent =>
             handleEditEvent(clickedIndex, editedEvent)
@@ -741,6 +801,7 @@ export const App = () => {
                 handleSaveData={handleSaveData}
                 setEvents={setEvents}
                 setPositions={setPositions}
+                setWidths={setWidths}
                 setOrders={setOrders}
                 setOrdersByEventIndex={setOrdersByEventIndex}
                 setLinks={setLinks}
