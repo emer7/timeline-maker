@@ -13,6 +13,8 @@ import {
   RESIZE_RIGHT,
 } from '../consts';
 
+const rx = 4;
+
 export const Bar = ({ minStartDate, ...props }) => {
   const {
     eventIndex,
@@ -106,7 +108,7 @@ export const Bar = ({ minStartDate, ...props }) => {
         className={rectClassName}
         x={x}
         y={y}
-        rx="4"
+        rx={rx}
         height={durationInPixels}
         width={width}
         fill={fill}
@@ -120,18 +122,18 @@ export const Bar = ({ minStartDate, ...props }) => {
       <line
         className="cursor-col-resize"
         x1={x}
-        y1={y}
+        y1={y + rx}
         x2={x}
-        y2={y + durationInPixels}
+        y2={y + durationInPixels - rx}
         stroke={stroke}
         onMouseDown={e => handleWidthResizeStart(e, RESIZE_LEFT)}
       />
       <line
         className="cursor-col-resize"
         x1={x + width}
-        y1={y}
+        y1={y + rx}
         x2={x + width}
-        y2={y + durationInPixels}
+        y2={y + durationInPixels - rx}
         stroke={stroke}
         onMouseDown={e => handleWidthResizeStart(e, RESIZE_RIGHT)}
       />
@@ -274,7 +276,7 @@ export const WithReign = ({
         className={rectClassName}
         x={x}
         y={y}
-        rx="4"
+        rx={rx}
         height={durationInPixels}
         width={width}
         fill={WHITE}
@@ -288,18 +290,18 @@ export const WithReign = ({
       <line
         className="cursor-col-resize"
         x1={x}
-        y1={y}
+        y1={y + rx}
         x2={x}
-        y2={y + durationInPixels}
+        y2={y + durationInPixels - rx}
         stroke={stroke}
         onMouseDown={e => handleWidthResizeStart(e, RESIZE_LEFT)}
       />
       <line
         className="cursor-col-resize"
         x1={x + width}
-        y1={y}
+        y1={y + rx}
         x2={x + width}
-        y2={y + durationInPixels}
+        y2={y + durationInPixels - rx}
         stroke={stroke}
         onMouseDown={e => handleWidthResizeStart(e, RESIZE_RIGHT)}
       />
