@@ -325,7 +325,7 @@ export const WithReign = ({
         onMouseDown={handleOnMouseDown}
         onMouseUp={handleOnMouseUp}
         onMouseLeave={handleOnMouseLeave}
-        clipPath={`url(#${parsedReignStartDate.getTime()})`}
+        clipPath={`url(#${eventIndex})`}
       />
       <g clipPath={isTitleClipped ? `url(#${eventIndex})` : undefined}>
         <text
