@@ -724,6 +724,7 @@ export const App = () => {
           events={events}
           minStartDate={minStartDate}
           positions={positions}
+          widths={widths}
           links={links}
           handleDeleteLink={handleDeleteLink}
         />

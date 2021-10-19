@@ -8,19 +8,16 @@ export const Links = ({
   events,
   minStartDate,
   positions,
+  widths,
   links,
   handleDeleteLink,
 }) =>
   links.map((link, linkIndex) => {
     const { origin, destination, type } = link;
 
-    const {
-      startDate: originStartDate,
-      endDate: originEndDate,
-      width: originWidth = WIDTH,
-    } = events[origin];
-    const { startDate: destinationStartDate, width: destinationWidth = WIDTH } =
-      events[destination];
+    const { startDate: originStartDate, endDate: originEndDate } =
+      events[origin];
+    const { startDate: destinationStartDate } = events[destination];
 
     const parsedOriginStartDate = parseMultipleFormat(originStartDate);
     const parsedOriginEndDate = parseMultipleFormat(originEndDate);
@@ -39,6 +36,7 @@ export const Links = ({
       yearInPixels
     );
     const originLeft = positions[origin];
+    const originWidth = widths[origin];
 
     const destinationTop = calculateDuration(
       minStartDate,
@@ -46,6 +44,7 @@ export const Links = ({
       yearInPixels
     );
     const destinationLeft = positions[destination];
+    const destinationWidth = widths[destination];
 
     const isOriginLaterThanDestination =
       originTop + originHeight > destinationTop;
