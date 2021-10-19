@@ -23,10 +23,14 @@ import {
 
 import { ColorPicker } from './ColorPicker';
 
+const GAP = 16;
+
 export const Popup = ({
   scrollTop,
   scrollLeft,
   yearInPixels,
+  vw,
+  vh,
   minStartDate,
   selectedEvent,
   left,
@@ -144,15 +148,41 @@ export const Popup = ({
 
   const isBlackOrWhite = getFontWhiteOrBlack(color);
 
+  const popupLeft = left + width / 2 + GAP - scrollLeft;
+
+  const popupRef = React.useRef();
+
+  const [popupSize, setPopupSize] = React.useState({});
+  React.useEffect(
+    () =>
+      setPopupSize({
+        popupWidth: popupRef.current.clientWidth,
+        popupHeight: popupRef.current.clientHeight,
+      }),
+    []
+  );
+
+  const { popupWidth, popupHeight } = popupSize;
+
   return (
     <div
-      className="relative inline-flex flex space-x-4 items-start"
+      className="relative inline-flex space-x-4 items-start"
       style={{
-        top: top - scrollTop,
-        left: left + width / 2 + 16 - scrollLeft,
+        top: Math.min(Math.max(top - scrollTop, GAP), vh - popupHeight - GAP),
+        left: Math.min(
+          Math.max(
+            popupLeft +
+              (popupLeft > vw - popupWidth - GAP
+                ? -popupWidth - GAP * 2 - width
+                : 0),
+            GAP
+          ),
+          vw - popupWidth - GAP
+        ),
       }}
+      ref={popupRef}
     >
-      <div className="inline-block rounded-lg bg-white shadow-lg overflow-hidden">
+      <div className="rounded-lg bg-white shadow-lg overflow-hidden">
         <div
           className={`flex space-x-4 justify-between p-2 cursor-pointer ${
             isBlackOrWhite === 'black' ? 'text-black' : 'text-white'
@@ -164,9 +194,10 @@ export const Popup = ({
         >
           <input
             className={`ml-1 py-1 box-border border-b-2 border-transparent focus:outline-none bg-transparent w-full ${
-              isEdit ? 'border-black' : ''
+              isEdit ? 'border-black' : 'cursor-pointer'
             }`}
             value={description}
+            onClick={e => e.stopPropagation()}
             onChange={handleDescriptionChange}
             disabled={!isEdit}
           />
