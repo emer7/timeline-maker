@@ -15,7 +15,6 @@ import {
 } from '../utils';
 import { getFontWhiteOrBlack } from '../utils/color';
 import {
-  WIDTH,
   PALETTE,
   RELIGION_OPTIONS,
   TYPE_OPTIONS,
@@ -31,6 +30,7 @@ export const Popup = ({
   minStartDate,
   selectedEvent,
   left,
+  width,
   handleDeleteEvent,
   handleEditEvent,
   handleChildrenVisibility,
@@ -149,7 +149,7 @@ export const Popup = ({
       className="relative inline-flex flex space-x-4 items-start"
       style={{
         top: top - scrollTop,
-        left: left + WIDTH / 2 + 16 - scrollLeft,
+        left: left + width / 2 + 16 - scrollLeft,
       }}
     >
       <div className="inline-block rounded-lg bg-white shadow-lg overflow-hidden">

@@ -12,6 +12,7 @@ export const Bar = ({ minStartDate, ...props }) => {
     yearInPixels,
     event,
     position,
+    width = WIDTH,
     temporaryVerticalPosition,
     canEventMove,
     canCreateGroup,
@@ -66,11 +67,11 @@ export const Bar = ({ minStartDate, ...props }) => {
   const rectClassName = `${cursorClassName} ${pointerEventsNoneClassName}`;
   const textClassName = `${rectClassName} select-none`;
 
-  const x = position - 25;
+  const x = position - width / 2;
   const y = temporaryVerticalPosition || startDurationInPixels;
   const fill = isReligion ? RELIGION_PALETTE[religion] : color ?? PALETTE[16];
 
-  const isHeightLargerThanWidth = durationInPixels > WIDTH;
+  const isHeightLargerThanWidth = durationInPixels > width;
 
   return reignStartDate && reignEndDate ? (
     <WithReign startDurationInPixels={startDurationInPixels} {...props}>
@@ -84,7 +85,7 @@ export const Bar = ({ minStartDate, ...props }) => {
         y={y}
         rx="4"
         height={durationInPixels}
-        width={WIDTH}
+        width={width}
         fill={fill}
         stroke={
           isOrigin
@@ -106,19 +107,19 @@ export const Bar = ({ minStartDate, ...props }) => {
           y={y + (canEventMove ? 1.5 : 0.5)}
           rx={canEventMove ? 2.5 : 3.5}
           height={Math.max(0, durationInPixels - (canEventMove ? 3 : 1))}
-          width={WIDTH - (canEventMove ? 3 : 1)}
+          width={width - (canEventMove ? 3 : 1)}
         />
       </clipPath>
       <g clipPath={isTitleClipped ? `url(#${eventIndex})` : undefined}>
         <text
           className={textClassName}
-          x={x + WIDTH / 2}
+          x={x + width / 2} // position
           y={y + durationInPixels / 2}
           textAnchor="middle"
           alignmentBaseline="middle"
           transform={
             isHeightLargerThanWidth
-              ? `rotate(270,${x + WIDTH / 2},${y + durationInPixels / 2})`
+              ? `rotate(270,${x + width / 2},${y + durationInPixels / 2})`
               : undefined
           }
           fill={getFontWhiteOrBlack(fill)}
@@ -139,6 +140,7 @@ export const WithReign = ({
   yearInPixels,
   event,
   position,
+  width = WIDTH,
   temporaryVerticalPosition,
   canEventMove,
   canCreateGroup,
@@ -210,11 +212,11 @@ export const WithReign = ({
   const rectClassName = `${cursorClassName} ${pointerEventsNoneClassName}`;
   const textClassName = `${rectClassName} select-none`;
 
-  const x = position - 25;
+  const x = position - width / 2;
   const y = temporaryVerticalPosition || startDurationInPixels;
   const fill = isReligion ? RELIGION_PALETTE[religion] : color ?? PALETTE[10];
 
-  const isHeightLargerThanWidth = durationInPixels > WIDTH;
+  const isHeightLargerThanWidth = durationInPixels > width;
 
   return (
     <g>
@@ -224,7 +226,7 @@ export const WithReign = ({
         y={y}
         rx="4"
         height={durationInPixels}
-        width={WIDTH}
+        width={width}
         fill={WHITE}
         stroke={
           isOrigin
@@ -246,7 +248,7 @@ export const WithReign = ({
           y={y + (canEventMove ? 1.5 : 0.5)}
           rx={canEventMove ? 2.5 : 3.5}
           height={Math.max(0, durationInPixels - (canEventMove ? 3 : 1))}
-          width={WIDTH - (canEventMove ? 3 : 1)}
+          width={width - (canEventMove ? 3 : 1)}
         />
       </clipPath>
       <rect
@@ -254,7 +256,7 @@ export const WithReign = ({
         x={x}
         y={y + reignStartDurationInPixels}
         height={reignDurationInPixels}
-        width={WIDTH}
+        width={width}
         fill={fill}
         onMouseDown={handleOnMouseDown}
         onMouseUp={handleOnMouseUp}
@@ -264,13 +266,13 @@ export const WithReign = ({
       <g clipPath={isTitleClipped ? `url(#${eventIndex})` : undefined}>
         <text
           className={textClassName}
-          x={x + WIDTH / 2}
+          x={x + width / 2} // position
           y={y + durationInPixels / 2}
           textAnchor="middle"
           alignmentBaseline="middle"
           transform={
             isHeightLargerThanWidth
-              ? `rotate(270,${x + WIDTH / 2},${y + durationInPixels / 2})`
+              ? `rotate(270,${x + width / 2},${y + durationInPixels / 2})`
               : undefined
           }
           fill={getFontWhiteOrBlack(fill)}

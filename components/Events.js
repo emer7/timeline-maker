@@ -8,6 +8,7 @@ export const Events = ({
   events,
   minStartDate,
   positions,
+  widths,
   ordersByEventIndex,
   visibility,
   temporaryHorizontalPositions,
@@ -45,6 +46,7 @@ export const Events = ({
         temporaryHorizontalPositions && isGroupSelection
           ? temporaryHorizontalPositions[groupSelection.indexOf(eventIndex)]
           : positions[eventIndex];
+      const width = widths[eventIndex];
 
       const temporaryVerticalPosition =
         temporaryVerticalPositions &&
@@ -63,6 +65,7 @@ export const Events = ({
           event={events[eventIndex]}
           minStartDate={minStartDate}
           position={position}
+          width={width}
           temporaryVerticalPosition={temporaryVerticalPosition}
           canEventMove={
             isGroupSelectionMemberMoving ||

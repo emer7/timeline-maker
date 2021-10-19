@@ -21,11 +21,12 @@ export const Storage = ({
     setImportJson(value);
   };
   const handleImportFromJson = () => {
-    const { events, positions, orders, ordersByEventIndex, links } =
+    const { events, positions, widths, orders, ordersByEventIndex, links } =
       JSON.parse(importJson);
 
     setEvents(events);
     setPositions(positions);
+    setWidths(widths);
     setOrders(orders);
     setOrdersByEventIndex(ordersByEventIndex);
     setLinks(links);

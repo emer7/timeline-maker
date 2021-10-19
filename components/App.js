@@ -2,7 +2,7 @@ import React from 'react';
 import { isAfter, isBefore, max, min } from 'date-fns';
 
 import { parseMultipleFormat, calculateDuration } from '../utils';
-import { SAMPLE_EVENT } from '../consts';
+import { SAMPLE_EVENT, WIDTH } from '../consts';
 
 import { Add } from './Add';
 import { Events } from './Events';
@@ -147,6 +147,7 @@ export const App = () => {
   React.useEffect(() => {
     const parsedEvents = JSON.parse(localStorage.getItem('events'));
     const parsedPositions = JSON.parse(localStorage.getItem('positions'));
+    const parsedWidths = JSON.parse(localStorage.getItem('widths'));
     const parsedOrders = JSON.parse(localStorage.getItem('orders'));
     const parsedOrdersByEventIndex = JSON.parse(
       localStorage.getItem('ordersByEventIndex')
@@ -161,8 +162,19 @@ export const App = () => {
       setBoundaryDate(parsedEvents, setMinStartDate, setMaxEndDate);
       setVisibility(parsedEvents.map(_ => true));
     }
-    parsedPositions && setPositions(parsedPositions);
+
+    setPositions(
+      parsedPositions
+        ? parsedPositions
+        : parsedEvents && parsedEvents.map(_ => 0)
+    );
+
+    setWidths(
+      parsedWidths ? parsedWidths : parsedEvents && parsedEvents.map(_ => WIDTH)
+    );
+
     calculatedOrders && setOrders(calculatedOrders);
+
     parsedOrdersByEventIndex
       ? setOrdersByEventIndex(parsedOrdersByEventIndex)
       : calculatedOrders &&
@@ -182,6 +194,7 @@ export const App = () => {
     calculateMaxEndDate(events)
   );
   const [positions, setPositions] = React.useState([0]);
+  const [widths, setWidths] = React.useState([WIDTH]);
   const [orders, setOrders] = React.useState([0]);
   const [ordersByEventIndex, setOrdersByEventIndex] = React.useState([0]);
   const [visibility, setVisibility] = React.useState([true]);
@@ -195,7 +208,8 @@ export const App = () => {
     isAfter(parsedEndDate, maxEndDate) && setMaxEndDate(parsedEndDate);
 
     setEvents([...events, event]);
-    setPositions([...positions, scrollLeft + 25]);
+    setPositions([...positions, scrollLeft + WIDTH / 2]);
+    setWidths([...widths, WIDTH]);
     setOrders([...orders, events.length]);
     setOrdersByEventIndex([...ordersByEventIndex, events.length]);
     setVisibility([...visibility, true]);
@@ -203,6 +217,7 @@ export const App = () => {
   const handleDeleteEvent = index => {
     const slicedEvents = removeElementByIndex(events, index);
     const slicedPositions = removeElementByIndex(positions, index);
+    const slicedWidths = removeElementByIndex(widths, index);
 
     const orderIndex = ordersByEventIndex[index];
     const slicedOrders = removeElementByIndex(orders, orderIndex);
@@ -215,6 +230,7 @@ export const App = () => {
 
     setEvents(slicedEvents);
     setPositions(slicedPositions);
+    setWidths(slicedWidths);
     setOrders(slicedOrders);
     setOrdersByEventIndex(slicedAndMappedOrdersByEventIndex);
     setVisibility(slicedVisibility);
@@ -534,7 +550,7 @@ export const App = () => {
     const selectedEvent = events
       .map((_, eventIndex) => eventIndex)
       .filter(eventIndex => {
-        const position = positions[eventIndex] - 25;
+        const position = positions[eventIndex] - widths[eventIndex] / 2;
 
         const { startDate, endDate } = events[eventIndex];
         const parsedStartDate = parseMultipleFormat(startDate);
@@ -562,7 +578,8 @@ export const App = () => {
 
         return (
           position <= Math.max(selectBoxStartingX, calculatedX) &&
-          Math.min(selectBoxStartingX, calculatedX) <= position + 50 &&
+          Math.min(selectBoxStartingX, calculatedX) <=
+            position + widths[eventIndex] &&
           startDurationInPixels <= Math.max(selectBoxStartingY, calculatedY) &&
           Math.min(selectBoxStartingY, calculatedY) <= endDurationInPixels
         );
@@ -586,6 +603,7 @@ export const App = () => {
   const handleSaveData = () => {
     localStorage.setItem('events', JSON.stringify(events));
     localStorage.setItem('positions', JSON.stringify(positions));
+    localStorage.setItem('widths', JSON.stringify(widths));
     localStorage.setItem('orders', JSON.stringify(orders));
     localStorage.setItem(
       'ordersByEventIndex',
@@ -633,6 +651,7 @@ export const App = () => {
           events={events}
           minStartDate={minStartDate}
           positions={positions}
+          widths={widths}
           ordersByEventIndex={ordersByEventIndex}
           visibility={visibility}
           temporaryHorizontalPositions={temporaryHorizontalPositions}
@@ -695,6 +714,7 @@ export const App = () => {
           minStartDate={minStartDate}
           selectedEvent={events[clickedIndex] || {}}
           left={positions[clickedIndex]}
+          width={widths[clickedIndex]}
           handleDeleteEvent={() => handleDeleteEvent(clickedIndex)}
           handleEditEvent={editedEvent =>
             handleEditEvent(clickedIndex, editedEvent)
@@ -741,6 +761,7 @@ export const App = () => {
                 handleSaveData={handleSaveData}
                 setEvents={setEvents}
                 setPositions={setPositions}
+                setWidths={setWidths}
                 setOrders={setOrders}
                 setOrdersByEventIndex={setOrdersByEventIndex}
                 setLinks={setLinks}
