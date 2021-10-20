@@ -14,6 +14,7 @@ import { Bar } from './Bar';
 import { AddLink } from './AddLink';
 import { Defs } from './Defs';
 import { Storage } from './Storage';
+import { Hidden } from './Hidden';
 
 const calculateMinStartDate = events => {
   const mappedEvents = events
@@ -261,6 +262,28 @@ export const App = () => {
     setEvents(slicedEvents);
 
     setBoundaryDate(slicedEvents, setMinStartDate, setMaxEndDate);
+  };
+  const handleHideEvent = index => {
+    setVisibility([
+      ...visibility.slice(0, index),
+      false,
+      ...visibility.slice(index + 1),
+    ]);
+    setIsPopup(false);
+  };
+  const handleHideEvents = () => {
+    setVisibility(
+      visibility.map((value, index) =>
+        groupSelection.includes(index) ? false : value
+      )
+    );
+  };
+  const handleUnhideEvent = index => {
+    setVisibility([
+      ...visibility.slice(0, index),
+      true,
+      ...visibility.slice(index + 1),
+    ]);
   };
 
   React.useEffect(() => {
@@ -763,18 +786,35 @@ export const App = () => {
             handleEditEvent(clickedIndex, editedEvent)
           }
           handleChildrenVisibility={handleChildrenVisibility}
+          handleHideEvent={() => handleHideEvent(clickedIndex)}
+        />
+      )}
+
+      {!visibility.reduce((acc, value) => acc && value, true) && (
+        <Hidden
+          events={events}
+          visibility={visibility}
+          handleUnhideEvent={handleUnhideEvent}
         />
       )}
 
       <div className="fixed right-2 bottom-2">
         <div className="flex space-x-2">
           {groupSelection.length ? (
-            <div
-              className={`${bottomButtonClassName} bg-green-400`}
-              onClick={handleClearGroupSelection}
-            >
-              Clear
-            </div>
+            <>
+              <div
+                className={`${bottomButtonClassName} bg-yellow-400`}
+                onClick={handleHideEvents}
+              >
+                Hide
+              </div>
+              <div
+                className={`${bottomButtonClassName} bg-green-400`}
+                onClick={handleClearGroupSelection}
+              >
+                Clear
+              </div>
+            </>
           ) : (
             <>
               {yearInPixels !== 6 && (
