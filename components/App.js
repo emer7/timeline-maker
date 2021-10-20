@@ -271,6 +271,13 @@ export const App = () => {
     ]);
     setIsPopup(false);
   };
+  const handleHideEvents = () => {
+    setVisibility(
+      visibility.map((value, index) =>
+        groupSelection.includes(index) ? false : value
+      )
+    );
+  };
   const handleUnhideEvent = index => {
     setVisibility([
       ...visibility.slice(0, index),
@@ -794,12 +801,20 @@ export const App = () => {
       <div className="fixed right-2 bottom-2">
         <div className="flex space-x-2">
           {groupSelection.length ? (
-            <div
-              className={`${bottomButtonClassName} bg-green-400`}
-              onClick={handleClearGroupSelection}
-            >
-              Clear
-            </div>
+            <>
+              <div
+                className={`${bottomButtonClassName} bg-yellow-400`}
+                onClick={handleHideEvents}
+              >
+                Hide
+              </div>
+              <div
+                className={`${bottomButtonClassName} bg-green-400`}
+                onClick={handleClearGroupSelection}
+              >
+                Clear
+              </div>
+            </>
           ) : (
             <>
               {yearInPixels !== 6 && (
