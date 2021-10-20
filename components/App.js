@@ -14,6 +14,7 @@ import { Bar } from './Bar';
 import { AddLink } from './AddLink';
 import { Defs } from './Defs';
 import { Storage } from './Storage';
+import { Hidden } from './Hidden';
 
 const calculateMinStartDate = events => {
   const mappedEvents = events
@@ -269,6 +270,13 @@ export const App = () => {
       ...visibility.slice(index + 1),
     ]);
     setIsPopup(false);
+  };
+  const handleUnhideEvent = index => {
+    setVisibility([
+      ...visibility.slice(0, index),
+      true,
+      ...visibility.slice(index + 1),
+    ]);
   };
 
   React.useEffect(() => {
@@ -772,6 +780,14 @@ export const App = () => {
           }
           handleChildrenVisibility={handleChildrenVisibility}
           handleHideEvent={() => handleHideEvent(clickedIndex)}
+        />
+      )}
+
+      {!visibility.reduce((acc, value) => acc && value, true) && (
+        <Hidden
+          events={events}
+          visibility={visibility}
+          handleUnhideEvent={handleUnhideEvent}
         />
       )}
 
