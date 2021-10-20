@@ -71,7 +71,8 @@ export const Links = ({
             ((isOriginToTheLeftOfDestination ? 1 : -1) * originWidth) / 2
           } ${originTop + originHeight} h ${
             horizontalDistance +
-            (isOriginToTheLeftOfDestination ? -1 : 1) * (destinationWidth + 8) // 8 is arrow dimension
+            (isOriginToTheLeftOfDestination ? -1 : 1) *
+              (destinationWidth / 2 + originWidth / 2 + 8) // 8 is arrow dimension
           } `;
 
     return (
