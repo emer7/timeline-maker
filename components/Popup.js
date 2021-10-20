@@ -159,7 +159,10 @@ export const Popup = ({
 
   const popupRef = React.useRef();
 
-  const [popupSize, setPopupSize] = React.useState({});
+  const [popupSize, setPopupSize] = React.useState({
+    popupWidth: 0,
+    popupHeight: 0,
+  });
   React.useEffect(
     () =>
       setPopupSize({
