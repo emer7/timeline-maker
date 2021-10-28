@@ -21,6 +21,7 @@ export const Events = ({
   isReligion,
   isTitleClipped,
   groupSelection,
+  searchResultEventIndex,
   handleOnMouseDownOnBar,
   handleOnMouseUp,
   handleOnMouseLeave,
@@ -79,6 +80,7 @@ export const Events = ({
           isGroupSelection={isGroupSelection}
           isReligion={isReligion}
           isTitleClipped={isTitleClipped}
+          isSearchResult={searchResultEventIndex === eventIndex}
           handleOnMouseDown={e => {
             e.stopPropagation();
             handleOnMouseDownOnBar(eventIndex);
