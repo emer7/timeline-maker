@@ -15,6 +15,7 @@ import { AddLink } from './AddLink';
 import { Defs } from './Defs';
 import { Storage } from './Storage';
 import { Hidden } from './Hidden';
+import { Search } from './Search';
 
 const calculateMinStartDate = events => {
   const mappedEvents = events
@@ -790,13 +791,16 @@ export const App = () => {
         />
       )}
 
-      {!visibility.reduce((acc, value) => acc && value, true) && (
-        <Hidden
-          events={events}
-          visibility={visibility}
-          handleUnhideEvent={handleUnhideEvent}
-        />
-      )}
+      <div className="fixed right-2 top-2 flex flex-col space-y-4">
+        <Search />
+        {!visibility.reduce((acc, value) => acc && value, true) && (
+          <Hidden
+            events={events}
+            visibility={visibility}
+            handleUnhideEvent={handleUnhideEvent}
+          />
+        )}
+      </div>
 
       <div className="fixed right-2 bottom-2">
         <div className="flex space-x-2">
