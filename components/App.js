@@ -663,6 +663,40 @@ export const App = () => {
     setResizeOriginalPosition(originalPosition);
   };
 
+  const [searchResultEventIndex, setSearchResultEventIndex] =
+    React.useState(-1);
+  const handleSearch = (searchTerm, searchResultOrder) => {
+    const filteredEvents = events
+      .map((event, index) => ({
+        event,
+        index,
+      }))
+      .filter(({ event: { description } }) =>
+        description.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+
+    if (filteredEvents.length) {
+      const wrappedResultIndex = searchResultOrder % filteredEvents.length;
+
+      const {
+        event: { startDate },
+        index: eventIndex,
+      } = filteredEvents[wrappedResultIndex];
+      const parsedStartDate = parseMultipleFormat(startDate);
+
+      const left = positions[eventIndex] - 80;
+      const top =
+        calculateDuration(minStartDate, parsedStartDate, yearInPixels) - 80;
+
+      setScrollLeft(left);
+      setScrollTop(top);
+
+      setSearchResultEventIndex(eventIndex);
+    } else {
+      setSearchResultEventIndex(-1);
+    }
+  };
+
   const handleSaveData = () => {
     localStorage.setItem('events', JSON.stringify(events));
     localStorage.setItem('positions', JSON.stringify(positions));
@@ -727,6 +761,7 @@ export const App = () => {
           groupSelection={groupSelection}
           isReligion={isReligion}
           isTitleClipped={isTitleClipped}
+          searchResultEventIndex={searchResultEventIndex}
           handleOnMouseDownOnBar={handleOnMouseDownOnBar}
           handleOnMouseUp={handleOnMouseUp}
           handleOnMouseLeave={handleOnMouseLeave}
@@ -792,7 +827,7 @@ export const App = () => {
       )}
 
       <div className="fixed right-2 top-2 flex flex-col space-y-4">
-        <Search />
+        <Search handleSearch={handleSearch} />
         {!visibility.reduce((acc, value) => acc && value, true) && (
           <Hidden
             events={events}

@@ -32,6 +32,7 @@ export const Bar = ({ minStartDate, ...props }) => {
     isGroupSelection,
     isReligion,
     isTitleClipped,
+    isSearchResult,
     handleOnMouseDown,
     handleOnMouseUp,
     handleOnMouseLeave,
@@ -104,6 +105,20 @@ export const Bar = ({ minStartDate, ...props }) => {
     </WithReign>
   ) : (
     <g>
+      {isSearchResult && (
+        <rect
+          x={x - 4}
+          y={y - 4}
+          rx="8"
+          height={durationInPixels + 8}
+          width={width + 8}
+          fill="none"
+          stroke="black"
+          strokeWidth="1"
+          strokeDasharray="4"
+        />
+      )}
+
       <rect
         className={rectClassName}
         x={x}
@@ -187,6 +202,7 @@ export const WithReign = ({
   isGroupSelection,
   isReligion,
   isTitleClipped,
+  isSearchResult,
   startDurationInPixels,
   handleOnMouseDown,
   handleOnMouseUp,
@@ -272,6 +288,20 @@ export const WithReign = ({
 
   return (
     <g>
+      {isSearchResult && (
+        <rect
+          x={x - 4}
+          y={y - 4}
+          rx="8"
+          height={durationInPixels + 8}
+          width={width + 8}
+          fill="none"
+          stroke="black"
+          strokeWidth="1"
+          strokeDasharray="4"
+        />
+      )}
+
       <rect
         className={rectClassName}
         x={x}
@@ -305,7 +335,7 @@ export const WithReign = ({
         stroke={stroke}
         onMouseDown={e => handleWidthResizeStart(e, RESIZE_RIGHT)}
       />
-
+      
       <clipPath id={eventIndex}>
         <rect
           x={x + (canEventMove ? 1.5 : 0.5)}
